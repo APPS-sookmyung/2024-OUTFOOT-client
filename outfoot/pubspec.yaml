@@ -65,6 +65,9 @@ flutter:
     - assets/shuffle_icon.svg
     - assets/floating_action.svg
     - assets/paw.svg
+    - assets/search.svg
+    - assets/home.svg
+    - assets/profile.svg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
