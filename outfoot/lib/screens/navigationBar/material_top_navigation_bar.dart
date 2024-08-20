@@ -8,7 +8,7 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0xFFEDFAFF),
+      backgroundColor: Color(0xFFFAF7F0),
       elevation: 0,
       leading: IconButton(
         icon: _buildCustomItem(

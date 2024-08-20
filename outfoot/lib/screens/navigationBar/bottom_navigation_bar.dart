@@ -33,9 +33,9 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1), // 그림자 색상과 투명도
-              offset: Offset(0, -4), // 그림자의 위치
-              blurRadius: 8, // 그림자 흐림 정도
+              color: Colors.black.withOpacity(0.1), 
+              offset: Offset(0, -4), 
+              blurRadius: 8, 
             ),
           ],
         ),
@@ -52,7 +52,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
                   '둘러보기',
                   index: 0,
                 ),
-                label: '', // 레이블을 빈 문자열로 설정
+                label: '', 
               ),
               BottomNavigationBarItem(
                 icon: _buildCustomItem(
@@ -60,7 +60,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
                   '홈',
                   index: 1,
                 ),
-                label: '', // 레이블을 빈 문자열로 설정
+                label: '', 
               ),
               BottomNavigationBarItem(
                 icon: _buildCustomItem(
@@ -68,12 +68,12 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
                   '마이페이지',
                   index: 2,
                 ),
-                label: '', // 레이블을 빈 문자열로 설정
+                label: '', 
               ),
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor: Color(0xFF79D7FF), // 선택된 항목 색상
-            unselectedItemColor: Color(0xFFCFCFCF), // 선택되지 않은 항목 색상
+            selectedItemColor: Color(0xFFC8AA9B), 
+            unselectedItemColor: Color(0xFFCFCFCF), 
             onTap: _onItemTapped,
               selectedLabelStyle: TextStyle(
               fontSize: 11,
@@ -91,8 +91,8 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
               height: 1.1,
               letterSpacing: -0.22,
             ),
-            showSelectedLabels: false, // 선택된 레이블 숨기기
-            showUnselectedLabels: false, // 선택되지 않은 레이블 숨기기
+            showSelectedLabels: false, 
+            showUnselectedLabels: false, 
           ),
         ),
       ),
@@ -109,9 +109,9 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
             iconPath,
             width: 24.0,
             height: 24.0,
-            color: _selectedIndex == index ? Color(0xFF79D7FF) : Color(0xFFCFCFCF),
+            color: _selectedIndex == index ? Color(0xFFC8AA9B) : Color(0xFFCFCFCF),
           ),
-          SizedBox(height: 6.93), // 아이콘과 레이블 사이의 간격
+          SizedBox(height: 6.93), 
           Text(
             label,
             style: TextStyle(
@@ -121,7 +121,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
               fontWeight: FontWeight.w500,
               height: 1.1,
               letterSpacing: -0.22,
-              color: _selectedIndex == index ? Color(0xFF79D7FF) : Color(0xFFCFCFCF),
+              color: _selectedIndex == index ? Color(0xFFC8AA9B) : Color(0xFFCFCFCF),
             ),
           ),
         ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:path_drawing/path_drawing.dart'; // path_drawing 패키지 임포트
+import 'package:path_drawing/path_drawing.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DashedCircle extends StatelessWidget {
@@ -43,7 +42,6 @@ class DashedCirclePainter extends CustomPainter {
     final Path path = Path()
       ..addOval(Rect.fromCircle(center: Offset(radius, radius), radius: radius));
 
-    // path_drawing 패키지를 사용하여 점선 스타일 추가
     final Path dashedPath = dashPath(
       path,
       dashArray: CircularIntervalList<double>(<double>[dashLength, spaceLength]),
@@ -60,7 +58,7 @@ class CheckPageFoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEDFAFF),
+      backgroundColor: Color(0xFFFAF7F0),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Stack(
@@ -76,10 +74,10 @@ class CheckPageFoot extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    '24.03.31', // 날짜
+                    '24.03.31', 
                     style: TextStyle(
                       fontSize: 11,
-                      color: Color(0xFF13A9EA),
+                      color: Color(0xFF5B411C),
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w400,
                       height: 1.1,
@@ -96,7 +94,7 @@ class CheckPageFoot extends StatelessWidget {
                       '하루에 물 2리터 마시기',
                       style: TextStyle(
                         fontSize: 18,
-                        color: Color(0xFF13A9EA),
+                        color: Color(0xFF5B411C),
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w600,
                         height: 1.1,
@@ -111,8 +109,8 @@ class CheckPageFoot extends StatelessWidget {
                         width: 7.991,
                         height: 7.991,
                         decoration: BoxDecoration(
-                          color: Color(0xFFC8EF2F),
-                          shape: BoxShape.circle, // 동그라미 모양
+                          color: Color(0xFFFFEAA5),
+                          shape: BoxShape.circle,
                         ),
                       ),
                     ),
@@ -139,7 +137,7 @@ class CheckPageFoot extends StatelessWidget {
                   ),
                   child: GridView.builder(
                     shrinkWrap: true,
-                    itemCount: 30, // 총 30개의 도장
+                    itemCount: 30, 
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
                       mainAxisSpacing: 10.63,
@@ -150,19 +148,19 @@ class CheckPageFoot extends StatelessWidget {
                         return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF79D7FF),
+                            color: Color(0xFFDFC4B6),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(7.18),
                             child: SvgPicture.asset(
-                              'assets/paw.svg', // 발바닥 이미지 
+                              'assets/paw.svg', 
                             ),
                           ),
                         );
                       } else {
                         return DashedCircle(
                           size: 24.57, 
-                          color: Color(0xFF79D7FF), 
+                          color: Color(0xFFC8AA9B), 
                         );
                       }
                     },
@@ -175,34 +173,40 @@ class CheckPageFoot extends StatelessWidget {
               top: 163, 
               left: 315, 
               right: 27.2, 
-              bottom: 300, // 아래쪽 간격 오류
+              bottom: 300, 
+              child: Container(),
+            ),
+            Positioned(
+              bottom: 12,
+              right: 20, 
+              child: FloatingActionButton(
+                onPressed: () {
+                  // 플로팅 액션 버튼 동작
+                },
+                backgroundColor: Colors.transparent, // 투명 배경
+                elevation: 0,
+                child: SvgPicture.asset(
+                  'assets/floating_action.svg',
+                  width:  65.035,
+                  height:  65.035,
+                  fit: BoxFit.contain, // 수정
+                ), 
+              ),
+            ),
+            Positioned(
+              top: 60, 
+              left: 330, 
               child: FloatingActionButton(
                 onPressed: () {
                   // 셔플 버튼 동작
                 },
-                backgroundColor: Colors.transparent, // 배경색 투명
-                elevation: 0, // 그림자 제거
+                backgroundColor: Colors.transparent, // 투명 배경
+                elevation: 0,
                 child: SvgPicture.asset(
                   'assets/shuffle_icon.svg',
                   width: 24,
                   height: 24,
                 ),
-              ),
-            ),
-            Positioned(
-              bottom: 12,
-              right: 20, // 재배치 필요
-              child: FloatingActionButton(
-                onPressed: () {
-                  // 플로팅 액션 버튼 동작
-                },
-                backgroundColor: Colors.transparent, // 배경색 투명
-                elevation: 0, // 그림자 제거
-                child: SvgPicture.asset(
-                  'assets/floating_action.svg',
-                  width:  65.035,
-                  height:  65.035,
-                ), 
               ),
             ),
           ],
