@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
+class MeterialTopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopNavigationBar(),
+      appBar: MeterialTopNavigationBar(),
       body: Center(child: Text('body')),
     );
   }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class BottomNavigationBarExample extends StatefulWidget {
+class CustomBottomNavigationBar extends StatefulWidget {
   @override
-  _BottomNavigationBarExampleState createState() => _BottomNavigationBarExampleState();
+  _CustomBottomNavigationBarState createState() => _CustomBottomNavigationBarState();
 }
 
-class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample> {
+class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -75,7 +75,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
             selectedItemColor: Color(0xFFC8AA9B), 
             unselectedItemColor: Color(0xFFCFCFCF), 
             onTap: _onItemTapped,
-              selectedLabelStyle: TextStyle(
+            selectedLabelStyle: TextStyle(
               fontSize: 11,
               fontFamily: 'Pretendard',
               fontStyle: FontStyle.normal,
@@ -132,6 +132,6 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
 
 void main() {
   runApp(MaterialApp(
-    home: BottomNavigationBarExample(),
+    home: CustomBottomNavigationBar(),
   ));
 }
