@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '/widgets/custom_floating_action_button.dart';
+import '/widgets/target_view.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -134,94 +136,11 @@ class _HomePageState extends State<HomePage> {
                     color: Color(0xFFF5F5F5),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '시작일 2024-01-01',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFFA4A4A4),
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w400,
-                              height: 1.1,
-                              letterSpacing: -0.24,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'OUTFOOT 백엔드 모각코',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF4A4A4A),
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.1,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                          SizedBox(height: 12),
-
-                          // 진행상황 바
-                          Stack(
-                            children: [
-                              Container(
-                                width: 275,
-                                height: 6.0,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFDFDFDF),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              Container(
-                                width: 203, // 78%
-                                height: 6.0,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFC8AA9B),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              '완성도 78% 완성 중',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFFA4A4A4),
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w400,
-                                height: 1.1,
-                                letterSpacing: -0.24,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          width: 34,
-                          height: 34,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFFFFF),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'assets/lock_icon.svg',
-                              width: 15,
-                              height: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: ProgressCard(
+                    startDate: '2024-01-01',
+                    title: 'OUTFOOT 백엔드 모각코',
+                    progressPercentage: 78,
+                    assetPath: 'assets/lock_icon.svg',
                   ),
                 ),
               ),
@@ -236,75 +155,11 @@ class _HomePageState extends State<HomePage> {
                     color: Color(0xFFFAF7F0),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '시작일 2024-01-01',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFFA4A4A4),
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w400,
-                              height: 1.1,
-                              letterSpacing: -0.24,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'OUTFOOT 백엔드 모각코',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF4A4A4A),
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.1,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                          SizedBox(height: 12),
-
-                          // 진행상황 바
-                          Stack(
-                            children: [
-                              Container(
-                                width: 275,
-                                height: 6.0,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFDFDFDF),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              Container(
-                                width: 203, // 78%
-                                height: 6.0,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFC8AA9B),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              '완성도 78% 완성 중',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFFA4A4A4),
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w400,
-                                height: 1.1,
-                                letterSpacing: -0.24,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  child: ProgressCard(
+                    startDate: '2024-01-01',
+                    title: 'OUTFOOT 백엔드 모각코',
+                    progressPercentage: 78,
+                    assetPath: '',
                   ),
                 ),
               ),
@@ -319,92 +174,22 @@ class _HomePageState extends State<HomePage> {
                     color: Color(0xFFFAF7F0),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '시작일 2024-01-01',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFFA4A4A4),
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w400,
-                              height: 1.1,
-                              letterSpacing: -0.24,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'OUTFOOT 백엔드 모각코',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF4A4A4A),
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.1,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                          SizedBox(height: 12),
-
-                          // 진행상황 바
-                          Stack(
-                            children: [
-                              Container(
-                                width: 275,
-                                height: 6.0,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFDFDFDF),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              Container(
-                                width: 203, // 78%
-                                height: 6.0,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFC8AA9B),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              '완성도 78% 완성 중',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFFA4A4A4),
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w400,
-                                height: 1.1,
-                                letterSpacing: -0.24,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  child: ProgressCard(
+                    startDate: '2024-01-01',
+                    title: 'OUTFOOT 백엔드 모각코',
+                    progressPercentage: 78,
+                    assetPath: '',
                   ),
                 ),
               ),
               Padding (padding: EdgeInsets.only(right:20, left:275, top:100),
                              
-              child: FloatingActionButton(
-                onPressed: () {
+              child: customFloatingActionButton(
+              'assets/floating_action.svg',  
+              onPressed: () {
                   // 플로팅 액션 버튼 동작
                 },
-                backgroundColor: Colors.transparent, 
-                elevation: 0, 
-                child: SvgPicture.asset(
-                  'assets/floating_action.svg',
-                  width:  65.035,
-                  height:  65.035,
-                ), 
-              ),
+            ),
             ),
             ],
           ),
