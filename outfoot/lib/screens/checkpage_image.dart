@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
+import '/widgets/custom_floating_action_button.dart';
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -173,19 +174,12 @@ class CheckPageFoot extends StatelessWidget {
             Positioned(
               bottom: 12,
               right: 20, 
-              child: FloatingActionButton(
-                onPressed: () {
+              child: customFloatingActionButton(
+              'assets/floating_action.svg',  
+              onPressed: () {
                   // 플로팅 액션 버튼 동작
                 },
-                backgroundColor: Colors.transparent, 
-                elevation: 0,
-                child: SvgPicture.asset(
-                  'assets/floating_action.svg',
-                  width:  65.035,
-                  height:  65.035,
-                  fit: BoxFit.contain,
-                ), 
-              ),
+            ),
             ),
             Positioned(
               top: 60, 
