@@ -84,7 +84,7 @@ class ProgressCard extends StatelessWidget {
             ),
           ],
         ),
-        if (assetPath.isNotEmpty)  // assetPath가 비어있지 않을 경우에만 아이콘 표시
+        if (assetPath.isNotEmpty)  
           Positioned(
             top: 0,
             right: 0,
