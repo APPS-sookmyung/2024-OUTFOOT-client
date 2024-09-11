@@ -14,14 +14,10 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   final List<Map<String, dynamic>> _carouselItems = [
     {
       "text": "어렵게 생각하던 것들,\n 더 이상 미뤄둘 수는\n없을 때",
-      "image": "assets/login_image.svg",
+      "image": "assets/login_image.svg", // Change the SVG images accordingly
     },
     {
       "text": "조그마한\n동기부여가\n필요한 모두에게",
-      "image": "assets/login_image.svg",
-    },
-    {
-      "text": "세번째 화면 룰루",
       "image": "assets/login_image.svg",
     },
   ];
@@ -34,9 +30,8 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 60), // Adjusted for logo space
-            SvgPicture.asset('assets/logo.svg',
-                height: 40), // Example logo path
+            SizedBox(height: 60),
+            SvgPicture.asset('assets/logo.svg', height: 40), // App logo
             SizedBox(height: 40),
             CarouselSlider.builder(
               carouselController: _carouselController,
@@ -46,8 +41,8 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   children: [
                     SvgPicture.asset(
                       _carouselItems[index]["image"],
-                      height: 188, // Custom height
-                      width: 263, // Custom width
+                      height: 188,
+                      width: 263,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -89,8 +84,8 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: _currentPage == entry.key
-                          ? Colors.blue
-                          : Colors.grey[300],
+                          ? Colors.brown // Highlight color for the active page
+                          : Colors.grey[300], // Inactive color
                     ),
                   ),
                 );
@@ -107,12 +102,11 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   SizedBox(height: 12),
                   TextButton(
                     onPressed: () {
-                      // 버튼이 클릭되었을 때 실행할 기능을 여기에 작성하세요.
                       print("TextButton pressed");
                     },
                     style: TextButton.styleFrom(
-                      primary: Colors.grey, // 글자 색상 설정
-                      textStyle: TextStyle(fontSize: 12), // 글자 크기 설정
+                      primary: Colors.grey,
+                      textStyle: TextStyle(fontSize: 12),
                     ),
                     child: Text('다른 방법으로 로그인'),
                   ),
