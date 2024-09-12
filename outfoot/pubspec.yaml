@@ -30,11 +30,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  path_drawing: ^1.0.1
 
   path_drawing: ^1.0.1
   image_picker: ^0.8.4+4
 
 
+
+  path_drawing: ^1.0.1
+  image_picker: ^0.8.4+4
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -42,6 +47,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  flutter_svg: ^1.0.3
+
 
   flutter_svg: ^1.0.3
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -61,6 +69,27 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/shuffle_icon.svg
+    - assets/floating_action.svg
+    - assets/paw.svg
+    - assets/search.svg
+    - assets/home.svg
+    - assets/profile.svg
+    - assets/back_icon.svg
+    - assets/share_icon.svg
+    - assets/delete_icon.svg
+
+
+  assets:
+    - assets/shuffle_icon.svg
+    - assets/floating_action.svg
+
+  assets:
+
+    - assets/admit.svg
+    - assets/no_admit.svg
+    - assets/paw_another.svg
 
   assets:
     - assets/floating_action.svg
