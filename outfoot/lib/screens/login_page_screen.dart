@@ -11,101 +11,145 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   int _currentPage = 0;
   final CarouselController _carouselController = CarouselController();
 
+  // Carousel items with corresponding images (text is separate now)
   final List<Map<String, dynamic>> _carouselItems = [
     {
-      "text": "어렵게 생각하던 것들,\n 더 이상 미뤄둘 수는\n없을 때",
-      "image": "assets/login_image.svg", // Change the SVG images accordingly
+      "image": "assets/login_image1.svg", // SVG 파일 경로
+      "width": 315.0,
+      "height": 288.0,
     },
     {
-      "text": "조그마한\n동기부여가\n필요한 모두에게",
-      "image": "assets/login_image.svg",
+      "image": "assets/login_image2.svg", // SVG 파일 경로
+      "width": 335.0,
+      "height": 369.0,
     },
+  ];
+
+  // Separate text list for the carousel
+  final List<String> _carouselTexts = [
+    "어렵게 생각하던 것들,\n더 이상 미뤄둘 수는\n없을 때",
+    "조그마한\n동기부여가\n필요한 모두에게",
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 60),
-            SvgPicture.asset('assets/logo.svg', height: 40), // App logo
-            SizedBox(height: 40),
-            CarouselSlider.builder(
-              carouselController: _carouselController,
-              itemCount: _carouselItems.length,
-              itemBuilder: (context, index, realIndex) {
-                return Column(
-                  children: [
-                    SvgPicture.asset(
-                      _carouselItems[index]["image"],
-                      height: 188,
-                      width: 263,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        _carouselItems[index]["text"],
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                );
-              },
-              options: CarouselOptions(
-                height: 350,
-                autoPlay: false,
-                enlargeCenterPage: true,
-                viewportFraction: 0.8,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
+      backgroundColor: Color(0xFFFAF7F0),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Positioned to place the logo 20px from the left and 80px from the top
+            Positioned(
+              left: 20,
+              top: 80,
+              child: SvgPicture.asset(
+                'assets/logo.svg',
+                width: 137,
+                height: 45,
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: _carouselItems.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () => _carouselController.animateToPage(entry.key),
-                  child: Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _currentPage == entry.key
-                          ? Colors.brown // Highlight color for the active page
-                          : Colors.grey[300], // Inactive color
+            // Stack for text and image only with dynamic height
+            Positioned(
+              left: 27,
+              right: 0,
+              top: 166, // Logo height + padding
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Display the text according to the current page
+                  Text(
+                    _carouselTexts[_currentPage],
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF5B411C),
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  SizedBox(height: 25), // 이미지와 인디케이터 사이의 거리
+                  // Carousel Slider for images
+                  CarouselSlider.builder(
+                    carouselController: _carouselController,
+                    itemCount: _carouselItems.length,
+                    itemBuilder: (context, index, realIndex) {
+                      return SizedBox(
+                        height: _carouselItems[index]["height"],
+                        width: _carouselItems[index]["width"],
+                        child: SvgPicture.asset(
+                          _carouselItems[index]["image"],
+                          fit: BoxFit.contain,
+                        ),
+                      );
+                    },
+                    options: CarouselOptions(
+                      height: 400,
+                      enableInfiniteScroll: true,
+                      viewportFraction: 1.0, // Show one item per page
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentPage = index; // Update the current page
+                        });
+                      },
                     ),
                   ),
-                );
-              }).toList(),
+                ],
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            // Page indicators, positioned below the image by 25px
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 124 + 34 + 45, // PageIndicator와 버튼 사이 34px 간격 유지
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: _carouselItems.asMap().entries.map((entry) {
+                  return GestureDetector(
+                    onTap: () => _carouselController.animateToPage(entry.key),
+                    child: Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _currentPage == entry.key
+                            ? Color(0xFFC8AA9B) // Active indicator color
+                            : Color(
+                                0x4DC8AA9B), // Inactive indicator color with 30% opacity
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            // Login buttons
+            Positioned(
+              left: 30,
+              right: 30,
+              bottom: 45, // 45px from bottom for "다른 방법으로 로그인"
               child: Column(
                 children: [
-                  _buildButton(
-                      '카카오 계정으로 로그인', Colors.yellow[700]!, Colors.black),
+                  // Kakao login button
+                  _loginButton(
+                    '카카오 계정으로 로그인',
+                    Color(0xFFFAE100), // Yellow color for Kakao button
+                    Colors.black,
+                  ),
                   SizedBox(height: 8),
-                  _buildButton('네이버 로그인', Colors.green, Colors.white),
-                  SizedBox(height: 12),
+                  // Naver login button
+                  _loginButton(
+                    '네이버 로그인',
+                    Color(0xFF03CF5D), // Green color for Naver button
+                    Colors.white,
+                  ),
+                  SizedBox(height: 15),
+                  // Other login methods button
                   TextButton(
                     onPressed: () {
-                      print("TextButton pressed");
+                      print("다른 방법으로 로그인 pressed");
                     },
                     style: TextButton.styleFrom(
-                      primary: Colors.grey,
+                      primary: Color(0xFF656565),
                       textStyle: TextStyle(fontSize: 12),
                     ),
                     child: Text('다른 방법으로 로그인'),
@@ -119,17 +163,28 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     );
   }
 
-  Widget _buildButton(String text, Color bgColor, Color textColor) {
+  // Helper function to create the login buttons with height 46 and corner radius 10
+  Widget _loginButton(String text, Color bgColor, Color textColor) {
     return SizedBox(
       width: double.infinity,
+      height: 46, // Set height to 46
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          print("$text button pressed");
+        },
         style: ElevatedButton.styleFrom(
           primary: bgColor,
-          padding: EdgeInsets.symmetric(vertical: 15),
+          padding:
+              EdgeInsets.symmetric(vertical: 10), // Adjust padding if necessary
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // Set corner radius to 10
+          ),
           textStyle: TextStyle(fontSize: 16),
         ),
-        child: Text(text, style: TextStyle(color: textColor)),
+        child: Text(
+          text,
+          style: TextStyle(color: textColor),
+        ),
       ),
     );
   }
