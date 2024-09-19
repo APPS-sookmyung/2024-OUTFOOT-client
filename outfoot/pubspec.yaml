@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -39,6 +40,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -57,6 +59,24 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/font/Pretendard-Black.otf
+        - asset: assets/font/Pretendard-Bold.otf
+        - asset: assets/font/Pretendard-ExtraBold.otf
+        - asset: assets/font/Pretendard-ExtraLight.otf
+        - asset: assets/font/Pretendard-Light.otf
+        - asset: assets/font/Pretendard-Medium.otf
+        - asset: assets/font/Pretendard-Regular.otf
+        - asset: assets/font/Pretendard-SemiBold.otf
+        - asset: assets/font/Pretendard-Thin.otf
+
+  assets:
+    - assets/icon/Vector 265_1.svg
+
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
