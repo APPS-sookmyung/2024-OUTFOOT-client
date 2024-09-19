@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outfoot/screens/make_goal/make_personal_goal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MakePersonalGoalPage(),
     );
   }
 }
