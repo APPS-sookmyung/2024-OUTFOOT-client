@@ -79,6 +79,9 @@ flutter:
     - assets/lock_icon.svg
     - assets/alarm_icon.svg
     - assets/logo.svg
+    - assets/yellow_smile_icon.svg
+
+
 
   # To add assets to your application, add an assets section, like this:
   assets:
