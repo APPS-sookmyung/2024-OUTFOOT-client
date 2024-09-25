@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/api/personal_goal_api.dart';
+import 'package:outfoot/models/personal_goal_model.dart';
 
 class MakePersonalGoalPage extends StatefulWidget {
   @override
@@ -10,6 +12,30 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
   final TextEditingController _goalNameController = TextEditingController();
   final TextEditingController _goalDescriptionController =
       TextEditingController();
+  final PersonalGoalApi _goalApi = PersonalGoalApi();
+
+  Future<void> _postGoal(int animalId) async {
+    final token =
+        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6IjYwZDY2NDM4LTFiZTYtNDQyYy04OTNhLTEwMTg3NDhlZDM2OCIsIm5pY2tuYW1lIjoi7KCV7KeA7JuQIiwiaWF0IjoxNzI2NzM5NjAyLCJleHAiOjE3MjY3NDY4MDJ9.QhWnDgsdu5XKanJmkxS5fnQAf1V0MqQop01P9bv2r6mmVAJwKO4HaRJRsyfw3nLU","refreshtoken":"eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6IjYwZDY2NDM4LTFiZTYtNDQyYy04OTNhLTEwMTg3NDhlZDM2OCIsImlhdCI6MTcyNjczOTYwMiwiZXhwIjoxNzI3MzQ0NDAyfQ.uJaPyAz3wrg-Mc14QcPXPFlzQktzBmrJhSjOyP_2wwAsFB4FbdzWEf6tnqLvZAkP'; // 토큰 넣는 곳
+
+    try {
+      final response = await _goalApi.postGoal(
+        token,
+        _goalNameController.text,
+        _goalDescriptionController.text,
+        animalId,
+      );
+
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        Goal goal = Goal.fromJson(response.data['response']);
+        print('Goal posted successfully: $goal');
+      } else {
+        print('Failed to post goal: ${response.data}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +70,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
             _buildTextFieldSection(
                 '한 줄 소개', '건강한 이너뷰티', _goalDescriptionController),
             Spacer(),
-            _buildCompleteButton('설정 완료', _onCompletePressed),
+            _buildCompleteButton('설정 완료', () => _postGoal(1)),
             SizedBox(height: 24),
           ],
         ),
@@ -152,10 +178,6 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
     );
   }
 
-  void _onCompletePressed() {
-    // 설정 완료 로직 추가
-  }
-
   void _showMateSelectionModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -200,12 +222,18 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
                     mainAxisSpacing: 13,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      width: 60,
-                      height: 60,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFF9F6F0),
-                        shape: OvalBorder(),
+                    return GestureDetector(
+                      onTap: () {
+                        _postGoal(index + 1); // animalId가 1부터 시작
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: ShapeDecoration(
+                          color: Color(0xFFF9F6F0),
+                          shape: OvalBorder(),
+                        ),
                       ),
                     );
                   },
