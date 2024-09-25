@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
 import '/widgets/target_view.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -64,8 +65,8 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               fontSize: 16,
                               color: _isGroupGoalSelected
-                                  ? Color(0xFFC09A87)
-                                  : Color(0xFFA4A4A4),
+                                  ? milkBrownColor1
+                                  : greyColor4,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w500,
                               height: 1.1,
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                               ? Container(
                                   width: 165,
                                   height: 4,
-                                  color: Color(0xFFC09A87),
+                                  color: milkBrownColor1,
                                 )
                               : CustomPaint(
                                   painter: DashedLinePainter(),
@@ -100,8 +101,8 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               fontSize: 16,
                               color: !_isGroupGoalSelected
-                                  ? Color(0xFFC09A87)
-                                  : Color(0xFFA4A4A4),
+                                  ? milkBrownColor1
+                                  : greyColor4,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w500,
                               height: 1.1,
@@ -113,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                               ? Container(
                                   width: 165,
                                   height: 4,
-                                  color: Color(0xFFC09A87),
+                                  color: milkBrownColor1,
                                 )
                               : CustomPaint(
                                   painter: DashedLinePainter(),
@@ -152,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                   height: 113,
                   padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ProgressCard(
@@ -171,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                   height: 113,
                   padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ProgressCard(
