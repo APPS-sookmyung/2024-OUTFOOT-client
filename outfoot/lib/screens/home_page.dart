@@ -8,7 +8,7 @@ class DashedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint()
-      ..color = Color(0xFFDFDFDF)
+      ..color = greyColor9
       ..strokeWidth = 0.7
       ..style = PaintingStyle.stroke;
 
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color(0xFFFFFEFD),
+      backgroundColor: lightColor1,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                   height: 113,
                   padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Color(0xFFF5F5F5),
+                    color: lightColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ProgressCard(
