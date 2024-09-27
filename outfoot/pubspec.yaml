@@ -79,6 +79,14 @@ flutter:
     - assets/lock_icon.svg
     - assets/alarm_icon.svg
     - assets/logo.svg
+    - assets/icon/before_arrow.svg
+    - assets/icon/copy.svg
+    - assets/icon/edit.svg
+    - assets/icon/failure_sign.svg
+    - assets/icon/logo_basic.svg
+    - assets/icon/next_arrow.svg
+    - assets/icon/party_popper.svg
+    - assets/icon/setting.svg
 
   fonts:
     - family: Pretendard

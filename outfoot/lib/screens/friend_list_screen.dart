@@ -40,8 +40,8 @@ class FriendList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFFFEFD),
-        leading:
-            _svgIcon('assets/icon/Vector 265.svg', width: 17.38, height: 8.69),
+        leading: _svgIcon('assets/icon/before_arrow.svg',
+            width: 17.38, height: 8.69),
         centerTitle: true,
         title: Text(
           '친구 목록',
@@ -61,12 +61,11 @@ class FriendList extends StatelessWidget {
                     _textStyle(14.0, FontWeight.w400, Color(0xFF8B8B8B), -0.28),
               ),
               SizedBox(height: 8.0),
-              // 반복되는 컨테이너들을 리스트로 생성
               for (int i = 0; i < 3; i++)
                 Container(
                   width: 320.0,
                   height: 88.0,
-                  margin: EdgeInsets.only(bottom: 10.0), // 컨테이너 간 간격
+                  margin: EdgeInsets.only(bottom: 10.0),
                   padding:
                       EdgeInsets.symmetric(vertical: 13.0, horizontal: 19.0),
                   decoration: _boxDecoration(Color(0xFFFAF7F0)),
@@ -82,7 +81,7 @@ class FriendList extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            '샘', // 여기서 '샘' 대신 다양한 이름을 넣을 수 있습니다.
+                            '샘',
                             style: _textStyle(
                                 20.0, FontWeight.w600, Color(0xFF3E3E3E), -0.4),
                           ),
@@ -97,12 +96,12 @@ class FriendList extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  '샘스미스', // 여기서 '샘스미스' 대신 다양한 이름을 넣을 수 있습니다.
+                                  '샘스미스',
                                   style: _textStyle(16.0, FontWeight.w500,
                                       Color(0xFF3E3E3E), -0.32),
                                 ),
                                 SizedBox(width: 8.0),
-                                _svgIcon('assets/icon/Vector 265_1.svg',
+                                _svgIcon('assets/icon/next_arrow.svg',
                                     width: 20.0, height: 20.0),
                               ],
                             ),
@@ -171,18 +170,15 @@ class FriendList extends StatelessWidget {
               _textStyle(11.0, FontWeight.w500, Color(0xFF79D7FF), -0.22),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: _svgIcon('assets/icon/Group 2150.svg',
-                  width: 25.57, height: 25.34),
+              icon: _svgIcon('assets/search.svg', width: 25.57, height: 25.34),
               label: '둘러보기',
             ),
             BottomNavigationBarItem(
-              icon: _svgIcon('assets/icon/Group 2149.svg',
-                  width: 23.25, height: 27.04),
+              icon: _svgIcon('assets/home.svg', width: 23.25, height: 27.04),
               label: '홈',
             ),
             BottomNavigationBarItem(
-              icon: _svgIcon('assets/icon/Group 2147.svg',
-                  width: 27.59, height: 25.8),
+              icon: _svgIcon('assets/profile.svg', width: 27.59, height: 25.8),
               label: '마이페이지',
             ),
           ],

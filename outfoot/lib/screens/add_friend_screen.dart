@@ -40,8 +40,8 @@ class AddFriend extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFFFEFD),
-        leading:
-            _svgIcon('assets/icon/Vector 265.svg', width: 17.38, height: 8.69),
+        leading: _svgIcon('assets/icon/before_arrow.svg',
+            width: 17.38, height: 8.69),
         centerTitle: true,
         title: Text(
           '친구 추가하기',
@@ -111,7 +111,7 @@ class AddFriend extends StatelessWidget {
                     Positioned(
                       top: 53.82,
                       right: 16.71,
-                      child: _svgIcon('assets/icon/Group 2130.svg'),
+                      child: _svgIcon('assets/icon/logo_basic.svg'),
                     ),
                     Positioned(
                       top: 79.15,
@@ -124,7 +124,7 @@ class AddFriend extends StatelessWidget {
                                 20.0, FontWeight.w600, Colors.white, -0.4),
                           ),
                           SizedBox(width: 8.0),
-                          _svgIcon('assets/icon/Group 2155.svg'),
+                          _svgIcon('assets/icon/copy.svg'),
                           SizedBox(width: 8.0),
                           Text(
                             '복사하기',
@@ -137,10 +137,9 @@ class AddFriend extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 18.75),
-              _svgIcon('assets/icon/Group 2206.svg',
-                  width: 25.57, height: 25.34),
-              SizedBox(height: 23.69),
+              SizedBox(height: 19.0),
+              _svgIcon('assets/arrow.svg', width: 17.0, height: 16.0),
+              SizedBox(height: 29.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -251,18 +250,15 @@ class AddFriend extends StatelessWidget {
               _textStyle(11.0, FontWeight.w500, Color(0xFF79D7FF), -0.22),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: _svgIcon('assets/icon/Group 2150.svg',
-                  width: 25.57, height: 25.34),
+              icon: _svgIcon('assets/search.svg', width: 25.57, height: 25.34),
               label: '둘러보기',
             ),
             BottomNavigationBarItem(
-              icon: _svgIcon('assets/icon/Group 2149.svg',
-                  width: 23.25, height: 27.04),
+              icon: _svgIcon('assets/home.svg', width: 23.25, height: 27.04),
               label: '홈',
             ),
             BottomNavigationBarItem(
-              icon: _svgIcon('assets/icon/Group 2147.svg',
-                  width: 27.59, height: 25.8),
+              icon: _svgIcon('assets/profile.svg', width: 27.59, height: 25.8),
               label: '마이페이지',
             ),
           ],
