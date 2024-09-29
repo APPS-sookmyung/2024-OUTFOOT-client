@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class CommentBottomNavigationBar extends StatefulWidget {
   @override
@@ -48,7 +49,7 @@ class _CommentBottomNavigationBarState extends State<CommentBottomNavigationBar>
                 width: 335.0, 
                 height: 38.0,
                 decoration: BoxDecoration(
-                  color: Color(0xFFF5F5F5),
+                  color: lightColor,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: TextField(
@@ -58,7 +59,7 @@ class _CommentBottomNavigationBarState extends State<CommentBottomNavigationBar>
                     hintText: '댓글을 입력해주세요',
                     hintStyle: TextStyle(
                       fontSize: 14,
-                      color: Color(0xFF8B8B8B),
+                      color: greyColor3,
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w400,
                       height: 1.1,

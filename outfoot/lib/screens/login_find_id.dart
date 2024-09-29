@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class LoginFindIdPage extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFEFD),
+      backgroundColor: lightColor1,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -45,7 +46,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF5B411C),
+                  color: blackBrownColor,
                 ),
               ),
               SizedBox(height: 8),
@@ -54,7 +55,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
                 '이메일',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xFF5B411C),
+                  color: blackBrownColor,
                 ),
               ),
               SizedBox(height: 8),
@@ -67,7 +68,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
                       decoration: InputDecoration(
                         hintText: '사용하신 이메일 주소를 입력해주세요',
                         filled: true,
-                        fillColor: Color(0xFFF2ECE3),
+                        fillColor: lightColor3,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -84,7 +85,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFD0B7A6),
+                      backgroundColor: apricotColor2,
                       padding:
                           EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                       shape: RoundedRectangleBorder(
@@ -104,7 +105,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
                 '인증번호',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xFF5B411C),
+                  color: blackBrownColor,
                 ),
               ),
               SizedBox(height: 8),
@@ -129,7 +130,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
                       // 아이디 찾기 로직
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFD0B7A6),
+                      backgroundColor: apricotColor2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -155,7 +156,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
       width: 60,
       height: 60,
       decoration: BoxDecoration(
-        color: Color(0xFFF2ECE3),
+        color: lightColor3,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(

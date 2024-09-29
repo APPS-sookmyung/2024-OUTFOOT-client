@@ -34,7 +34,6 @@ dependencies:
   flutter_svg: ^1.0.3
   path_drawing: ^1.0.1
   image_picker: ^0.8.4+4
-  flutter_svg: ^1.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -44,8 +43,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   
-
-  flutter_svg: ^1.0.3
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -80,18 +77,14 @@ flutter:
     - assets/alarm_icon.svg
     - assets/logo.svg
     - assets/yellow_smile_icon.svg
-
-
-
-  # To add assets to your application, add an assets section, like this:
-  assets:
     - assets/login_image1.svg
     - assets/login_image2.svg
     - assets/logo.svg
     - assets/start_login_logo.svg
 
-    
 
+
+  # To add assets to your application, add an assets section, like this:
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

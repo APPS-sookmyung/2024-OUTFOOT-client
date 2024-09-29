@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class LoginPageScreen extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFAF7F0),
+      backgroundColor: lightColor2,
       body: SafeArea(
         child: Stack(
           children: [
@@ -57,7 +58,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                     style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF5B411C),
+                      color: blackBrownColor,
                     ),
                     textAlign: TextAlign.left,
                   ),
@@ -106,7 +107,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _currentPage == entry.key
-                            ? Color(0xFFC8AA9B)
+                            ? mainBrownColor
                             : Color(0x4DC8AA9B),
                       ),
                     ),
@@ -137,7 +138,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                       print("다른 방법으로 로그인 pressed");
                     },
                     style: TextButton.styleFrom(
-                      primary: Color(0xFF656565),
+                      backgroundColor: greyColor2,
                       textStyle: TextStyle(fontSize: 12),
                     ),
                     child: Text('다른 방법으로 로그인'),
@@ -160,7 +161,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
           print("$text button pressed");
         },
         style: ElevatedButton.styleFrom(
-          primary: bgColor,
+          backgroundColor: bgColor,
           padding: EdgeInsets.symmetric(vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
