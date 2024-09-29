@@ -84,7 +84,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFD0B7A6),
+                      backgroundColor: Color(0xFFD0B7A6),
                       padding:
                           EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                       shape: RoundedRectangleBorder(
@@ -129,7 +129,7 @@ class _LoginFindIdPageState extends State<LoginFindIdPage> {
                       // 아이디 찾기 로직
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFD0B7A6),
+                      backgroundColor: Color(0xFFD0B7A6),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

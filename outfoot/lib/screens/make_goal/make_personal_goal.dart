@@ -14,27 +14,24 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
       TextEditingController();
   final PersonalGoalApi _goalApi = PersonalGoalApi();
 
-  Future<void> _postGoal(int animalId) async {
-    final token =
-        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6IjYwZDY2NDM4LTFiZTYtNDQyYy04OTNhLTEwMTg3NDhlZDM2OCIsIm5pY2tuYW1lIjoi7KCV7KeA7JuQIiwiaWF0IjoxNzI2NzM5NjAyLCJleHAiOjE3MjY3NDY4MDJ9.QhWnDgsdu5XKanJmkxS5fnQAf1V0MqQop01P9bv2r6mmVAJwKO4HaRJRsyfw3nLU","refreshtoken":"eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6IjYwZDY2NDM4LTFiZTYtNDQyYy04OTNhLTEwMTg3NDhlZDM2OCIsImlhdCI6MTcyNjczOTYwMiwiZXhwIjoxNzI3MzQ0NDAyfQ.uJaPyAz3wrg-Mc14QcPXPFlzQktzBmrJhSjOyP_2wwAsFB4FbdzWEf6tnqLvZAkP'; // 토큰 넣는 곳
+  int? selectedAnimalId;
 
-    try {
-      final response = await _goalApi.postGoal(
-        token,
-        _goalNameController.text,
-        _goalDescriptionController.text,
-        animalId,
-      );
-
-      if (response.statusCode == 200 && response.data['success'] == true) {
-        Goal goal = Goal.fromJson(response.data['response']);
-        print('Goal posted successfully: $goal');
-      } else {
-        print('Failed to post goal: ${response.data}');
-      }
-    } catch (e) {
-      print('Error: $e');
+  void _postGoal() async {
+    if (selectedAnimalId == null) {
+      print('Please select an animal before submitting.');
+      return;
     }
+
+    final token =
+        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6IjQxYzM5NjA3LTRhMjUtNGRhOC1iYjkzLWE4ZDhjODgwYWQzMSIsIm5pY2tuYW1lIjoi7KCV7KeA7JuQIiwiaWF0IjoxNzI3NTgyMjAxLCJleHAiOjE3Mjc1ODk0MDF9.0YwPduyFZuULVhJwNCUwBAL3cTfjAZuJNy7CMOGkdm_B5O1mIKLdK8dCSsA2j3Da'; //토큰 발급받아 넣는 곳
+
+    final response = await _goalApi.postGoal(
+      token,
+      _goalNameController.text,
+      _goalDescriptionController.text,
+      selectedAnimalId!,
+    );
+    print(response);
   }
 
   @override
@@ -70,7 +67,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
             _buildTextFieldSection(
                 '한 줄 소개', '건강한 이너뷰티', _goalDescriptionController),
             Spacer(),
-            _buildCompleteButton('설정 완료', () => _postGoal(1)),
+            _buildCompleteButton('설정 완료', _postGoal),
             SizedBox(height: 24),
           ],
         ),
@@ -179,6 +176,8 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
   }
 
   void _showMateSelectionModal(BuildContext context) {
+    int? tempSelectedAnimalId;
+
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -224,8 +223,9 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
-                        _postGoal(index + 1); // animalId가 1부터 시작
-                        Navigator.pop(context);
+                        setState(() {
+                          tempSelectedAnimalId = index + 1; // 임시로 선택된 animalId
+                        });
                       },
                       child: Container(
                         width: 60,
@@ -245,7 +245,15 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    if (tempSelectedAnimalId != null) {
+                      setState(() {
+                        selectedAnimalId =
+                            tempSelectedAnimalId; // 최종적으로 선택된 animalId
+                      });
+                      Navigator.pop(context);
+                    } else {
+                      print('Please select an animal before completing.');
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFD0B7A6),

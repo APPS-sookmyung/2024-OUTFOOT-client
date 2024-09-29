@@ -17,12 +17,12 @@ class Goal {
 
   factory Goal.fromJson(Map<String, dynamic> json) {
     return Goal(
-      id: json['id'],
-      title: json['title'],
-      intro: json['intro'],
-      createdAt: json['createdAt'],
-      animalPosition: json['animalPosition'],
-      animal: json['animal'],
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      intro: json['intro'] ?? '',
+      createdAt: json['createdAt'] ?? '',
+      animalPosition: json['animalPosition'] ?? 0,
+      animal: json['animal'] ?? '',
     );
   }
 }
