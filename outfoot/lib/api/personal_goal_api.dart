@@ -32,12 +32,6 @@ class PersonalGoalApi {
 
       if (response.statusCode == 200) {
         final goal = Goal.fromJson(response.data);
-        print("Goal ID: ${goal.id}\n");
-        print("Title: ${goal.title}\n");
-        print("Intro: ${goal.intro}\n");
-        print("Created At: ${goal.createdAt}\n");
-        print("Animal Position: ${goal.animalPosition}\n");
-        print("Animal: ${goal.animal}\n");
         return "=============데이터 전송 성공==============\n";
       } else {
         return "=============데이터 전송 실패==============\n";

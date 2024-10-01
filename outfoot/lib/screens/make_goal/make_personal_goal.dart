@@ -22,8 +22,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
       return;
     }
 
-    final token =
-        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6IjQxYzM5NjA3LTRhMjUtNGRhOC1iYjkzLWE4ZDhjODgwYWQzMSIsIm5pY2tuYW1lIjoi7KCV7KeA7JuQIiwiaWF0IjoxNzI3NTgyMjAxLCJleHAiOjE3Mjc1ODk0MDF9.0YwPduyFZuULVhJwNCUwBAL3cTfjAZuJNy7CMOGkdm_B5O1mIKLdK8dCSsA2j3Da'; //토큰 발급받아 넣는 곳
+    final token = ''; //토큰 발급받아 넣는 곳
 
     final response = await _goalApi.postGoal(
       token,
