@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:outfoot/api/view_all_api.dart';
+import 'package:outfoot/models/view_all_model.dart';
 import 'package:path_drawing/path_drawing.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
@@ -16,6 +18,19 @@ class DashedCircle extends StatelessWidget {
     this.dashLength = 6.0,
     this.spaceLength = 6.0,
   });
+
+  final ViewAllApi _viewApi = ViewAllApi();
+
+  void _getView() async {
+
+  final token = ''; // 토큰 발급받아 넣는 곳
+
+  final response = await _viewApi.getView(
+    token,
+    
+    );
+    print(response);
+  }
 
   @override
   Widget build(BuildContext context) {
