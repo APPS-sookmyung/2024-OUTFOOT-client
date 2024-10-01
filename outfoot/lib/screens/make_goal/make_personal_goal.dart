@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/api/personal_goal_api.dart';
+import 'package:outfoot/models/personal_goal_model.dart';
 import 'package:outfoot/colors/colors.dart';
 
 class MakePersonalGoalPage extends StatefulWidget {
@@ -11,6 +13,26 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
   final TextEditingController _goalNameController = TextEditingController();
   final TextEditingController _goalDescriptionController =
       TextEditingController();
+  final PersonalGoalApi _goalApi = PersonalGoalApi();
+
+  int? selectedAnimalId;
+
+  void _postGoal() async {
+    if (selectedAnimalId == null) {
+      print('Please select an animal before submitting.');
+      return;
+    }
+
+    final token = ''; //토큰 발급받아 넣는 곳
+
+    final response = await _goalApi.postGoal(
+      token,
+      _goalNameController.text,
+      _goalDescriptionController.text,
+      selectedAnimalId!,
+    );
+    print(response);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +67,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
             _buildTextFieldSection(
                 '한 줄 소개', '건강한 이너뷰티', _goalDescriptionController),
             Spacer(),
-            _buildCompleteButton('설정 완료', _onCompletePressed),
+            _buildCompleteButton('설정 완료', _postGoal),
             SizedBox(height: 24),
           ],
         ),
@@ -153,11 +175,9 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
     );
   }
 
-  void _onCompletePressed() {
-    // 설정 완료 로직 추가
-  }
-
   void _showMateSelectionModal(BuildContext context) {
+    int? tempSelectedAnimalId;
+
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -201,12 +221,19 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
                     mainAxisSpacing: 13,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      width: 60,
-                      height: 60,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFF9F6F0),
-                        shape: OvalBorder(),
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          tempSelectedAnimalId = index + 1; // 임시로 선택된 animalId
+                        });
+                      },
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: ShapeDecoration(
+                          color: Color(0xFFF9F6F0),
+                          shape: OvalBorder(),
+                        ),
                       ),
                     );
                   },
@@ -218,7 +245,15 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    if (tempSelectedAnimalId != null) {
+                      setState(() {
+                        selectedAnimalId =
+                            tempSelectedAnimalId; // 최종적으로 선택된 animalId
+                      });
+                      Navigator.pop(context);
+                    } else {
+                      print('Please select an animal before completing.');
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: apricotColor2,
