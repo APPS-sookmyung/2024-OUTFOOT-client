@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class StartLoginPageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFEFD),
+      backgroundColor: lightColor1,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -34,8 +35,8 @@ class StartLoginPageScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: '아이디를 입력해주세요',
-                labelStyle: TextStyle(color: Color(0xFFA89A91)),
-                fillColor: Color(0xFFF6F2EE),
+                labelStyle: TextStyle(color: milkBrownColor2),
+                fillColor: lightColor4,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -48,8 +49,8 @@ class StartLoginPageScreen extends StatelessWidget {
               obscureText: true,
               decoration: InputDecoration(
                 labelText: '비밀번호를 입력해주세요',
-                labelStyle: TextStyle(color: Color(0xFFA89A91)),
-                fillColor: Color(0xFFF6F2EE),
+                labelStyle: TextStyle(color: milkBrownColor2),
+                fillColor: lightColor4,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -65,7 +66,7 @@ class StartLoginPageScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFD1B6A1), // 버튼 색상 설정
+                    backgroundColor: Color(0xFFD1B6A1), // 버튼 색상 설정
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -85,7 +86,7 @@ class StartLoginPageScreen extends StatelessWidget {
               child: Text(
                 '아이디 찾기 | 비밀번호 찾기 | 회원가입',
                 style: TextStyle(
-                  color: Color(0xFFA89A91),
+                  color: milkBrownColor2,
                   fontSize: 14,
                 ),
               ),
@@ -97,7 +98,7 @@ class StartLoginPageScreen extends StatelessWidget {
                   Text(
                     '간편 로그인',
                     style: TextStyle(
-                      color: Color(0xFFA89A91),
+                      color: milkBrownColor2,
                       fontSize: 14,
                     ),
                   ),
@@ -141,7 +142,7 @@ class StartLoginPageScreen extends StatelessWidget {
           print("$text button pressed");
         },
         style: ElevatedButton.styleFrom(
-          primary: bgColor,
+          backgroundColor: bgColor,
           padding: EdgeInsets.symmetric(vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/api/personal_goal_api.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class MakePersonalGoalPage extends StatefulWidget {
   @override
@@ -36,19 +37,19 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF7F0),
+      backgroundColor: apricotColor1,
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFF7F0),
+        backgroundColor: apricotColor1,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF5B411C)),
+          icon: Icon(Icons.arrow_back, color: blackBrownColor),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         title: Text(
           '도장 만들기',
-          style: TextStyle(color: Color(0xFF5B411C)),
+          style: TextStyle(color: blackBrownColor),
         ),
         centerTitle: true,
       ),
@@ -80,7 +81,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundColor: Color(0xFFD0B7A6),
+            backgroundColor: apricotColor2,
             child: Icon(Icons.person, size: 40, color: Colors.white),
           ),
           SizedBox(height: 16),
@@ -89,7 +90,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
               _showMateSelectionModal(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFFFFEAA5),
+              backgroundColor: yellowColor,
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -98,7 +99,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
             child: Text(
               '도장 메이트 선택',
               style: TextStyle(
-                color: Color(0xFF3E3E3E),
+                color: greyColor1,
                 fontSize: 12,
                 fontFamily: 'Pretendard',
                 fontWeight: FontWeight.w600,
@@ -119,7 +120,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
         Text(
           label,
           style: TextStyle(
-            color: Color(0xFF5B411C),
+            color: blackBrownColor,
             fontSize: 16,
             fontFamily: 'Pretendard',
             fontWeight: FontWeight.w600,
@@ -136,7 +137,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
           decoration: InputDecoration(
             hintText: hintText,
             filled: true,
-            fillColor: Color(0xFFF2ECE3),
+            fillColor: greyColor10,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
@@ -155,7 +156,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFD0B7A6),
+            backgroundColor: apricotColor2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -187,7 +188,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
           height: 518,
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           decoration: BoxDecoration(
-            color: Color(0xFFFFFEFC),
+            color: greyColor10,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
@@ -197,7 +198,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
                 '해당 목표의\n도장 메이트를 선택해주세요',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF3E3E3E),
+                  color: greyColor1,
                   fontSize: 18,
                   fontFamily: 'Pretendard',
                   fontWeight: FontWeight.w600,
@@ -255,7 +256,7 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFD0B7A6),
+                    backgroundColor: apricotColor2,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

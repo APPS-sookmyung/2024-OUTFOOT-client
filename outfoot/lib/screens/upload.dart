@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:outfoot/colors/colors.dart';
 
 class DashedBorder extends StatelessWidget {
   final Widget child;
@@ -55,7 +56,7 @@ class DashedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint()
-      ..color = Color(0xFFDFDFDF)
+      ..color = greyColor9
       ..strokeWidth = 0.7
       ..style = PaintingStyle.stroke;
 
@@ -99,7 +100,7 @@ class _UploadState extends State<Upload> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFEFD),
+      backgroundColor: lightColor1,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -112,14 +113,14 @@ class _UploadState extends State<Upload> {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
                     '24.03.31',
                     style: TextStyle(
                       fontSize: 11,
-                      color: Color(0xFF5B411C),
+                      color: blackBrownColor,
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w400,
                       height: 1.1,
@@ -138,7 +139,7 @@ class _UploadState extends State<Upload> {
                       '하루에 물 2리터 마시기',
                       style: TextStyle(
                         fontSize: 18,
-                        color: Color(0xFF5B411C),
+                        color: blackBrownColor,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w600,
                         height: 1.1,
@@ -152,7 +153,7 @@ class _UploadState extends State<Upload> {
                         width: 7.991,
                         height: 7.991,
                         decoration: BoxDecoration(
-                          color: Color(0xFFFFEAA5),
+                          color: yellowColor,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -167,7 +168,7 @@ class _UploadState extends State<Upload> {
                   '건강한 이너뷰티',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Color(0xFF8B8B8B),
+                    color: greyColor3,
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w400,
                     height: 1.1,
@@ -182,7 +183,7 @@ class _UploadState extends State<Upload> {
                   width: 319.921,
                   height: 212.283,
                   decoration: BoxDecoration(
-                    color: Color(0xFFFDFBF7),
+                    color: beigeColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: DashedBorder(
@@ -203,7 +204,7 @@ class _UploadState extends State<Upload> {
                                   '사진 추가',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Color(0xFFC8AA9B),
+                                    color: mainBrownColor,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w500,
                                     height: 1.1,
@@ -215,7 +216,7 @@ class _UploadState extends State<Upload> {
                                   '인증 사진을 추가해주세요',
                                   style: TextStyle(
                                     fontSize: 11,
-                                    color: Color(0xFF8B8B8B),
+                                    color: greyColor3,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w400,
                                     height: 1.1,
@@ -259,7 +260,7 @@ class _UploadState extends State<Upload> {
                   width: 319.921,
                   height: 150.685,
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -270,7 +271,7 @@ class _UploadState extends State<Upload> {
                           '제목을 입력하세요',
                           style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF8B8B8B),
+                              color: greyColor3,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w400,
                               height: 1.1,
@@ -294,7 +295,7 @@ class _UploadState extends State<Upload> {
                               hintText: '내용을 입력하세요 (최대 50자 작성 가능)',
                               hintStyle: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xFF8B8B8B),
+                                color: greyColor3,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w400,
                                 height: 1.1,
@@ -310,7 +311,7 @@ class _UploadState extends State<Upload> {
                           '0/50',
                           style: TextStyle(
                               fontSize: 11,
-                              color: Color(0xFFC8AA9B),
+                              color: mainBrownColor,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w400,
                               letterSpacing: -0.22),
@@ -327,7 +328,7 @@ class _UploadState extends State<Upload> {
                   width: 71.321,
                   height: 30.149,
                   decoration: BoxDecoration(
-                    color: Color(0xFFC8AA9B),
+                    color: mainBrownColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
@@ -335,7 +336,7 @@ class _UploadState extends State<Upload> {
                                   '완료',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFFFFFFFF),
+                                    color: Colors.white,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w600,
                                     height: 1.1,
