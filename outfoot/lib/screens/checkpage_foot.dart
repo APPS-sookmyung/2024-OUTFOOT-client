@@ -3,6 +3,8 @@ import 'package:path_drawing/path_drawing.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/api/personal_goal_api.dart';
+import 'package:outfoot/models/personal_goal_model.dart';
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -56,7 +58,52 @@ class DashedCirclePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class CheckPageFoot extends StatelessWidget {
+class CheckPageFoot extends StatefulWidget {
+  @override
+  _CheckPageFootState createState() => _CheckPageFootState();
+}
+
+class _CheckPageFootState extends State<CheckPageFoot> {
+  final PersonalGoalApi _goalApi = PersonalGoalApi();
+  late TextEditingController _goalNameController = TextEditingController();
+  late TextEditingController _goalDescriptionController = TextEditingController();
+
+  int? selectedAnimalId;
+  int? tempSelectedAnimalId;
+
+    @override
+  void initState() {
+    super.initState();
+    // 컨트롤러 초기화
+    _goalNameController = TextEditingController();
+    _goalDescriptionController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // 컨트롤러 해제
+    _goalNameController.dispose();
+    _goalDescriptionController.dispose();
+    super.dispose();
+  }
+
+  void _postGoal() async {
+    if (selectedAnimalId == null) {
+      print('Please select an animal before submitting.');
+      return;
+    }
+
+    final token = ''; // 토큰 발급받아 넣는 곳
+
+    final response = await _goalApi.postGoal(
+      token,
+      _goalNameController.text,
+      _goalDescriptionController.text,
+      selectedAnimalId!,
+    );
+    print(response);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,21 +219,21 @@ class CheckPageFoot extends StatelessWidget {
               ],
             ),
             Positioned(
-              top: 163, 
-              left: 315, 
-              right: 27.2, 
-              bottom: 300, 
-              child: Container(),
-            ),
-            Positioned(
               bottom: 12,
               right: 20, 
               child: customFloatingActionButton(
-              'assets/floating_action.svg',  
-              onPressed: () {
-                  // 플로팅 액션 버튼 동작
+                'assets/floating_action.svg',  
+                onPressed: () {
+                  if (tempSelectedAnimalId != null) {
+                    setState(() {
+                      selectedAnimalId = tempSelectedAnimalId; // 최종적으로 선택된 animalId
+                    });
+                    Navigator.pop(context);
+                  } else {
+                    print('Please select an animal before completing.');
+                  }
                 },
-            ),
+              ),
             ),
             Positioned(
               top: 60, 

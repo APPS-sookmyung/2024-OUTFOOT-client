@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outfoot/screens/checkpage_foot.dart';
 import 'package:outfoot/screens/login/login_page_screen.dart';
 import 'package:outfoot/screens/make_goal/make_personal_goal.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MakePersonalGoalPage(),
+      home: CheckPageFoot(),
     );
   }
 }
