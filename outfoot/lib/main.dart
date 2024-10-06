@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:outfoot/screens/add_friend_screen.dart';
+import 'package:outfoot/screens/add_friend_popup_screen.dart';
+import 'package:outfoot/screens/friend_list_screen.dart';
 import 'package:outfoot/screens/login/login_page_screen.dart';
 import 'package:outfoot/screens/make_goal/make_personal_goal.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

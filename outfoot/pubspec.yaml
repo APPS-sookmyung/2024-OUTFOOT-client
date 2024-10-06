@@ -30,12 +30,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^0.8.7+4
   carousel_slider: ^4.0.0
   http: ^0.13.3
   dio: ^5.0.0
   path_drawing: ^1.0.1
   image_picker: ^0.8.4+4
   flutter_svg: ^1.0.3
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -44,6 +46,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -77,12 +80,37 @@ flutter:
     - assets/lock_icon.svg
     - assets/alarm_icon.svg
     - assets/logo.svg
+    - assets/arrow.svg
+    - assets/icon/before_arrow.svg
+    - assets/icon/copy.svg
+    - assets/icon/edit.svg
+    - assets/icon/failure_sign.svg
+    - assets/icon/logo_basic.svg
+    - assets/icon/next_arrow.svg
+    - assets/icon/party_popper.svg
+    - assets/icon/setting.svg
     - assets/yellow_smile_icon.svg
     - assets/login_image1.svg
     - assets/login_image2.svg
     - assets/logo.svg
     - assets/start_login_logo.svg
     - assets/config/.env
+
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/font/Pretendard-Black.otf
+        - asset: assets/font/Pretendard-Bold.otf
+        - asset: assets/font/Pretendard-ExtraBold.otf
+        - asset: assets/font/Pretendard-ExtraLight.otf
+        - asset: assets/font/Pretendard-Light.otf
+        - asset: assets/font/Pretendard-Medium.otf
+        - asset: assets/font/Pretendard-Regular.otf
+        - asset: assets/font/Pretendard-SemiBold.otf
+        - asset: assets/font/Pretendard-Thin.otf
+
+
+
 
 
 
