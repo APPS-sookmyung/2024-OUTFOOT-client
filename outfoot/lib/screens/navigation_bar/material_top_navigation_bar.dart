@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class MeterialTopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -8,7 +9,7 @@ class MeterialTopNavigationBar extends StatelessWidget implements PreferredSizeW
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0xFFFAF7F0),
+      backgroundColor: apricotColor1,
       elevation: 0,
       leading: IconButton(
         icon: _buildCustomItem(

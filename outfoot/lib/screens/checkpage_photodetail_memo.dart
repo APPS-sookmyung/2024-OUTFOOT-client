@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint()
-      ..color = Color(0xFFDFDFDF)
+      ..color = greyColor7
       ..strokeWidth = 0.7
       ..style = PaintingStyle.stroke;
 
@@ -29,7 +30,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFEFD),
+      backgroundColor: lightColor1,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -45,7 +46,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 19.64, vertical: 20.37),
                       decoration: BoxDecoration(
-                        color: Color(0xFFC8AA9B),
+                        color: mainBrownColor,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Center(
@@ -53,7 +54,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                           '문',
                           style: TextStyle(
                             fontSize: 13.834,
-                            color: Color(0xFFFFFFFF),
+                            color: Colors.white,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w600,
                             height: 1.1,
@@ -76,7 +77,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                     '문서영',
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Color(0xFF3E3E3E),
+                                      color: greyColor1,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w500,
                                       height: 1.1,
@@ -89,7 +90,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                   '안뇽하세요 반가워요 안ㄴ...',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFF3E3E3E),
+                                    color: greyColor1,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w400,
                                     height: 1.1,
@@ -107,7 +108,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                               height: 40,
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: Color(0xFFC8AA9B),
+                                color: mainBrownColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Center(
@@ -115,7 +116,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                   '프로필 보기',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFFFFFFFF),
+                                    color: Colors.white,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w600,
                                     height: 1.1,
@@ -156,7 +157,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Color(0xFF3E3E3E).withOpacity(0.5),
+                            greyColor1.withOpacity(0.5),
                             Colors.transparent,
                           ],
                         ),
@@ -171,14 +172,14 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
                           decoration: BoxDecoration(
-                            color: Color(0xFFFAF7F0).withOpacity(1),
+                            color: lightColor2.withOpacity(1),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             '24.03.31',
                             style: TextStyle(
                               fontSize: 11,
-                              color: Color(0xFF5B411C),
+                              color: blackBrownColor,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w400,
                               height: 1.1,
@@ -194,7 +195,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                               '하루에 물 2리터 마시기',
                               style: TextStyle(
                                 fontSize: 18,
-                                color: Color(0xFF5B411C),
+                                color: blackBrownColor,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w600,
                                 height: 1.1,
@@ -208,7 +209,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                 width: 7.991,
                                 height: 7.991,
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFFFEAA5),
+                                  color: yellowColor,
                                   shape: BoxShape.circle,
                                 ),
                               ),
@@ -220,7 +221,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                           '건강한 이너뷰티',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Color(0xFF8B8B8B),
+                            color: greyColor3,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w400,
                             height: 1.1,
@@ -249,7 +250,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                   '15',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFFFFFFFF),
+                                    color: Colors.white,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w500,
                                     height: 1.1,
@@ -267,7 +268,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                   '1',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFFFFFFFF),
+                                    color: Colors.white,
                                     fontFamily: 'Pretendard',
                                     fontWeight: FontWeight.w500,
                                     height: 1.1,
@@ -290,7 +291,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                   width: 319.921,
                   height: 150.685,
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -301,7 +302,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                           '오늘도 뿌듯한 하루~~',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF3E3E3E),
+                            color: greyColor1,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w400,
                             height: 1.1,
@@ -326,7 +327,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                               hintText: '마치 하마가 된 거 같고, 뿌듯함ㅋㅋ',
                               hintStyle: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xFF3E3E3E),
+                                color: greyColor1,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w400,
                                 height: 1.1,
@@ -342,7 +343,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                           '24.03.31 작성됨',
                           style: TextStyle(
                             fontSize: 11,
-                            color: Color(0xFFC8AA9B),
+                            color: mainBrownColor,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w400,
                             letterSpacing: -0.22,
@@ -368,7 +369,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                   '댓글 4개',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF3E3E3E),
+                    color: greyColor1,
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w400,
                     height: 1.1,
@@ -383,7 +384,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                   width: 319.921,
                   height: 71.224,
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: EdgeInsets.only(left: 20.3, right: 19.8),
@@ -411,7 +412,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                       '물 먹는 하마',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Color(0xFF3E3E3E),
+                                        color: greyColor1,
                                         fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.w500,
                                         height: 1.1,
@@ -424,7 +425,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                     '03/31 14:29',
                                     style: TextStyle(
                                       fontSize: 11,
-                                      color: Color(0xFFA4A4A4),
+                                      color: greyColor4,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
                                       height: 1.1,
@@ -438,7 +439,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                 '저까지 뿌듯해지는 인증샷이네여 멋져요!',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Color(0xFF3E3E3E),
+                                  color: greyColor1,
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.w400,
                                   height: 1.1,
@@ -460,7 +461,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                   width: 319.921,
                   height: 71.224,
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: EdgeInsets.only(left: 20.3, right: 19.8),
@@ -488,7 +489,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                       '밥 먹는 사람',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Color(0xFF3E3E3E),
+                                        color: greyColor1,
                                         fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.w500,
                                         height: 1.1,
@@ -501,7 +502,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                     '03/31 14:29',
                                     style: TextStyle(
                                       fontSize: 11,
-                                      color: Color(0xFFA4A4A4),
+                                      color: greyColor4,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
                                       height: 1.1,
@@ -515,7 +516,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                 '저도 갑자기 밥이 먹고싶어지는 거 같습니다~!',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Color(0xFF3E3E3E),
+                                  color: greyColor1,
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.w400,
                                   height: 1.1,
@@ -537,7 +538,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                   width: 319.921,
                   height: 71.224,
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: EdgeInsets.only(left: 20.3, right: 19.8),
@@ -565,7 +566,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                       '강호동',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Color(0xFF3E3E3E),
+                                        color: greyColor1,
                                         fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.w500,
                                         height: 1.1,
@@ -578,7 +579,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                     '03/31 14:29',
                                     style: TextStyle(
                                       fontSize: 11,
-                                      color: Color(0xFFA4A4A4),
+                                      color: greyColor4,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
                                       height: 1.1,
@@ -592,7 +593,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                 '와우 나도 얼른 라면 먹으러 가야겠다',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Color(0xFF3E3E3E),
+                                  color: greyColor1,
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.w400,
                                   height: 1.1,
@@ -614,7 +615,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                   width: 319.921,
                   height: 71.224,
                   decoration: BoxDecoration(
-                    color: Color(0xFFFAF7F0),
+                    color: lightColor2,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: EdgeInsets.only(left: 20.3, right: 19.8),
@@ -642,7 +643,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                       '용산구 카리나',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Color(0xFF3E3E3E),
+                                        color: greyColor1,
                                         fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.w500,
                                         height: 1.1,
@@ -655,7 +656,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                     '03/31 14:29',
                                     style: TextStyle(
                                       fontSize: 11,
-                                      color: Color(0xFFA4A4A4),
+                                      color: lightColor2,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
                                       height: 1.1,
@@ -670,7 +671,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                 + '    화이팅 제가 응원할게요',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Color(0xFF3E3E3E),
+                                  color: greyColor1,
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.w400,
                                   height: 1.1,

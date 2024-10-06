@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   @override
@@ -72,8 +73,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               ),
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor: Color(0xFFC8AA9B), 
-            unselectedItemColor: Color(0xFFCFCFCF), 
+            selectedItemColor: mainBrownColor, 
+            unselectedItemColor: greyColor6, 
             onTap: _onItemTapped,
             selectedLabelStyle: TextStyle(
               fontSize: 11,
@@ -109,7 +110,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             iconPath,
             width: 24.0,
             height: 24.0,
-            color: _selectedIndex == index ? Color(0xFFC8AA9B) : Color(0xFFCFCFCF),
+            color: _selectedIndex == index ? mainBrownColor : greyColor6,
           ),
           SizedBox(height: 6.93), 
           Text(
@@ -121,7 +122,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               fontWeight: FontWeight.w500,
               height: 1.1,
               letterSpacing: -0.22,
-              color: _selectedIndex == index ? Color(0xFFC8AA9B) : Color(0xFFCFCFCF),
+              color: _selectedIndex == index ? mainBrownColor : greyColor6,
             ),
           ),
         ],

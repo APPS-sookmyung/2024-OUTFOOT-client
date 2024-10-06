@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -9,7 +10,7 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0xFFFFFEFD),
+      backgroundColor: lightColor1,
       elevation: 0,
       title : SvgPicture.asset(
         'assets/logo.svg',

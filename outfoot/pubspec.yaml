@@ -31,20 +31,21 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker: ^0.8.7+4
-
-  flutter_svg: ^1.0.0
-
-
+  carousel_slider: ^4.0.0
+  http: ^0.13.3
+  dio: ^5.0.0
+  path_drawing: ^1.0.1
+  image_picker: ^0.8.4+4
+  flutter_svg: ^1.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  
-
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -88,6 +89,12 @@ flutter:
     - assets/icon/next_arrow.svg
     - assets/icon/party_popper.svg
     - assets/icon/setting.svg
+    - assets/yellow_smile_icon.svg
+    - assets/login_image1.svg
+    - assets/login_image2.svg
+    - assets/logo.svg
+    - assets/start_login_logo.svg
+    - assets/config/.env
 
   fonts:
     - family: Pretendard
@@ -104,11 +111,10 @@ flutter:
 
 
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
 
+
+
+  # To add assets to your application, add an assets section, like this:
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

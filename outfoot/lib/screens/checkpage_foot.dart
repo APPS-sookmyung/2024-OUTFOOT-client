@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -59,7 +60,7 @@ class CheckPageFoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFAF7F0),
+      backgroundColor: lightColor2,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Stack(
@@ -71,14 +72,14 @@ class CheckPageFoot extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
                   decoration: BoxDecoration(
-                    color: Color(0xFFFFFFFF),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
                     '24.03.31', 
                     style: TextStyle(
                       fontSize: 11,
-                      color: Color(0xFF5B411C),
+                      color: blackBrownColor,
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w400,
                       height: 1.1,
@@ -95,7 +96,7 @@ class CheckPageFoot extends StatelessWidget {
                       '하루에 물 2리터 마시기',
                       style: TextStyle(
                         fontSize: 18,
-                        color: Color(0xFF5B411C),
+                        color: blackBrownColor,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w600,
                         height: 1.1,
@@ -110,7 +111,7 @@ class CheckPageFoot extends StatelessWidget {
                         width: 7.991,
                         height: 7.991,
                         decoration: BoxDecoration(
-                          color: Color(0xFFFFEAA5),
+                          color: yellowColor,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -122,7 +123,7 @@ class CheckPageFoot extends StatelessWidget {
                   '건강한 이너뷰티',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Color(0xFF8B8B8B),
+                    color: greyColor3,
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w400,
                     height: 1.1,
@@ -133,7 +134,7 @@ class CheckPageFoot extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.only(left: 16.95, right: 16.95, top: 17.35, bottom: 35.23),
                   decoration: BoxDecoration(
-                    color: Color(0xFFFFFFFF),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: GridView.builder(
@@ -149,7 +150,7 @@ class CheckPageFoot extends StatelessWidget {
                         return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFFDFC4B6),
+                            color: mainBrownColor2,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(7.18),
@@ -161,7 +162,7 @@ class CheckPageFoot extends StatelessWidget {
                       } else {
                         return DashedCircle(
                           size: 24.57, 
-                          color: Color(0xFFC8AA9B), 
+                          color: mainBrownColor, 
                         );
                       }
                     },
