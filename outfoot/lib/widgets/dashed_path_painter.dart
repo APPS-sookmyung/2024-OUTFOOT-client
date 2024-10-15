@@ -22,7 +22,7 @@ class DashedPathPainter extends CustomPainter {
 
     // 아랫면만 점선 만들기
     final RRect roundedRect = RRect.fromRectAndCorners(
-      Rect.fromLTWH(0, size.height - 28, size.width, 28), // 아랫면 그리기
+      Rect.fromLTWH(0, size.height - 29, size.width, 28), // 아랫면 그리기
       bottomLeft: Radius.circular(20),
       bottomRight: Radius.circular(20),
     );

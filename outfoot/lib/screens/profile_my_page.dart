@@ -41,16 +41,13 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: lightColor2,
-      ),
       body: Column(
         children: [
           Stack(
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 276.0,
+                height: 319.0,
                 decoration: BoxDecoration(
                   color: lightColor2,
                   borderRadius: BorderRadius.only(
@@ -64,7 +61,20 @@ class Profile extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 52.0,
+                top: 65.0,
+                right: 20.0,
+                child: Row(
+                  children: [
+                    _svgIcon('assets/icon/edit.svg', width: 8.0, height: 26.0),
+                    SizedBox(width: 17.0),
+                    _svgIcon('assets/icon/setting.svg',
+                        width: 22.0, height: 23.0),
+                    SizedBox(width: 20.0),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 103.0,
                 left: 30.0,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -148,8 +158,8 @@ class Profile extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 173.0,
-                left: MediaQuery.of(context).size.width / 2 - 151.5,
+                top: 216.0,
+                left: MediaQuery.of(context).size.width / 2 - 160,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -231,28 +241,16 @@ class Profile extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                top: 22,
-                right: 20,
-                child: Row(
-                  children: [
-                    _svgIcon('assets/icon/edit.svg', width: 8.0, height: 26.0),
-                    SizedBox(width: 17.0),
-                    _svgIcon('assets/icon/setting.svg',
-                        width: 22.0, height: 23.0),
-                    SizedBox(width: 20.0),
-                  ],
-                ),
-              )
             ],
           ),
           Container(
+            height: MediaQuery.of(context).size.height * 0.6,
             color: lightColor1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 40, top: 20.0),
+                  padding: EdgeInsets.only(left: 30, top: 20.0),
                   child: Text(
                     '목록',
                     style: _textStyle(
@@ -260,9 +258,9 @@ class Profile extends StatelessWidget {
                   ),
                 ),
                 Center(
-                  // ProgressCard를 가로 센터로 정렬
+// ProgressCard를 가로 센터로 정렬
                   child: Padding(
-                    padding: EdgeInsets.only(left: 20, top: 8),
+                    padding: EdgeInsets.only(left: 0, top: 8.0),
                     child: Container(
                       width: 330,
                       height: 113,
