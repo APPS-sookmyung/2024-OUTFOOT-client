@@ -6,6 +6,7 @@ const mainBrownColor2 = Color(0xFFDFC4B6);
 const lightBrownColor = Color(0xFFF9F0EB);
 const darkBrownColor = Color(0xFF6D4C3A);
 
+const greycolor0 = Color(0xFF3F3F3F);
 const greyColor1 = Color(0xFF3E3E3E);
 const greyColor2 = Color(0xFF656565);
 const greyColor3 = Color(0xFF8B8B8B);
@@ -22,8 +23,8 @@ const yellowColor = Color(0xFFFFEAA5);
 const beigeColor = Color(0xFFFDFBF7);
 
 // 추가 색상
-const apricotColor1= Color(0xFFFFF7F0);
-const apricotColor2= Color(0xFFD0B7A6);
+const apricotColor1 = Color(0xFFFFF7F0);
+const apricotColor2 = Color(0xFFD0B7A6);
 
 const lightColor1 = Color(0xFFFFFEFD);
 const lightColor2 = Color(0xFFFAF7F0);
@@ -37,3 +38,5 @@ const milkBrownColor2 = Color(0xFFA89A91);
 
 const greyColor9 = Color(0xFFDFDFDF);
 const greyColor10 = Color(0xFFF2ECE3);
+
+const redColor = Color(0xFFF73B12);
