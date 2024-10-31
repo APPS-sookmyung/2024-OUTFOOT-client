@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class FriendList extends StatelessWidget {
   const FriendList({super.key});
@@ -39,17 +40,17 @@ class FriendList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFFEFD),
+        backgroundColor: lightColor1,
         leading: _svgIcon('assets/icon/before_arrow.svg',
             width: 17.38, height: 8.69),
         centerTitle: true,
         title: Text(
           '친구 목록',
-          style: _textStyle(16.0, FontWeight.w600, Color(0xFF3F3F3F), -0.32),
+          style: _textStyle(16.0, FontWeight.w600, greycolor0, -0.32),
         ),
       ),
       body: Container(
-        color: Color(0xFFFFFEFD),
+        color: lightColor1,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,8 +58,7 @@ class FriendList extends StatelessWidget {
               SizedBox(height: 20.0),
               Text(
                 '총 3명',
-                style:
-                    _textStyle(14.0, FontWeight.w400, Color(0xFF8B8B8B), -0.28),
+                style: _textStyle(14.0, FontWeight.w400, greyColor3, -0.28),
               ),
               SizedBox(height: 8.0),
               for (int i = 0; i < 3; i++)
@@ -68,7 +68,7 @@ class FriendList extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 10.0),
                   padding:
                       EdgeInsets.symmetric(vertical: 13.0, horizontal: 19.0),
-                  decoration: _boxDecoration(Color(0xFFFAF7F0)),
+                  decoration: _boxDecoration(lightColor2),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -77,13 +77,13 @@ class FriendList extends StatelessWidget {
                         height: 61.0,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Color(0xFFFFEAA5),
+                          color: yellowColor,
                         ),
                         child: Center(
                           child: Text(
                             '샘',
                             style: _textStyle(
-                                20.0, FontWeight.w600, Color(0xFF3E3E3E), -0.4),
+                                20.0, FontWeight.w600, greyColor1, -0.4),
                           ),
                         ),
                       ),
@@ -97,8 +97,8 @@ class FriendList extends StatelessWidget {
                               children: [
                                 Text(
                                   '샘스미스',
-                                  style: _textStyle(16.0, FontWeight.w500,
-                                      Color(0xFF3E3E3E), -0.32),
+                                  style: _textStyle(
+                                      16.0, FontWeight.w500, greyColor1, -0.32),
                                 ),
                                 SizedBox(width: 8.0),
                                 _svgIcon('assets/icon/next_arrow.svg',
@@ -107,8 +107,8 @@ class FriendList extends StatelessWidget {
                             ),
                             SizedBox(height: 5.0),
                             Text('암 낫 디 온리원~',
-                                style: _textStyle(12.0, FontWeight.w400,
-                                    Color(0xFF656565), -0.22)),
+                                style: _textStyle(
+                                    12.0, FontWeight.w400, greyColor2, -0.22)),
                           ],
                         ),
                       ),
@@ -117,20 +117,20 @@ class FriendList extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Container(
-                            decoration: _boxDecoration(Colors.white),
+                            decoration: _boxDecoration(lightMainColor),
                             width: 49.0,
                             height: 26.0,
                             child: TextButton(
                               style: TextButton.styleFrom(
-                                foregroundColor: Color(0xFFF73B12),
+                                foregroundColor: redColor,
                               ),
                               onPressed: () {
                                 // 삭제 버튼 클릭 시 처리할 내용
                               },
                               child: Text(
                                 '삭제',
-                                style: _textStyle(14.0, FontWeight.w400,
-                                    Color(0xFFF73B12), -0.28),
+                                style: _textStyle(
+                                    14.0, FontWeight.w400, redColor, -0.28),
                               ),
                             ),
                           ),
@@ -147,7 +147,7 @@ class FriendList extends StatelessWidget {
         height: 84.0,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: lightMainColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.0),
             topRight: Radius.circular(16.0),
@@ -165,9 +165,9 @@ class FriendList extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           unselectedLabelStyle:
-              _textStyle(11.0, FontWeight.w500, Color(0xFFCFCFCF), -0.22),
+              _textStyle(11.0, FontWeight.w500, greyColor6, -0.22),
           selectedLabelStyle:
-              _textStyle(11.0, FontWeight.w500, Color(0xFF79D7FF), -0.22),
+              _textStyle(11.0, FontWeight.w500, mainBrownColor, -0.22),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: _svgIcon('assets/search.svg', width: 25.57, height: 25.34),

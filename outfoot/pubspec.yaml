@@ -31,11 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker: ^0.8.7+4
-  carousel_slider: ^4.0.0
+  carousel_slider: ^5.0.0
   http: ^0.13.3
   dio: ^5.0.0
   path_drawing: ^1.0.1
-  image_picker: ^0.8.4+4
   flutter_svg: ^1.0.3
 
   # The following adds the Cupertino Icons font to your application.
@@ -94,6 +93,7 @@ flutter:
     - assets/login_image2.svg
     - assets/logo.svg
     - assets/start_login_logo.svg
+    - assets/people_icon.svg
     - assets/config/.env
 
   fonts:

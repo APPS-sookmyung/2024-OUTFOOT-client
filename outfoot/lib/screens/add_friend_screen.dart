@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/colors/colors.dart';
 
 class AddFriend extends StatelessWidget {
   const AddFriend({super.key});
@@ -39,17 +40,17 @@ class AddFriend extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFFEFD),
+        backgroundColor: lightColor1,
         leading: _svgIcon('assets/icon/before_arrow.svg',
             width: 17.38, height: 8.69),
         centerTitle: true,
         title: Text(
           '친구 추가하기',
-          style: _textStyle(16.0, FontWeight.w600, Color(0xFF3E3E3E), -0.32),
+          style: _textStyle(16.0, FontWeight.w600, greyColor1, -0.32),
         ),
       ),
       body: Container(
-        color: Color(0xFFFFFEFD),
+        color: lightColor1,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,15 +63,14 @@ class AddFriend extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 35.0),
                     child: Text(
                       '내 코드 공유하기',
-                      style: _textStyle(
-                          14.0, FontWeight.w500, Color(0xFF3E3E3E), -0.28),
+                      style:
+                          _textStyle(14.0, FontWeight.w500, greyColor1, -0.28),
                     ),
                   ),
                   SizedBox(width: 5.0),
                   Text(
                     '내 코드를 공유해 친구를 초대하세요',
-                    style: _textStyle(
-                        11.0, FontWeight.w400, Color(0xFF656565), -0.22),
+                    style: _textStyle(11.0, FontWeight.w400, greyColor2, -0.22),
                   ),
                 ],
               ),
@@ -79,14 +79,7 @@ class AddFriend extends StatelessWidget {
                 width: 320.0,
                 height: 128.775,
                 decoration: _boxDecoration(
-                  Color(0xFF6D4C3A),
-                  [
-                    BoxShadow(
-                      color: Color(0xFF45C7FF).withOpacity(0.22),
-                      offset: Offset(4, 4),
-                      blurRadius: 20,
-                    ),
-                  ],
+                  darkBrownColor,
                 ),
                 child: Stack(
                   children: [
@@ -96,7 +89,7 @@ class AddFriend extends StatelessWidget {
                       child: Text(
                         '친구를 초대해보세요',
                         style: _textStyle(
-                            11.0, FontWeight.w400, Colors.white, -0.22),
+                            11.0, FontWeight.w400, lightMainColor, -0.22),
                       ),
                     ),
                     Positioned(
@@ -105,7 +98,7 @@ class AddFriend extends StatelessWidget {
                       child: Text(
                         '내 코드',
                         style: _textStyle(
-                            14.0, FontWeight.w500, Colors.white, -0.28),
+                            14.0, FontWeight.w500, lightMainColor, -0.28),
                       ),
                     ),
                     Positioned(
@@ -121,7 +114,7 @@ class AddFriend extends StatelessWidget {
                           Text(
                             'A29NB67',
                             style: _textStyle(
-                                20.0, FontWeight.w600, Colors.white, -0.4),
+                                20.0, FontWeight.w600, lightMainColor, -0.4),
                           ),
                           SizedBox(width: 8.0),
                           _svgIcon('assets/icon/copy.svg'),
@@ -129,7 +122,7 @@ class AddFriend extends StatelessWidget {
                           Text(
                             '복사하기',
                             style: _textStyle(
-                                11.0, FontWeight.w400, Colors.white, -0.22),
+                                11.0, FontWeight.w400, lightMainColor, -0.22),
                           ),
                         ],
                       ),
@@ -147,15 +140,14 @@ class AddFriend extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 35.0),
                     child: Text(
                       '친구 추가하기',
-                      style: _textStyle(
-                          14.0, FontWeight.w500, Color(0xFF3E3E3E), -0.28),
+                      style:
+                          _textStyle(14.0, FontWeight.w500, greyColor1, -0.28),
                     ),
                   ),
                   SizedBox(width: 5.0),
                   Text(
                     '추가할 친구 코드를 입력하세요',
-                    style: _textStyle(
-                        11.0, FontWeight.w400, Color(0xFF656565), -0.22),
+                    style: _textStyle(11.0, FontWeight.w400, greyColor2, -0.22),
                   ),
                 ],
               ),
@@ -165,7 +157,7 @@ class AddFriend extends StatelessWidget {
               Container(
                 width: 320.0,
                 height: 133.185,
-                decoration: _boxDecoration(Color(0xFFFDFBF7)),
+                decoration: _boxDecoration(beigeColor),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 22.0),
                   child: Column(
@@ -175,19 +167,19 @@ class AddFriend extends StatelessWidget {
                       Text(
                         '친구에게 받은 코드를 입력해주세요',
                         style: _textStyle(
-                            11.0, FontWeight.w400, Color(0xFF656565), -0.22),
+                            11.0, FontWeight.w400, greyColor2, -0.22),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         '친구 코드',
                         style: _textStyle(
-                            14.0, FontWeight.w500, Color(0xFF3E3E3E), -0.28),
+                            14.0, FontWeight.w500, greyColor1, -0.28),
                       ),
                       SizedBox(height: 19.03),
                       Container(
                         width: double.infinity,
                         height: 41.108,
-                        decoration: _boxDecoration(Color(0xFFFAF7F0)),
+                        decoration: _boxDecoration(lightColor2),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10.76, vertical: 15.0),
@@ -195,8 +187,8 @@ class AddFriend extends StatelessWidget {
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: '친구 코드 입력',
-                              hintStyle: _textStyle(14.0, FontWeight.w400,
-                                  Color(0xFFA4A4A4), -0.28),
+                              hintStyle: _textStyle(
+                                  14.0, FontWeight.w400, greyColor4, -0.28),
                             ),
                           ),
                         ),
@@ -209,13 +201,13 @@ class AddFriend extends StatelessWidget {
               Container(
                 width: 320.0,
                 height: 45.994,
-                decoration: _boxDecoration(Color(0xFFC8AA9B)),
+                decoration: _boxDecoration(mainBrownColor),
                 child: Center(
                   child: Text(
                     '추가하기',
                     textAlign: TextAlign.center,
-                    style:
-                        _textStyle(14.0, FontWeight.w600, Colors.white, -0.28),
+                    style: _textStyle(
+                        14.0, FontWeight.w600, lightMainColor, -0.28),
                   ),
                 ),
               ),
@@ -227,7 +219,7 @@ class AddFriend extends StatelessWidget {
         height: 84.0,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: lightMainColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.0),
             topRight: Radius.circular(16.0),
@@ -245,9 +237,9 @@ class AddFriend extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           unselectedLabelStyle:
-              _textStyle(11.0, FontWeight.w500, Color(0xFFCFCFCF), -0.22),
+              _textStyle(11.0, FontWeight.w500, greyColor6, -0.22),
           selectedLabelStyle:
-              _textStyle(11.0, FontWeight.w500, Color(0xFF79D7FF), -0.22),
+              _textStyle(11.0, FontWeight.w500, mainBrownColor, -0.22),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: _svgIcon('assets/search.svg', width: 25.57, height: 25.34),
