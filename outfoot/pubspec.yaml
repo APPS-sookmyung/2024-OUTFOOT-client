@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker: ^0.8.7+4
-  carousel_slider: ^4.0.0
+  carousel_slider: ^5.0.0
   http: ^0.13.3
   dio: ^5.0.0
   path_drawing: ^1.0.1
