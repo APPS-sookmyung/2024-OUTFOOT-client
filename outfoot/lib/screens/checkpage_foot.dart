@@ -5,6 +5,8 @@ import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/personal_goal_api.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
+import 'package:outfoot/api/view_single_api.dart'; 
+import 'package:outfoot/models/view_single_model.dart'; 
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -70,13 +72,26 @@ class _CheckPageFootState extends State<CheckPageFoot> {
 
   int? selectedAnimalId;
   int? tempSelectedAnimalId;
+  List<Goal> goals = []; // 도장 정보를 저장
 
     @override
-  void initState() {
+    void initState() {
     super.initState();
     // 컨트롤러 초기화
     _goalNameController = TextEditingController();
     _goalDescriptionController = TextEditingController();
+    _fetchGoals(); // 도장 정보를 가져오는 함수 호출
+  }
+
+Future<void> _fetchGoals() async {
+    try {
+      final fetchedGoals = await _viewSingleApi.getGoal();
+      setState(() {
+        goals = fetchedGoals; // 가져온 도장 정보를 goals 리스트에 저장
+      });
+    } catch (e) {
+      print('Failed to fetch goals: $e'); // 오류 처리
+    }
   }
 
   @override
@@ -85,7 +100,7 @@ class _CheckPageFootState extends State<CheckPageFoot> {
     _goalNameController.dispose();
     _goalDescriptionController.dispose();
     super.dispose();
-  }
+  } 
 
   void _postGoal() async {
     if (selectedAnimalId == null) {
@@ -102,6 +117,27 @@ class _CheckPageFootState extends State<CheckPageFoot> {
       selectedAnimalId!,
     );
     print(response);
+  }
+
+  // 도장 클릭 시 자세한 정보 조회
+  void _showGoalDetails(Goal goal) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(goal.title),
+          content: Text('내용: ${goal.intro}'), 
+          actions: <Widget>[
+            TextButton(
+              child: Text('닫기'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -186,15 +222,17 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                   ),
                   child: GridView.builder(
                     shrinkWrap: true,
-                    itemCount: 30, 
+                    itemCount: goals.length, // API에서 가져온 도장 개수 사용
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
                       mainAxisSpacing: 10.63,
                       crossAxisSpacing: 10.75,
                     ),
                     itemBuilder: (context, index) {
-                      if (index < 11) { // 임의로 11개 채워진 도장
-                        return Container(
+                      final goal = goals[index];
+                      return GestureDetector(
+                        onTap: () => _showGoalDetails(goal), // 도장을 클릭했을 때 상세 정보 표시
+                        child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: mainBrownColor2,
@@ -205,13 +243,8 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                               'assets/paw.svg', 
                             ),
                           ),
-                        );
-                      } else {
-                        return DashedCircle(
-                          size: 24.57, 
-                          color: mainBrownColor, 
-                        );
-                      }
+                        ),
+                      );
                     },
                   ),
                 ),
