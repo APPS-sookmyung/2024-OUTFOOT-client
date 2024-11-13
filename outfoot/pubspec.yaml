@@ -94,6 +94,9 @@ flutter:
     - assets/logo.svg
     - assets/start_login_logo.svg
     - assets/people_icon.svg
+    - assets/logo_white.svg
+    - assets/bell.svg
+    - assets/crown.svg
     - assets/config/.env
 
   fonts:
