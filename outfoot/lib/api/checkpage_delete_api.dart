@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+// 도장판 삭제
 
 class CheckPageApi {
   final Dio _dio = Dio();

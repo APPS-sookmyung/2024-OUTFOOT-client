@@ -1,4 +1,4 @@
-class Goal {
+class ViewGoal {
   final int id;
   final String title;
   final String intro;
@@ -7,7 +7,7 @@ class Goal {
   final String animal; 
   final List<ConfirmResponse> confirmResponses;
 
-  Goal({
+  ViewGoal({
     required this.id,
     required this.title,
     required this.intro,
@@ -17,12 +17,12 @@ class Goal {
     required this.confirmResponses,
   });
 
-  factory Goal.fromJson(Map<String, dynamic> json) {
+  factory ViewGoal.fromJson(Map<String, dynamic> json) {
     var confirmResponsesFromJson = json['confirmResponses'] as List;
     List<ConfirmResponse> confirmResponsesList =
         confirmResponsesFromJson.map((i) => ConfirmResponse.fromJson(i)).toList();
         
-    return Goal(
+    return ViewGoal(
       id: json['id'] ?? 0,
       title: json['title'] ?? '',
       intro: json['intro'] ?? '',

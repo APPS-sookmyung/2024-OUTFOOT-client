@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:outfoot/models/view_single_model.dart';
 
+// 도장판 단건 조회
+
 class ViewSingleApi {
   final Dio dio;
   final String baseUrl;
@@ -9,7 +11,7 @@ class ViewSingleApi {
   ViewSingleApi({required this.dio})
       : baseUrl = dotenv.env['BASE_URL'] ?? '';
 
-  Future<String> getGoal(String token, String checkPageId) async {
+  Future<ViewGoal> getGoal(String token, String checkPageId) async {
     try {
       final response = await dio.get(
         '$baseUrl/checkpages/$checkPageId/foot',
@@ -24,18 +26,13 @@ class ViewSingleApi {
       print("서버 응답: ${response.data}");
 
       if (response.statusCode == 200) {
-        final goal = Goal.fromJson(response.data);
-        return "=============데이터 전송 성공==============\n";
-      } else if (response.statusCode == 400) {
-        return "=============잘못된 요청 (400)==============\n";
-      } else if (response.statusCode == 401) {
-        return "=============권한 오류 (401)==============\n";
-      } else {
-        return "=============서버 오류: ${response.statusCode}==============\n";
-      }
-    } catch (e) {
-      print('오류 발생: $e');
-      return '============데이터 전송 실패==============: 네트워크 오류\n';
+      return ViewGoal.fromJson(response.data);
+    } else {
+      throw Exception('Failed to load goal');
     }
+  } catch (e) {
+    print('오류 발생: $e');
+    throw Exception('Failed to fetch goal');
+  }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +8,7 @@ import 'package:outfoot/api/personal_goal_api.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
 import 'package:outfoot/api/view_single_api.dart'; 
 import 'package:outfoot/models/view_single_model.dart'; 
+
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -61,72 +63,46 @@ class DashedCirclePainter extends CustomPainter {
 }
 
 class CheckPageFoot extends StatefulWidget {
+  final String token; // 토큰 전달
+  final String checkPageId; // 개별 도장판 ID 전달
+
+  CheckPageFoot({required this.token, required this.checkPageId});
+
   @override
   _CheckPageFootState createState() => _CheckPageFootState();
 }
 
 class _CheckPageFootState extends State<CheckPageFoot> {
-  final PersonalGoalApi _goalApi = PersonalGoalApi();
-  late TextEditingController _goalNameController = TextEditingController();
-  late TextEditingController _goalDescriptionController = TextEditingController();
-
+  final ViewSingleApi _viewSingleApi = ViewSingleApi(dio: Dio());
+  final PersonalGoalApi _personalGoalApi = PersonalGoalApi(); // PersonalGoalApi 객체 생성
+  ViewGoal? goal; // 다일 도장 데이터 저장할 변수
   int? selectedAnimalId;
   int? tempSelectedAnimalId;
-  List<Goal> goals = []; // 도장 정보를 저장
-
-    @override
-    void initState() {
-    super.initState();
-    // 컨트롤러 초기화
-    _goalNameController = TextEditingController();
-    _goalDescriptionController = TextEditingController();
-    _fetchGoals(); // 도장 정보를 가져오는 함수 호출
-  }
-
-Future<void> _fetchGoals() async {
-    try {
-      final fetchedGoals = await _viewSingleApi.getGoal();
-      setState(() {
-        goals = fetchedGoals; // 가져온 도장 정보를 goals 리스트에 저장
-      });
-    } catch (e) {
-      print('Failed to fetch goals: $e'); // 오류 처리
-    }
-  }
+  bool _isSubmitting = false; 
 
   @override
-  void dispose() {
-    // 컨트롤러 해제
-    _goalNameController.dispose();
-    _goalDescriptionController.dispose();
-    super.dispose();
-  } 
-
-  void _postGoal() async {
-    if (selectedAnimalId == null) {
-      print('Please select an animal before submitting.');
-      return;
-    }
-
-    final token = ''; // 토큰 발급받아 넣는 곳
-
-    final response = await _goalApi.postGoal(
-      token,
-      _goalNameController.text,
-      _goalDescriptionController.text,
-      selectedAnimalId!,
-    );
-    print(response);
+  void initState() {
+    super.initState();
+    _fetchGoal();
   }
 
-  // 도장 클릭 시 자세한 정보 조회
-  void _showGoalDetails(Goal goal) {
+  Future<void> _fetchGoal() async {
+    try {
+      final fetchedGoal = await _viewSingleApi.getGoal(widget.token, widget.checkPageId);
+      setState(() {
+        goal = fetchedGoal; // 데이터를 저장하여 화면에서 접근 가능하게 
+      });
+    } catch (e) {
+      print('오류: $e'); //오류처리
+    }
+  }
+    void _showConfirmDetails(ConfirmResponse confirm) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(goal.title),
-          content: Text('내용: ${goal.intro}'), 
+          title: Text('인증 ID: ${confirm.id}'),
+          content: Image.network(confirm.imageUrl),
           actions: <Widget>[
             TextButton(
               child: Text('닫기'),
@@ -140,17 +116,58 @@ Future<void> _fetchGoals() async {
     );
   }
 
+    // API 호출 함수 추가
+  Future<void> _createPersonalGoal() async {
+    if (tempSelectedAnimalId != null) {
+      print('Please select an animal before completing.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select an animal before completing.')),
+      );
+      return;
+    }
+    if (_isSubmitting) return; 
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+      try {
+        final result = await _personalGoalApi.postGoal(
+          widget.token,
+          goal?.title ?? 'Default Title', // title 전달
+          goal?.intro ?? 'Default Intro', // intro 전달 
+          tempSelectedAnimalId!, // animalId 전달
+        );
+        print(result);
+
+        setState(() {
+          selectedAnimalId = tempSelectedAnimalId; // 선택한 animalId 저장
+        });
+        Navigator.pop(context);
+      } catch (e) {
+        print('Goal 생성 중 오류 발생: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to create goal. Please try again.')),
+        );
+      } finally {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
+    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lightColor2,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        child:goal == null
+          ? Center(child: CircularProgressIndicator()) //데이터 로딩 
+          : Stack(
               children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
                 SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
@@ -159,7 +176,7 @@ Future<void> _fetchGoals() async {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    '24.03.31', 
+                    goal!.createdAt,
                     style: TextStyle(
                       fontSize: 11,
                       color: blackBrownColor,
@@ -176,7 +193,7 @@ Future<void> _fetchGoals() async {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '하루에 물 2리터 마시기',
+                      goal!.title,     
                       style: TextStyle(
                         fontSize: 18,
                         color: blackBrownColor,
@@ -203,7 +220,7 @@ Future<void> _fetchGoals() async {
                 ),
                 SizedBox(height: 10.63),
                 Text(
-                  '건강한 이너뷰티',
+                  goal!.intro,
                   style: TextStyle(
                     fontSize: 12,
                     color: greyColor3,
@@ -222,16 +239,16 @@ Future<void> _fetchGoals() async {
                   ),
                   child: GridView.builder(
                     shrinkWrap: true,
-                    itemCount: goals.length, // API에서 가져온 도장 개수 사용
+                    itemCount: goal!.confirmResponses.length, // API에서 가져온 도장 개수 사용
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
                       mainAxisSpacing: 10.63,
                       crossAxisSpacing: 10.75,
                     ),
                     itemBuilder: (context, index) {
-                      final goal = goals[index];
+                      final confirm = goal!.confirmResponses[index];
                       return GestureDetector(
-                        onTap: () => _showGoalDetails(goal), // 도장을 클릭했을 때 상세 정보 표시
+                        onTap: () => _showConfirmDetails(confirm), // 도장을 클릭했을 때 상세 정보 표시
                         child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -257,6 +274,7 @@ Future<void> _fetchGoals() async {
               child: customFloatingActionButton(
                 'assets/floating_action.svg',  
                 onPressed: () {
+                  _createPersonalGoal(); // personal goal API 호출
                   if (tempSelectedAnimalId != null) {
                     setState(() {
                       selectedAnimalId = tempSelectedAnimalId; // 최종적으로 선택된 animalId
@@ -293,6 +311,9 @@ Future<void> _fetchGoals() async {
 
 void main() {
   runApp(MaterialApp(
-    home: CheckPageFoot(),
+    home: CheckPageFoot(
+      token: '', // 임시 값
+      checkPageId: '', // 임시 값
+    ),
   ));
 }
