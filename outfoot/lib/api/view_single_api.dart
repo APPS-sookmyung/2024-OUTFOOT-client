@@ -11,7 +11,7 @@ class ViewSingleApi {
   ViewSingleApi({required this.dio})
       : baseUrl = dotenv.env['BASE_URL'] ?? '';
 
-  Future<ViewGoal> getGoal(String token, String checkPageId) async {
+  Future<ViewGoal?> getGoal(String token, String checkPageId) async { // 반환 타입을 Future<ViewGoal?>로 변경
     try {
       final response = await dio.get(
         '$baseUrl/checkpages/$checkPageId/foot',
@@ -26,13 +26,15 @@ class ViewSingleApi {
       print("서버 응답: ${response.data}");
 
       if (response.statusCode == 200) {
-      return ViewGoal.fromJson(response.data);
-    } else {
-      throw Exception('Failed to load goal');
+        final goal = ViewGoal.fromJson(response.data); // 서버 응답을 ViewGoal 객체로 변환
+        return goal; // ViewGoal 객체 반환
+      } else {
+        print("서버 오류: ${response.statusCode}");
+        return null; // 실패 시 null 반환
+      }
+    } catch (e) {
+      print('오류 발생: $e');
+      return null; // 예외 발생 시 null 반환
     }
-  } catch (e) {
-    print('오류 발생: $e');
-    throw Exception('Failed to fetch goal');
-  }
   }
 }

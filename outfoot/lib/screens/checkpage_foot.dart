@@ -8,6 +8,8 @@ import 'package:outfoot/api/personal_goal_api.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
 import 'package:outfoot/api/view_single_api.dart'; 
 import 'package:outfoot/models/view_single_model.dart'; 
+import 'package:outfoot/screens/upload.dart';
+import 'package:outfoot/screens/checkpage_image.dart';
 
 
 class DashedCircle extends StatelessWidget {
@@ -274,15 +276,10 @@ class _CheckPageFootState extends State<CheckPageFoot> {
               child: customFloatingActionButton(
                 'assets/floating_action.svg',  
                 onPressed: () {
-                  _createPersonalGoal(); // personal goal API 호출
-                  if (tempSelectedAnimalId != null) {
-                    setState(() {
-                      selectedAnimalId = tempSelectedAnimalId; // 최종적으로 선택된 animalId
-                    });
-                    Navigator.pop(context);
-                  } else {
-                    print('Please select an animal before completing.');
-                  }
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Upload()),
+                  ); // Upload 페이지로 이동
                 },
               ),
             ),
@@ -291,7 +288,10 @@ class _CheckPageFootState extends State<CheckPageFoot> {
               left: 330, 
               child: FloatingActionButton(
                 onPressed: () {
-                  // 셔플 버튼 동작
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CheckPageImage()),
+                  );
                 },
                 backgroundColor: Colors.transparent, // 투명 배경
                 elevation: 0,

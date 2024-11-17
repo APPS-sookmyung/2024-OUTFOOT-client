@@ -56,7 +56,7 @@ class DashedCirclePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class CheckPageFoot extends StatelessWidget {
+class CheckPageImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,6 +207,6 @@ class CheckPageFoot extends StatelessWidget {
 
 void main() {
   runApp(MaterialApp(
-    home: CheckPageFoot(),
+    home: CheckPageImage(),
   ));
 }
