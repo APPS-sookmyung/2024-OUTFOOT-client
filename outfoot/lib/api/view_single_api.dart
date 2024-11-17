@@ -11,7 +11,7 @@ class ViewSingleApi {
   ViewSingleApi({required this.dio})
       : baseUrl = dotenv.env['BASE_URL'] ?? '';
 
-  Future<ViewGoal?> getGoal(String token, String checkPageId) async { // 반환 타입을 Future<ViewGoal?>로 변경
+  Future<ViewGoal?> getGoal(String token, String checkPageId) async { 
     try {
       final response = await dio.get(
         '$baseUrl/checkpages/$checkPageId/foot',
