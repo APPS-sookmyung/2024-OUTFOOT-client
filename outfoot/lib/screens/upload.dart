@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/api/auth_addition_api.dart';
+import 'package:outfoot/models/auth_addition_model.dart';
 
 class DashedBorder extends StatelessWidget {
   final Widget child;
@@ -83,6 +85,9 @@ class Upload extends StatefulWidget {
 }
 
 class _UploadState extends State<Upload> {
+  final AuthAdditionApi _api = AuthAdditionApi(); // API 인스턴스 생성
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
   File? _image;
 
   Future<void> _pickImage() async {
@@ -95,6 +100,36 @@ class _UploadState extends State<Upload> {
         print('No image selected.');
       }
     });
+  }
+
+    Future<void> _submitGoal() async {
+    if (_titleController.text.isEmpty || _contentController.text.isEmpty || _image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('제목, 내용, 이미지를 모두 입력해주세요.')),
+      );
+      return;
+    }
+
+    String token = 'your_token_here'; // 실제 토큰 값으로 대체
+    String checkPageId = 'your_check_page_id_here'; // 실제 체크 페이지 ID로 대체
+
+    String result = await _api.postGoal(
+      token,
+      checkPageId,
+      _titleController.text,
+      _contentController.text,
+      _image!.path, // 선택된 이미지 파일 경로
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(result)),
+    );
+  }
+   @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    super.dispose();
   }
 
   @override
@@ -324,13 +359,15 @@ class _UploadState extends State<Upload> {
               SizedBox(height: 41.8),
               Padding(
                 padding: EdgeInsets.only(left: 267, right: 20.82),
-                child: Container(
-                  width: 71.321,
-                  height: 30.149,
-                  decoration: BoxDecoration(
-                    color: mainBrownColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                child: GestureDetector(
+                  onTap: _submitGoal,
+                  child: Container(
+                    width: 71.321,
+                    height: 30.149,
+                    decoration: BoxDecoration(
+                      color: mainBrownColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   child: Center(
                     child: Text(
                                   '완료',
@@ -343,6 +380,7 @@ class _UploadState extends State<Upload> {
                                     letterSpacing: -0.24,
                                   ),
                                 ),
+                    ),
                   ),
                 ),
               ),
