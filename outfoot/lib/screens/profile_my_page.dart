@@ -94,279 +94,255 @@ class _ProfileState extends State<ProfileMyPage> {
     return Scaffold(
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Stack(
+          : _profile == null
+              ? Center(child: Text('No data found')) // 데이터가 없을 때 처리
+              : SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Container(
-                        width: screenWidth,
-                        height: screenHeight * 0.4,
-                        decoration: BoxDecoration(
-                          color: lightColor2,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
+                      Stack(
+                        children: [
+                          Container(
+                            width: screenWidth,
+                            height: screenHeight * 0.4,
+                            decoration: BoxDecoration(
+                              color: lightColor2,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: CustomPaint(
+                              size: Size(screenWidth, screenHeight * 0.04),
+                              painter: DashedPathPainter(),
+                            ),
                           ),
-                        ),
-                        child: CustomPaint(
-                          size: Size(screenWidth, screenHeight * 0.04),
-                          painter: DashedPathPainter(),
-                        ),
-                      ),
-                      Positioned(
-                        top: screenHeight * 0.08,
-                        right: screenWidth * 0.05,
-                        child: Row(
-                          children: [
-                            _svgIcon('assets/icon/edit.svg',
-                                width: screenWidth * 0.02,
-                                height: screenHeight * 0.03),
-                            SizedBox(width: screenWidth * 0.04),
-                            _svgIcon('assets/icon/setting.svg',
-                                width: screenWidth * 0.06,
-                                height: screenHeight * 0.03),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        top: screenHeight * 0.13,
-                        left: screenWidth * 0.08,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Stack(
-                              clipBehavior: Clip.none,
-                              alignment: Alignment.center,
+                          Positioned(
+                            top: screenHeight * 0.08,
+                            right: screenWidth * 0.05,
+                            child: Row(
                               children: [
-                                Container(
-                                  width: screenWidth * 0.2,
-                                  height: screenWidth * 0.2,
-                                  decoration: BoxDecoration(
-                                    color: mainBrownColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                                Positioned(
-                                  left: screenWidth * 0.14,
-                                  top: screenHeight * 0.06,
-                                  child: Container(
-                                    child: Center(
-                                      child: SizedBox(
-                                        width: 36,
-                                        height: 36,
-                                        child: _svgIcon('assets/edit2.svg',
-                                            fit: BoxFit.contain),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 0.0,
-                                  child: Container(
-                                    width: screenWidth * 0.2,
-                                    height: screenWidth * 0.2,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      getDisplayName(_profile?.name),
-                                      style: _textStyle(
-                                          screenWidth * 0.07,
-                                          FontWeight.w600,
-                                          lightMainColor,
-                                          0.52,
-                                          0.8),
-                                    ),
-                                  ),
-                                ),
+                                _svgIcon('assets/icon/edit.svg',
+                                    width: screenWidth * 0.02,
+                                    height: screenHeight * 0.03),
+                                SizedBox(width: screenWidth * 0.04),
+                                _svgIcon('assets/icon/setting.svg',
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight * 0.03),
                               ],
                             ),
-                            SizedBox(width: screenWidth * 0.06),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                          Positioned(
+                            top: screenHeight * 0.13,
+                            left: screenWidth * 0.08,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  '좋은 아침이에요,',
-                                  style: _textStyle(
-                                      screenWidth * 0.05,
-                                      FontWeight.w500,
-                                      blackBrownColor,
-                                      0.4,
-                                      0.8),
+                                Stack(
+                                  clipBehavior: Clip.none,
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      width: screenWidth * 0.2,
+                                      height: screenWidth * 0.2,
+                                      decoration: BoxDecoration(
+                                        color: mainBrownColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: screenWidth * 0.14,
+                                      top: screenHeight * 0.06,
+                                      child: Container(
+                                        child: Center(
+                                          child: SizedBox(
+                                            width: 36,
+                                            height: 36,
+                                            child: _svgIcon('assets/edit2.svg',
+                                                fit: BoxFit.contain),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 0.0,
+                                      child: Container(
+                                        width: screenWidth * 0.2,
+                                        height: screenWidth * 0.2,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          getDisplayName(_profile?.name),
+                                          style: _textStyle(
+                                              screenWidth * 0.07,
+                                              FontWeight.w600,
+                                              lightMainColor,
+                                              0.52,
+                                              0.8),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: screenHeight * 0.01),
-                                Row(
+                                SizedBox(width: screenWidth * 0.06),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      _profile?.name ?? '사용자',
-                                      style: _textStyle(
-                                          screenWidth * 0.05,
-                                          FontWeight.w700,
-                                          blackBrownColor,
-                                          0.4,
-                                          0.8),
-                                    ),
-                                    Text(
-                                      ' 님!',
+                                      '좋은 아침이에요,',
                                       style: _textStyle(
                                           screenWidth * 0.05,
                                           FontWeight.w500,
                                           blackBrownColor,
                                           0.4,
-                                          0.8),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: screenHeight * 0.02),
-                                Text(
-                                  truncateIntro(_profile?.myIntro),
-                                  style: _textStyle(screenWidth * 0.04,
-                                      FontWeight.w400, greyColor1, 1.2, 0.28),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        top: screenHeight * 0.27,
-                        left: screenWidth / 2 - screenWidth * 0.4,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: screenWidth * 0.25,
-                              height: screenHeight * 0.08,
-                              decoration: _boxDecoration(mainBrownColor2),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '친구 수',
-                                      style: _textStyle(
-                                          screenWidth * 0.03,
-                                          FontWeight.w400,
-                                          greyColor1,
-                                          0.24,
                                           0.8),
                                     ),
                                     SizedBox(height: screenHeight * 0.01),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          _profile?.name ?? '사용자',
+                                          style: _textStyle(
+                                              screenWidth * 0.05,
+                                              FontWeight.w700,
+                                              blackBrownColor,
+                                              0.4,
+                                              0.8),
+                                        ),
+                                        Text(
+                                          ' 님!',
+                                          style: _textStyle(
+                                              screenWidth * 0.05,
+                                              FontWeight.w500,
+                                              blackBrownColor,
+                                              0.4,
+                                              0.8),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: screenHeight * 0.02),
                                     Text(
-                                      '${_profile?.friendCount ?? 0}',
+                                      truncateIntro(_profile?.myIntro),
                                       style: _textStyle(
                                           screenWidth * 0.04,
-                                          FontWeight.w500,
+                                          FontWeight.w400,
                                           greyColor1,
-                                          0.32,
-                                          0.8),
+                                          1.2,
+                                          0.28),
                                     ),
                                   ],
                                 ),
-                              ),
+                              ],
                             ),
-                            SizedBox(width: screenWidth * 0.03),
-                            Container(
-                              width: screenWidth * 0.6,
-                              height: screenHeight * 0.08,
-                              decoration: _boxDecoration(milkBrownColor1),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(width: screenWidth * 0.05),
-                                    Column(
+                          ),
+                          Positioned(
+                            top: screenHeight * 0.27,
+                            left: screenWidth / 2 - screenWidth * 0.4,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: screenWidth * 0.25,
+                                  height: screenHeight * 0.08,
+                                  decoration: _boxDecoration(mainBrownColor2),
+                                  child: Center(
+                                    child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '코드를 통해',
+                                          '친구 수',
                                           style: _textStyle(
                                               screenWidth * 0.03,
                                               FontWeight.w400,
-                                              lightMainColor,
+                                              greyColor1,
                                               0.24,
                                               0.8),
                                         ),
                                         SizedBox(height: screenHeight * 0.01),
                                         Text(
-                                          '친구 추가하기',
+                                          '${_profile?.friendCount ?? 0}',
                                           style: _textStyle(
                                               screenWidth * 0.04,
                                               FontWeight.w500,
-                                              lightMainColor,
-                                              0.28,
+                                              greyColor1,
+                                              0.32,
                                               0.8),
                                         ),
                                       ],
                                     ),
-                                    Spacer(),
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            right: screenWidth * 0.05),
-                                        child: _svgIcon(
-                                            'assets/people_icon.svg',
-                                            width: screenWidth * 0.15,
-                                            height: screenHeight * 0.06),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                SizedBox(width: screenWidth * 0.03),
+                                Container(
+                                  width: screenWidth * 0.6,
+                                  height: screenHeight * 0.08,
+                                  decoration: _boxDecoration(milkBrownColor1),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(width: screenWidth * 0.05),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '코드를 통해',
+                                              style: _textStyle(
+                                                  screenWidth * 0.03,
+                                                  FontWeight.w400,
+                                                  lightMainColor,
+                                                  0.24,
+                                                  0.8),
+                                            ),
+                                            SizedBox(
+                                                height: screenHeight * 0.01),
+                                            Text(
+                                              '친구 추가하기',
+                                              style: _textStyle(
+                                                  screenWidth * 0.04,
+                                                  FontWeight.w500,
+                                                  lightMainColor,
+                                                  0.28,
+                                                  0.8),
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                right: screenWidth * 0.05),
+                                            child: _svgIcon(
+                                                'assets/people_icon.svg',
+                                                width: screenWidth * 0.15,
+                                                height: screenHeight * 0.06),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
+                          ),
+                        ],
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Username: ${_profile?.name ?? 'Unknown'}'),
+                            Text('Email: ${_profile?.code ?? 'N/A'}'),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    height: screenHeight * 0.6,
-                    color: lightColor1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: screenWidth * 0.08,
-                              top: screenHeight * 0.02),
-                          child: Text(
-                            '목록',
-                            style: _textStyle(screenWidth * 0.035,
-                                FontWeight.w400, greyColor1, 1.2, 0.28),
-                          ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: screenWidth * 0.0,
-                                top: screenHeight * 0.01),
-                            child: Container(
-                              width: screenWidth * 0.9,
-                              height: screenHeight * 0.15,
-                              padding: EdgeInsets.all(screenWidth * 0.04),
-                              decoration: BoxDecoration(
-                                color: lightColor2,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ProgressCard(
-                                startDate: '2024-01-01',
-                                title: 'OUTFOOT 백엔드 모각코',
-                                progressPercentage: 78,
-                                assetPath: '',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-      bottomNavigationBar: CustomBottomNavigationBar(),
+                ),
     );
   }
 }

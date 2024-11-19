@@ -19,6 +19,7 @@ class ProfileMyApi {
       );
 
       if (response.statusCode == 200) {
+        print('Response Status: ${response.statusCode}');
         return Profile.fromJson(response.data);
       } else {
         print("서버 오류: ${response.statusCode}");
