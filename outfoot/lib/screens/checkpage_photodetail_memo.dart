@@ -1,6 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/api/like_post_api.dart';
+import 'package:outfoot/api/like_delete_api.dart';
+import 'package:outfoot/api/dislike_post_api.dart';
+import 'package:outfoot/api/dislike_delete_api.dart';
+import 'package:outfoot/api/confirm_get_api.dart';
+import 'package:outfoot/models/confirm_get_model.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -26,7 +33,69 @@ class DashedLinePainter extends CustomPainter {
   }
 }
 
-class CheckpagePhotodetailMemo extends StatelessWidget {
+class CheckpagePhotodetailMemo extends StatefulWidget {
+  final String token;
+  final String confirmId;
+
+  CheckpagePhotodetailMemo({required this.token, required this.confirmId});
+
+  @override
+  _CheckpagePhotodetailMemoState createState() => _CheckpagePhotodetailMemoState();
+}
+
+class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
+  int likeCount = 0; // 좋아요 초기화
+  int dislikeCount = 0; // 싫어요 초기화
+  bool isLiked = false; // 유저 본인의 좋아요 여부
+  bool isDisliked = false; // 유저 본인의 싫어요 여부
+  ConfirmGoal? goal; 
+  final DislikePostApi dislikePostApi = DislikePostApi();
+  final DislikeDeleteApi dislikeDeleteApi = DislikeDeleteApi();
+  final LikePostApi likePostApi = LikePostApi();
+  final LikeDeleteApi likeDeleteApi = LikeDeleteApi();
+
+  @override
+  void initState() {
+    super.initState();
+    ConfirmGetApi confirmGetApi = ConfirmGetApi(dio: Dio());
+    fetchGoal();
+  }
+
+  // API 호출하여 좋아요 싫어요 수 받아오기
+  void fetchGoal() async {
+    final confirmGetApi = ConfirmGetApi(dio: Dio());
+    
+    final goal = await confirmGetApi.getGoal(widget.token, widget.confirmId);
+    if (goal != null) {
+      setState(() {
+        likeCount = goal.likeCount;
+        dislikeCount = goal.dislikeCount;
+      });
+    }
+  }
+
+  void toggleLike() {
+    setState(() {
+      if(isLiked) {
+        likeCount--;
+      } else {
+        likeCount++;
+      }
+      isLiked = !isLiked;
+    });
+  }
+
+  void toggleDislike() {
+    setState(() {
+      if(isDisliked) {
+        dislikeCount--;
+      } else {
+        dislikeCount++;
+      }
+      isDisliked = !isDisliked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +209,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                     height: 212,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/your_image.jpg'), // 갤러리에서 가져온 이미지
+                        image: AssetImage(goal!.imageUrl),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.circular(15),
@@ -176,7 +245,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            '24.03.31',
+                            goal!.createdAt,
                             style: TextStyle(
                               fontSize: 11,
                               color: blackBrownColor,
@@ -240,14 +309,17 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SvgPicture.asset(
+                                GestureDetector(
+                                  onTap: () => toggleLike, // 좋아요/취소
+                                child:SvgPicture.asset(
                                   'assets/admit.svg',
                                   width: 10,
                                   height: 14,
                                 ),
+                              ),
                                 SizedBox(width: 8),
                                 Text(
-                                  '15',
+                                  '$likeCount', // 좋아요 수 반환
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.white,
@@ -258,14 +330,17 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                SvgPicture.asset(
+                                GestureDetector(
+                                  onTap: toggleDislike,
+                                child: SvgPicture.asset(
                                   'assets/no_admit.svg',
                                   width: 10,
                                   height: 14,
                                 ),
+                                ),
                                 SizedBox(width: 8),
                                 Text(
-                                  '1',
+                                  '$isDisliked', //  싫어요 수 반환
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.white,
@@ -299,7 +374,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 19.91, left: 16.5, right:170),
                         child: Text(
-                          '오늘도 뿌듯한 하루~~',
+                          goal!.title,
                           style: TextStyle(
                             fontSize: 14,
                             color: greyColor1,
@@ -324,7 +399,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                           child: TextField(
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: '마치 하마가 된 거 같고, 뿌듯함ㅋㅋ',
+                              hintText: goal!.content,
                               hintStyle: TextStyle(
                                 fontSize: 12,
                                 color: greyColor1,
@@ -340,7 +415,7 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(bottom: 15, left: 228),
                         child: Text(
-                          '24.03.31 작성됨',
+                          goal!.createdAt + '작성됨',
                           style: TextStyle(
                             fontSize: 11,
                             color: mainBrownColor,
@@ -694,8 +769,12 @@ class CheckpagePhotodetailMemo extends StatelessWidget {
   }
 }
 
+
 void main() {
   runApp(MaterialApp(
-    home: CheckpagePhotodetailMemo(),
+    home: CheckpagePhotodetailMemo(
+      token: '',
+      confirmId: '',
+    ),
   ));
 }
