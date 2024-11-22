@@ -1,8 +1,17 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/api/personal_goal_api.dart';
+import 'package:outfoot/models/personal_goal_model.dart';
+import 'package:outfoot/api/view_single_api.dart'; 
+import 'package:outfoot/models/view_single_model.dart'; 
+import 'package:outfoot/screens/upload.dart';
+import 'package:outfoot/screens/checkpage_image.dart';
+import 'package:outfoot/screens/checkpage_image.dart';
+
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -56,18 +65,112 @@ class DashedCirclePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class CheckPageFoot extends StatelessWidget {
+class CheckPageFoot extends StatefulWidget {
+  final String token; // 토큰 전달
+  final String checkPageId; // 개별 도장판 ID 전달
+
+  CheckPageFoot({required this.token, required this.checkPageId});
+
+  @override
+  _CheckPageFootState createState() => _CheckPageFootState();
+}
+
+class _CheckPageFootState extends State<CheckPageFoot> {
+  final ViewSingleApi _viewSingleApi = ViewSingleApi(dio: Dio());
+  final PersonalGoalApi _personalGoalApi = PersonalGoalApi(); // PersonalGoalApi 객체 생성
+  ViewGoal? goal; // 다일 도장 데이터 저장할 변수
+  int? selectedAnimalId;
+  int? tempSelectedAnimalId;
+  bool _isSubmitting = false; 
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchGoal();
+  }
+
+  Future<void> _fetchGoal() async {
+    try {
+      final fetchedGoal = await _viewSingleApi.getGoal(widget.token, widget.checkPageId);
+      setState(() {
+        goal = fetchedGoal; // 데이터를 저장하여 화면에서 접근 가능하게 
+      });
+    } catch (e) {
+      print('오류: $e'); //오류처리
+    }
+  }
+    void _showConfirmDetails(ConfirmResponse confirm) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('인증 ID: ${confirm.id}'),
+          content: Image.network(confirm.imageUrl),
+          actions: <Widget>[
+            TextButton(
+              child: Text('닫기'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+    // API 호출 함수 추가
+  Future<void> _createPersonalGoal() async {
+    if (tempSelectedAnimalId != null) {
+      print('Please select an animal before completing.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select an animal before completing.')),
+      );
+      return;
+    }
+    if (_isSubmitting) return; 
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+      try {
+        final result = await _personalGoalApi.postGoal(
+          widget.token,
+          goal?.title ?? 'Default Title', // title 전달
+          goal?.intro ?? 'Default Intro', // intro 전달 
+          tempSelectedAnimalId!, // animalId 전달
+        );
+        print(result);
+
+        setState(() {
+          selectedAnimalId = tempSelectedAnimalId; // 선택한 animalId 저장
+        });
+        Navigator.pop(context);
+      } catch (e) {
+        print('Goal 생성 중 오류 발생: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to create goal. Please try again.')),
+        );
+      } finally {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
+    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lightColor2,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        child:goal == null
+          ? Center(child: CircularProgressIndicator()) //데이터 로딩 
+          : Stack(
               children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
                 SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
@@ -76,7 +179,7 @@ class CheckPageFoot extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    '24.03.31', 
+                    goal!.createdAt,
                     style: TextStyle(
                       fontSize: 11,
                       color: blackBrownColor,
@@ -93,7 +196,7 @@ class CheckPageFoot extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '하루에 물 2리터 마시기',
+                      goal!.title,     
                       style: TextStyle(
                         fontSize: 18,
                         color: blackBrownColor,
@@ -120,7 +223,7 @@ class CheckPageFoot extends StatelessWidget {
                 ),
                 SizedBox(height: 10.63),
                 Text(
-                  '건강한 이너뷰티',
+                  goal!.intro,
                   style: TextStyle(
                     fontSize: 12,
                     color: greyColor3,
@@ -139,15 +242,17 @@ class CheckPageFoot extends StatelessWidget {
                   ),
                   child: GridView.builder(
                     shrinkWrap: true,
-                    itemCount: 30, 
+                    itemCount: goal!.confirmResponses.length, // API에서 가져온 도장 개수 사용
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
                       mainAxisSpacing: 10.63,
                       crossAxisSpacing: 10.75,
                     ),
                     itemBuilder: (context, index) {
-                      if (index < 11) { // 임의로 11개 채워진 도장
-                        return Container(
+                      final confirm = goal!.confirmResponses[index];
+                      return GestureDetector(
+                        onTap: () => _showConfirmDetails(confirm), // 도장을 클릭했을 때 상세 정보 표시
+                        child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: mainBrownColor2,
@@ -158,13 +263,8 @@ class CheckPageFoot extends StatelessWidget {
                               'assets/paw.svg', 
                             ),
                           ),
-                        );
-                      } else {
-                        return DashedCircle(
-                          size: 24.57, 
-                          color: mainBrownColor, 
-                        );
-                      }
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -172,28 +272,27 @@ class CheckPageFoot extends StatelessWidget {
               ],
             ),
             Positioned(
-              top: 163, 
-              left: 315, 
-              right: 27.2, 
-              bottom: 300, 
-              child: Container(),
-            ),
-            Positioned(
               bottom: 12,
               right: 20, 
               child: customFloatingActionButton(
-              'assets/floating_action.svg',  
-              onPressed: () {
-                  // 플로팅 액션 버튼 동작
+                'assets/floating_action.svg',  
+                onPressed: () {
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Upload()),
+                  ); // Upload 페이지로 이동
                 },
-            ),
+              ),
             ),
             Positioned(
               top: 60, 
               left: 330, 
               child: FloatingActionButton(
                 onPressed: () {
-                  // 셔플 버튼 동작
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CheckPageImage(token: '', checkPageId: '')),
+                  );
                 },
                 backgroundColor: Colors.transparent, // 투명 배경
                 elevation: 0,
@@ -213,6 +312,9 @@ class CheckPageFoot extends StatelessWidget {
 
 void main() {
   runApp(MaterialApp(
-    home: CheckPageFoot(),
+    home: CheckPageFoot(
+      token: '', // 임시 값
+      checkPageId: '', // 임시 값
+    ),
   ));
 }

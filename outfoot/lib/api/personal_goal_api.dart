@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
 
+// 도장판 생성 
+
 class PersonalGoalApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];

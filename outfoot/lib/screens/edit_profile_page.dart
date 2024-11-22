@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/widgets/dashed_line_painter.dart';
 
 class EditProfile extends StatelessWidget {
   const EditProfile({super.key});
@@ -156,7 +157,7 @@ class EditProfile extends StatelessWidget {
             right: 0,
             child: CustomPaint(
               size: Size(MediaQuery.of(context).size.width, 2),
-              painter: DashedLinePainter(),
+              painter: DashedLinePainter(color: mainBrownColor2),
             ),
           ),
           Positioned(
@@ -225,7 +226,6 @@ class EditProfile extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 38.0),
-
                 Container(
                   width: 320.0,
                   height: 45.994,
@@ -246,31 +246,4 @@ class EditProfile extends StatelessWidget {
       ),
     );
   }
-}
-
-class DashedLinePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = mainBrownColor2
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    final dashWidth = 5.0;
-    final dashSpace = 5.0;
-    double startX = 0;
-
-    while (startX < size.width) {
-      canvas.drawLine(
-        Offset(startX, size.height / 2),
-        Offset(startX + dashWidth, size.height / 2),
-        paint,
-      );
-      startX += dashWidth + dashSpace;
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
