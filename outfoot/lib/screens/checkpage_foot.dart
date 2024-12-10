@@ -10,6 +10,7 @@ import 'package:outfoot/api/view_single_api.dart';
 import 'package:outfoot/models/view_single_model.dart'; 
 import 'package:outfoot/screens/upload.dart';
 import 'package:outfoot/screens/checkpage_image.dart';
+import 'package:outfoot/screens/checkpage_image.dart';
 
 
 class DashedCircle extends StatelessWidget {
@@ -290,7 +291,7 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CheckPageImage()),
+                    MaterialPageRoute(builder: (context) => CheckPageImage(token: '', checkPageId: '')),
                   );
                 },
                 backgroundColor: Colors.transparent, // 투명 배경
