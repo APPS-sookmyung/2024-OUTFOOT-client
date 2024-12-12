@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/api/view_single_api.dart';
+import 'package:outfoot/models/view_single_model.dart';
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -55,8 +58,34 @@ class DashedCirclePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+class CheckPageImage extends StatefulWidget {
+  final String token; // API 인증 토큰
+  final String checkPageId; // 조회할 체크 페이지 ID
 
-class CheckPageImage extends StatelessWidget {
+  CheckPageImage({required this.token, required this.checkPageId});
+
+  @override
+  _CheckPageImageState createState() => _CheckPageImageState();
+}
+
+class _CheckPageImageState extends State<CheckPageImage> {
+  ViewGoal? goal; // API에서 불러온 데이터를 저장할 변수
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchGoal(); // 초기화 시 API 호출
+  }
+
+  Future<void> _fetchGoal() async {
+    final api = ViewSingleApi(dio: Dio());
+    final fetchedGoal = await api.getGoal(widget.token, widget.checkPageId);
+
+    setState(() {
+      goal = fetchedGoal; // 불러온 데이터를 상태에 저장
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +105,7 @@ class CheckPageImage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    '24.03.31', 
+                    goal?.createdAt ?? '날짜 정보 없음',  
                     style: TextStyle(
                       fontSize: 11,
                       color: blackBrownColor,
@@ -93,7 +122,7 @@ class CheckPageImage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '하루에 물 2리터 마시기',
+                      goal?.title ?? '제목 없음', // 불러온 데이터의 제목 표시
                       style: TextStyle(
                         fontSize: 18,
                         color: blackBrownColor,
@@ -120,7 +149,7 @@ class CheckPageImage extends StatelessWidget {
                 ),
                 SizedBox(height: 10.63),
                 Text(
-                  '건강한 이너뷰티',
+                  goal?.intro ?? '설명 없음', // 불러온 데이터의 설명 표시
                   style: TextStyle(
                     fontSize: 12,
                     color: greyColor3,
@@ -146,17 +175,17 @@ class CheckPageImage extends StatelessWidget {
                       crossAxisSpacing: 10.75,
                     ),
                     itemBuilder: (context, index) {
-                      if (index < 11) { // 임의로 11개 채워진 도장
+                      if (goal != null && index < goal!.confirmResponses.length) {
+                        // 이미지 URL을 불러온 데이터의 confirmResponses에서 가져오기
                         return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: mainBrownColor2 ,
+                            color: mainBrownColor2,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(7.18),
                             child: Image.network(
-                              'https://outfoot.com/image$index.png', // 이미지 URL
-                              fit: BoxFit.contain,
+                              goal!.confirmResponses[index].imageUrl, // 동적으로 이미지 URL 표시                              fit: BoxFit.contain,
                             ),
                           ),
                         );
@@ -207,6 +236,8 @@ class CheckPageImage extends StatelessWidget {
 
 void main() {
   runApp(MaterialApp(
-    home: CheckPageImage(),
+    home: CheckPageImage(
+      token: '', checkPageId: ''
+    ),
   ));
 }
