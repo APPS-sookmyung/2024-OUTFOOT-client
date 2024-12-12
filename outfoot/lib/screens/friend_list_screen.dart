@@ -24,8 +24,7 @@ class _FriendListState extends State<FriendList> {
   }
 
   Future<void> _fetchFriendList() async {
-    final token =
-        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6ImZmOTdmYTc1LTE1ODMtNGMxNi04ZjZmLWJjZTQyM2RlMDYxMCIsIm5pY2tuYW1lIjoi7KCV7ISc7JewIiwiaWF0IjoxNzMzODIwNzI0LCJleHAiOjE3MzM4Mjc5MjR9.t1z4SAtA-6_OUHmdO1tquvrdKEfNFKjTeocwXYMMSaI8ZQDcBL9NXnIesWDFgHxV';
+    final token = 'token';
     try {
       final response = await _friendService.getFriendList(token);
       setState(() {
@@ -56,8 +55,7 @@ class _FriendListState extends State<FriendList> {
   }
 
   Future<void> _deleteFriend(String friendId) async {
-    final token =
-        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6ImZmOTdmYTc1LTE1ODMtNGMxNi04ZjZmLWJjZTQyM2RlMDYxMCIsIm5pY2tuYW1lIjoi7KCV7ISc7JewIiwiaWF0IjoxNzMzODIwNzI0LCJleHAiOjE3MzM4Mjc5MjR9.t1z4SAtA-6_OUHmdO1tquvrdKEfNFKjTeocwXYMMSaI8ZQDcBL9NXnIesWDFgHxV'; // 실제 토큰 값으로 교체
+    final token = 'token'; // 실제 토큰 값으로 교체
     try {
       await _friendService.deleteFriend(token, friendId);
       setState(() {
