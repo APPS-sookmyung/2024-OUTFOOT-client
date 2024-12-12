@@ -4,7 +4,8 @@ import 'package:outfoot/colors/colors.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   @override
-  _CustomBottomNavigationBarState createState() => _CustomBottomNavigationBarState();
+  _CustomBottomNavigationBarState createState() =>
+      _CustomBottomNavigationBarState();
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
@@ -18,83 +19,78 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Bottom Navigation Bar'),
-      ),
-      body: Center(child: Text('Body')),
-      bottomNavigationBar: Container(
-        width: 360.0,
-        height: 84.0,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
+    return Container(
+      width: 360.0,
+      height: 84.0,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: Offset(0, -4),
+            blurRadius: 8,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1), 
-              offset: Offset(0, -4), 
-              blurRadius: 8, 
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+        child: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: _buildCustomItem(
+                'assets/search.svg',
+                '둘러보기',
+                index: 0,
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildCustomItem(
+                'assets/home.svg',
+                '홈',
+                index: 1,
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildCustomItem(
+                'assets/profile.svg',
+                '마이페이지',
+                index: 2,
+              ),
+              label: '',
             ),
           ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
+          currentIndex: _selectedIndex,
+          selectedItemColor: mainBrownColor,
+          unselectedItemColor: greyColor6,
+          backgroundColor: Colors.white, // 배경 색상을 명시적으로 설정
+          onTap: _onItemTapped,
+          selectedLabelStyle: TextStyle(
+            fontSize: 11,
+            fontFamily: 'Pretendard',
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w500,
+            height: 1.1,
+            letterSpacing: -0.22,
           ),
-          child: BottomNavigationBar(
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: _buildCustomItem(
-                  'assets/search.svg',
-                  '둘러보기',
-                  index: 0,
-                ),
-                label: '', 
-              ),
-              BottomNavigationBarItem(
-                icon: _buildCustomItem(
-                  'assets/home.svg',
-                  '홈',
-                  index: 1,
-                ),
-                label: '', 
-              ),
-              BottomNavigationBarItem(
-                icon: _buildCustomItem(
-                  'assets/profile.svg',
-                  '마이페이지',
-                  index: 2,
-                ),
-                label: '', 
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: mainBrownColor, 
-            unselectedItemColor: greyColor6, 
-            onTap: _onItemTapped,
-            selectedLabelStyle: TextStyle(
-              fontSize: 11,
-              fontFamily: 'Pretendard',
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              height: 1.1,
-              letterSpacing: -0.22,
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontSize: 11,
-              fontFamily: 'Pretendard',
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              height: 1.1,
-              letterSpacing: -0.22,
-            ),
-            showSelectedLabels: false, 
-            showUnselectedLabels: false, 
+          unselectedLabelStyle: TextStyle(
+            fontSize: 11,
+            fontFamily: 'Pretendard',
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w500,
+            height: 1.1,
+            letterSpacing: -0.22,
           ),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
         ),
       ),
     );
@@ -112,7 +108,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             height: 24.0,
             color: _selectedIndex == index ? mainBrownColor : greyColor6,
           ),
-          SizedBox(height: 6.93), 
+          SizedBox(height: 6.93),
           Text(
             label,
             style: TextStyle(
@@ -131,8 +127,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: CustomBottomNavigationBar(),
-  ));
-}
+// void main() {
+//   runApp(MaterialApp(
+//     home: Scaffold(
+//       body: Center(child: Text("Main Content")),
+//       bottomNavigationBar: CustomBottomNavigationBar(),
+//     ),
+//   ));
+// }

@@ -6,11 +6,21 @@ import 'package:outfoot/screens/make_goal/make_personal_goal.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:outfoot/screens/add_friend_popup_screen.dart';
 import 'package:outfoot/screens/friend_list_screen.dart';
+import 'package:outfoot/screens/upload.dart';
+import 'package:outfoot/utils/goal_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 초기화
   await dotenv.load(fileName: 'assets/config/.env');
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => GoalProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +32,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FriendList(),
+      home: Upload(),
     );
   }
 }

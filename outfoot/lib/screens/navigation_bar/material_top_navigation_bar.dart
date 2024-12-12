@@ -3,7 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/checkpage_delete_api.dart';
 
-class MeterialTopNavigationBar extends StatefulWidget implements PreferredSizeWidget {
+class MeterialTopNavigationBar extends StatefulWidget
+    implements PreferredSizeWidget {
   final int checkPageId; // 삭제할 도장판 ID
 
   MeterialTopNavigationBar({required this.checkPageId});
@@ -12,7 +13,8 @@ class MeterialTopNavigationBar extends StatefulWidget implements PreferredSizeWi
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   @override
-  _MeterialTopNavigationBarState createState() => _MeterialTopNavigationBarState();
+  _MeterialTopNavigationBarState createState() =>
+      _MeterialTopNavigationBarState();
 }
 
 class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
@@ -21,7 +23,8 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: apricotColor1,
+      scrolledUnderElevation: 0,
+      backgroundColor: lightColor1,
       elevation: 0,
       leading: IconButton(
         icon: _buildCustomItem(
@@ -63,14 +66,16 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
             width: 17.363,
             height: 21.565,
           ),
-          onPressed: () => _showDeleteConfirmationDialog(context), // 삭제 확인 다이얼로그 표시
+          onPressed: () =>
+              _showDeleteConfirmationDialog(context), // 삭제 확인 다이얼로그 표시
         ),
       ],
     );
   }
 
   // 커스텀 아이콘 빌더
-  Widget _buildCustomItem(String iconPath, {required double width, required double height}) {
+  Widget _buildCustomItem(String iconPath,
+      {required double width, required double height}) {
     return SvgPicture.asset(
       iconPath,
       width: width,
@@ -108,19 +113,19 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
 
   // 삭제 요청 수행 함수
   Future<void> _deleteCheckPage(BuildContext context) async {
-  try {
-    await _checkPageApi.deleteCheckPage(widget.checkPageId); // 반환값 사용하지 않음
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('도장판이 성공적으로 삭제되었습니다.')),
-    );
-    Navigator.of(context).pop(); // 삭제 후 이전 화면으로 이동
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('도장판 삭제에 실패했습니다. 다시 시도해주세요.')),
-    );
-    print('Error deleting CheckPage: $e');
+    try {
+      await _checkPageApi.deleteCheckPage(widget.checkPageId); // 반환값 사용하지 않음
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('도장판이 성공적으로 삭제되었습니다.')),
+      );
+      Navigator.of(context).pop(); // 삭제 후 이전 화면으로 이동
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('도장판 삭제에 실패했습니다. 다시 시도해주세요.')),
+      );
+      print('Error deleting CheckPage: $e');
+    }
   }
-}
 }
 
 void main() {
