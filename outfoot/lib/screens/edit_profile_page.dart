@@ -2,9 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/widgets/dashed_line_painter.dart';
+import 'package:outfoot/api/profile_edit_api.dart';
+import 'package:outfoot/models/profile_edit_model.dart';
 
-class EditProfile extends StatelessWidget {
+class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
+
+  @override
+  _EditProfileState createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  final ProfileEditApi _profileEditApi = ProfileEditApi();
+  final TextEditingController _nicknameController = TextEditingController();
+  final TextEditingController _introController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  bool _isLoading = false;
 
   TextStyle _textStyle(double fontSize, FontWeight fontWeight, Color color,
       double letterSpacing) {
@@ -35,6 +48,40 @@ class EditProfile extends StatelessWidget {
       height: height,
       fit: fit,
     );
+  }
+
+   Future<void> _updateProfile() async {
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final response = await _profileEditApi.updateProfile(
+        nickname: _nicknameController.text,
+        myIntro: _introController.text,
+        email: _emailController.text,
+        token: 'user-access-token',
+      );
+
+      if (response.success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('프로필이 성공적으로 수정되었습니다!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('수정 실패: ${response.message}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('오류 발생: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
