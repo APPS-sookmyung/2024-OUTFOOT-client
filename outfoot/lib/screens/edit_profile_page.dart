@@ -278,14 +278,18 @@ class _EditProfileState extends State<EditProfile> {
                   height: 45.994,
                   decoration: _boxDecoration(mainBrownColor),
                   child: Center(
-                    child: Text(
-                      '변경하기',
-                      textAlign: TextAlign.center,
-                      style: _textStyle(
-                          14.0, FontWeight.w600, lightMainColor, -0.28),
-                    ),
+                    child: TextButton(
+                      onPressed: _isLoading ? null : _updateProfile, // 로딩 중 버튼 비활성화
+                      child: _isLoading
+                        ? CircularProgressIndicator(color: Colors.white) // 로딩 표시 추가
+                        : Text(
+                          '변경하기',
+                          textAlign: TextAlign.center,
+                          style: _textStyle(14.0, FontWeight.w600, lightMainColor, -0.28),
+                        ),
                   ),
                 ),
+              ),
               ],
             ),
           ),
