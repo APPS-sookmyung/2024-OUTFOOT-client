@@ -1,218 +1,139 @@
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart'; 
-import 'package:flutter_svg/flutter_svg.dart';
-import '/widgets/custom_floating_action_button.dart';
-import 'package:outfoot/colors/colors.dart';
+import 'package:provider/provider.dart';
+import 'package:outfoot/utils/goal_provider.dart';
 
-class DashedCircle extends StatelessWidget {
-  final double size;
-  final Color color;
-  final double dashLength;
-  final double spaceLength;
+class CheckPageFoot extends StatefulWidget {
+  final String token; // 토큰 전달
+  final String checkPageId; // 개별 도장판 ID 전달
 
-  DashedCircle({
-    required this.size,
-    required this.color,
-    this.dashLength = 6.0,
-    this.spaceLength = 6.0,
-  });
+  CheckPageFoot({required this.token, required this.checkPageId});
 
   @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(size, size),
-      painter: DashedCirclePainter(color, dashLength, spaceLength),
-    );
-  }
+  _CheckPageFootState createState() => _CheckPageFootState();
 }
 
-class DashedCirclePainter extends CustomPainter {
-  final Color color;
-  final double dashLength;
-  final double spaceLength;
-
-  DashedCirclePainter(this.color, this.dashLength, this.spaceLength);
+class _CheckPageFootState extends State<CheckPageFoot> {
+  String? goalTitle;
+  String? goalIntro;
+  String? goalImagePath;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final double radius = size.width / 2;
-    final Paint paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    final Path path = Path()
-      ..addOval(Rect.fromCircle(center: Offset(radius, radius), radius: radius));
-
-    final Path dashedPath = dashPath(
-      path,
-      dashArray: CircularIntervalList<double>(<double>[dashLength, spaceLength]),
-    );
-
-    canvas.drawPath(dashedPath, paint);
+  void initState() {
+    super.initState();
+    // 예제 데이터를 로드합니다. 실제 데이터는 API 호출로 대체 가능
+    goalTitle = "하루에 물 2리터 마시기";
+    goalIntro = "건강한 이너뷰티를 위한 도전입니다.";
+    goalImagePath = null;
   }
 
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class CheckPageFoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lightColor2,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("Check Page"),
+        backgroundColor: Colors.teal,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: 10),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    '24.03.31', 
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: blackBrownColor,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w400,
-                      height: 1.1,
-                      letterSpacing: -0.22,
+        child: goalTitle == null
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // 날짜 표시
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(6),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(height: 18.76),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '하루에 물 2리터 마시기',
+                    child: Text(
+                      "2024.12.31", // 예제 날짜
                       style: TextStyle(
-                        fontSize: 18,
-                        color: blackBrownColor,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w600,
-                        height: 1.1,
-                        letterSpacing: -0.36,
+                        fontSize: 12,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w400,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(width: 3.69),
-                    Transform.translate(
-                      offset: Offset(0, -9.0),
-                      child: Container(
-                        width: 7.991,
-                        height: 7.991,
-                        decoration: BoxDecoration(
-                          color: yellowColor,
-                          shape: BoxShape.circle,
+                  ),
+                  SizedBox(height: 20),
+
+                  // 목표 제목 표시
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        goalTitle ?? "목표 없음",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.63),
-                Text(
-                  '건강한 이너뷰티',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: greyColor3,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                    height: 1.1,
-                    letterSpacing: -0.24,
+                      SizedBox(width: 8),
+                      Icon(Icons.check_circle, color: Colors.green, size: 24),
+                    ],
                   ),
-                ),
-                SizedBox(height: 22.42),
-                Container(
-                  padding: EdgeInsets.only(left: 16.95, right: 16.95, top: 17.35, bottom: 35.23),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: 30, 
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      mainAxisSpacing: 10.63,
-                      crossAxisSpacing: 10.75,
+                  SizedBox(height: 10),
+
+                  // 목표 설명 표시
+                  Text(
+                    goalIntro ?? "",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
                     ),
-                    itemBuilder: (context, index) {
-                      if (index < 11) { // 임의로 11개 채워진 도장
-                        return Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: mainBrownColor2,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 40),
+
+                  // 이미지 표시 (예제)
+                  goalImagePath == null
+                      ? Text(
+                          "이미지가 없습니다.",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(7.18),
-                            child: SvgPicture.asset(
-                              'assets/paw.svg', 
-                            ),
-                          ),
-                        );
-                      } else {
-                        return DashedCircle(
-                          size: 24.57, 
-                          color: mainBrownColor, 
-                        );
+                        )
+                      : Image.network(
+                          goalImagePath!,
+                          height: 150,
+                          fit: BoxFit.cover,
+                        ),
+                  SizedBox(height: 40),
+
+                  // 완료 버튼
+                  ElevatedButton(
+                    onPressed: () {
+                      if (goalTitle != null && goalIntro != null) {
+                        // Provider를 통해 제목 업데이트
+                        Provider.of<GoalProvider>(context, listen: false)
+                            .updateGoal(goalTitle!, goalIntro!, goalImagePath);
+
+                        // 이전 화면으로 이동
+                        Navigator.pop(context);
                       }
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 32.0, vertical: 12.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      "목표 저장하고 돌아가기",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
                   ),
-                ),
-                Spacer(),
-              ],
-            ),
-            Positioned(
-              top: 163, 
-              left: 315, 
-              right: 27.2, 
-              bottom: 300, 
-              child: Container(),
-            ),
-            Positioned(
-              bottom: 12,
-              right: 20, 
-              child: customFloatingActionButton(
-              'assets/floating_action.svg',  
-              onPressed: () {
-                  // 플로팅 액션 버튼 동작
-                },
-            ),
-            ),
-            Positioned(
-              top: 60, 
-              left: 330, 
-              child: FloatingActionButton(
-                onPressed: () {
-                  // 셔플 버튼 동작
-                },
-                backgroundColor: Colors.transparent, // 투명 배경
-                elevation: 0,
-                child: SvgPicture.asset(
-                  'assets/shuffle_icon.svg',
-                  width: 24,
-                  height: 24,
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: CheckPageFoot(),
-  ));
 }

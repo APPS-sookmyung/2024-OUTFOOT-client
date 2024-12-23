@@ -1,26 +1,26 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:outfoot/models/personal_goal_model.dart';
+import 'package:outfoot/models/auth_addition_model.dart';
 
-// 도장판 생성 
+// 인증판 생성
 
-class PersonalGoalApi {
+class AuthAdditionApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
 
   Future<String> postGoal(
-      String token, String title, String intro, int animalId) async {
+      String token, String checkPageId, String title, String content, String imageUrl) async {
     try {
       final requestData = {
         'title': title,
-        'intro': intro,
-        'animalId': animalId.toString(),
+        'content': content,
+        'image': imageUrl,
       };
 
       print("전송 데이터: $requestData");
 
       final response = await dio.post(
-        '$baseUrl/checkpages',
+        '$baseUrl/confirm/$checkPageId',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -33,7 +33,7 @@ class PersonalGoalApi {
       print("서버 응답: ${response.data}");
 
       if (response.statusCode == 200) {
-        final goal = Goal.fromJson(response.data);
+        final goal = AddGoal.fromJson(response.data);
         return "=============데이터 전송 성공==============\n";
       } else {
         return "=============데이터 전송 실패==============\n";

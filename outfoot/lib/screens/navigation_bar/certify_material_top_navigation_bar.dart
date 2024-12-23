@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
-import 'package:outfoot/api/checkpage_delete_api.dart';
+import 'package:outfoot/api/confirm_delete_api.dart';
+
+// 인증판 상단바 (도장판이랑 별도임 잘 구분바람)
 
 class MeterialTopNavigationBar extends StatefulWidget
     implements PreferredSizeWidget {
-  final int checkPageId; // 삭제할 도장판 ID
+  final int ConfirmId; // 삭제할 도장판 ID
 
-  MeterialTopNavigationBar({required this.checkPageId});
+  MeterialTopNavigationBar({required this.ConfirmId});
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -18,7 +20,7 @@ class MeterialTopNavigationBar extends StatefulWidget
 }
 
 class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
-  final CheckPageApi _checkPageApi = CheckPageApi(); // CheckPageApi 객체 생성
+  final ConfirmDeleteApi _confirmApi = ConfirmDeleteApi(); // ConfirmApi 객체 생성
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,7 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('삭제 확인'),
-          content: Text('이 도장판을 삭제하시겠습니까?'),
+          content: Text('이 인증판을 삭제하시겠습니까?'),
           actions: <Widget>[
             TextButton(
               child: Text('취소'),
@@ -102,7 +104,7 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
               child: Text('삭제'),
               onPressed: () {
                 Navigator.of(context).pop(); // 다이얼로그 닫기
-                _deleteCheckPage(context); // 삭제 요청 수행
+                _deleteConfirm(context); // 삭제 요청 수행
               },
             ),
           ],
@@ -112,18 +114,18 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
   }
 
   // 삭제 요청 수행 함수
-  Future<void> _deleteCheckPage(BuildContext context) async {
+  Future<void> _deleteConfirm(BuildContext context) async {
     try {
-      await _checkPageApi.deleteCheckPage(widget.checkPageId); // 반환값 사용하지 않음
+      await _confirmApi.deleteConfirm(widget.ConfirmId); // 반환값 사용하지 않음
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('도장판이 성공적으로 삭제되었습니다.')),
+        SnackBar(content: Text('인증판이 성공적으로 삭제되었습니다.')),
       );
       Navigator.of(context).pop(); // 삭제 후 이전 화면으로 이동
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('도장판 삭제에 실패했습니다. 다시 시도해주세요.')),
+        SnackBar(content: Text('인증판 삭제에 실패했습니다. 다시 시도해주세요.')),
       );
-      print('Error deleting CheckPage: $e');
+      print('Error deleting ConfirmPage: $e');
     }
   }
 }
@@ -145,7 +147,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MeterialTopNavigationBar(checkPageId: 1), // 예시로 ID 1 전달
+      appBar: MeterialTopNavigationBar(ConfirmId: 1), // 예시로 ID 1 전달
       body: Center(child: Text('body')),
     );
   }
