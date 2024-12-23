@@ -6,8 +6,11 @@ import 'package:outfoot/api/like_post_api.dart';
 import 'package:outfoot/api/like_delete_api.dart';
 import 'package:outfoot/api/dislike_post_api.dart';
 import 'package:outfoot/api/dislike_delete_api.dart';
-import 'package:outfoot/api/confirm_get_api.dart';
-import 'package:outfoot/models/confirm_get_model.dart';
+import 'package:outfoot/screens/navigation_bar/comment_bottom_navigation_bar.dart';
+import 'package:outfoot/screens/navigation_bar/auth_top_navigation_bar.dart';
+import 'package:outfoot/utils/goal_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -40,15 +43,17 @@ class CheckpagePhotodetailMemo extends StatefulWidget {
   CheckpagePhotodetailMemo({required this.token, required this.confirmId});
 
   @override
-  _CheckpagePhotodetailMemoState createState() => _CheckpagePhotodetailMemoState();
+  _CheckpagePhotodetailMemoState createState() =>
+      _CheckpagePhotodetailMemoState();
 }
 
 class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
-  int likeCount = 0; // 좋아요 초기화
-  int dislikeCount = 0; // 싫어요 초기화
-  bool isLiked = false; // 유저 본인의 좋아요 여부
-  bool isDisliked = false; // 유저 본인의 싫어요 여부
-  ConfirmGoal? goal; 
+  int likeCount = 0;
+  int dislikeCount = 0;
+  bool isLiked = false;
+  bool isDisliked = false;
+  bool isLoading = true;
+
   final DislikePostApi dislikePostApi = DislikePostApi();
   final DislikeDeleteApi dislikeDeleteApi = DislikeDeleteApi();
   final LikePostApi likePostApi = LikePostApi();
@@ -57,48 +62,125 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
   @override
   void initState() {
     super.initState();
-    ConfirmGetApi confirmGetApi = ConfirmGetApi(dio: Dio());
-    fetchGoal();
+    fetchGoal(widget.token, widget.confirmId).then((_) {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
-  // API 호출하여 좋아요 싫어요 수 받아오기
-  void fetchGoal() async {
-    final confirmGetApi = ConfirmGetApi(dio: Dio());
-    
-    final goal = await confirmGetApi.getGoal(widget.token, widget.confirmId);
-    if (goal != null) {
-      setState(() {
-        likeCount = goal.likeCount;
-        dislikeCount = goal.dislikeCount;
-      });
+  Future<void> fetchGoal(String token, String id) async {
+    final String? baseUrl = dotenv.env['BASE_URL'];
+
+    try {
+      final response = await Dio().get(
+        '$baseUrl/confirm/$id',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        setState(() {
+          likeCount = data['likeCount'] ?? 0;
+          dislikeCount = data['dislikeCount'] ?? 0;
+          isLiked = data['isLiked'] ?? false;
+          isDisliked = data['isDisliked'] ?? false;
+        });
+
+        // Update GoalProvider
+        final goalProvider = Provider.of<GoalProvider>(context, listen: false);
+        goalProvider.updateGoal(data['title'] ?? '기본 목표 제목',
+            data['intro'] ?? '기본 목표 설명', data['imageUrl'] ?? '');
+        goalProvider.updateDate(data['date'] ?? '24.01.01');
+      } else {
+        throw Exception('Failed to fetch goal data');
+      }
+    } catch (e) {
+      print('Error fetching goal data: $e');
     }
   }
 
-  void toggleLike() {
-    setState(() {
-      if(isLiked) {
-        likeCount--;
-      } else {
-        likeCount++;
+  Future<void> toggleLike() async {
+    if (isLiked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('이미 좋아요를 눌렀습니다.')),
+      );
+      return;
+    }
+
+    try {
+      if (isDisliked) {
+        await dislikeDeleteApi
+            .deleteDislikeConfirm(int.parse(widget.confirmId));
+        setState(() {
+          dislikeCount--;
+          isDisliked = false;
+        });
       }
-      isLiked = !isLiked;
-    });
+
+      await likePostApi.PostLikeConfirm(int.parse(widget.confirmId));
+      setState(() {
+        likeCount++;
+        isLiked = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('좋아요를 눌렀습니다.')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('좋아요 요청에 실패했습니다.')),
+      );
+      print('좋아요 동기화 오류: $e');
+    }
   }
 
-  void toggleDislike() {
-    setState(() {
-      if(isDisliked) {
-        dislikeCount--;
-      } else {
-        dislikeCount++;
+  Future<void> toggleDislike() async {
+    if (isDisliked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('이미 싫어요를 눌렀습니다.')),
+      );
+      return;
+    }
+
+    try {
+      if (isLiked) {
+        await likeDeleteApi.deleteLikeConfirm(int.parse(widget.confirmId));
+        setState(() {
+          likeCount--;
+          isLiked = false;
+        });
       }
-      isDisliked = !isDisliked;
-    });
+
+      await dislikePostApi.PostDislikeConfirm(int.parse(widget.confirmId));
+      setState(() {
+        dislikeCount++;
+        isDisliked = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('싫어요를 눌렀습니다.')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('싫어요 요청에 실패했습니다.')),
+      );
+      print('싫어요 동기화 오류: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final goalProvider = Provider.of<GoalProvider>(context);
+
+    if (isLoading) {
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
+      appBar: AuthTopNavigationBar(checkPageId: 1),
       backgroundColor: lightColor1,
       body: SingleChildScrollView(
         child: Padding(
@@ -107,13 +189,17 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 10),
+              // 기존 UI 유지
               Padding(
                 padding: EdgeInsets.only(left: 12),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 19.64, vertical: 20.37),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 19.64,
+                        vertical: 20.37,
+                      ),
                       decoration: BoxDecoration(
                         color: mainBrownColor,
                         borderRadius: BorderRadius.circular(30),
@@ -134,65 +220,35 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                     ),
                     SizedBox(width: 17.03),
                     Expanded(
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(top: 11),
-                                  child: Text(
-                                    '문서영',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: greyColor1,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.1,
-                                      letterSpacing: -0.22,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 5.5),
-                                Text(
-                                  '안뇽하세요 반가워요 안ㄴ...',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: greyColor1,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w400,
-                                    height: 1.1,
-                                    letterSpacing: -0.24,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 20),
                           Padding(
                             padding: EdgeInsets.only(top: 11),
-                            child: Container(
-                              width: 100,
-                              height: 40,
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: mainBrownColor,
-                                borderRadius: BorderRadius.circular(10),
+                            child: Text(
+                              '문서영',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: greyColor1,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.1,
+                                letterSpacing: -0.22,
                               ),
-                              child: Center(
-                                child: Text(
-                                  '프로필 보기',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.1,
-                                    letterSpacing: -0.24,
-                                  ),
-                                ),
-                              ),
+                            ),
+                          ),
+                          SizedBox(height: 5.5),
+                          Text(
+                            goalProvider.content.isNotEmpty
+                                ? goalProvider.content
+                                : "기본 목표 설명",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: greyColor1,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w400,
+                              height: 1.1,
+                              letterSpacing: -0.24,
                             ),
                           ),
                         ],
@@ -204,22 +260,31 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
               SizedBox(height: 20),
               Stack(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    height: 212,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(goal!.imageUrl),
-                        fit: BoxFit.cover,
+                  // 이미지
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 320,
+                      height: 212,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: goalProvider.isAssetImage ||
+                                  (goalProvider.imagePath?.isEmpty ?? true)
+                              ? AssetImage('assets/testImg.png')
+                                  as ImageProvider<Object>
+                              : NetworkImage(goalProvider.imagePath!),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
+                  // 회색 그라데이션 박스
+                  Align(
+                    alignment: Alignment.center,
                     child: Container(
-                      width: 319.921,
-                      height: 212.283,
+                      width: 320,
+                      height: 212,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         gradient: LinearGradient(
@@ -233,19 +298,24 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                       ),
                     ),
                   ),
+                  // 텍스트
                   Padding(
                     padding: EdgeInsets.only(left: 35.0, top: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // 날짜
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.83, vertical: 5.7),
                           decoration: BoxDecoration(
                             color: lightColor2.withOpacity(1),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            goal!.createdAt,
+                            goalProvider.date.isNotEmpty
+                                ? goalProvider.date
+                                : '24.03.31',
                             style: TextStyle(
                               fontSize: 11,
                               color: blackBrownColor,
@@ -257,14 +327,17 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                           ),
                         ),
                         SizedBox(height: 18.76),
+                        // 제목
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              '하루에 물 2리터 마시기',
+                              goalProvider.title.isNotEmpty
+                                  ? goalProvider.title
+                                  : '하루에 물 2리터 마시기',
                               style: TextStyle(
                                 fontSize: 18,
-                                color: blackBrownColor,
+                                color: yellowColor2,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w600,
                                 height: 1.1,
@@ -286,8 +359,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                           ],
                         ),
                         SizedBox(height: 10.63),
+                        // 내용
                         Text(
-                          '건강한 이너뷰티',
+                          goalProvider.content.isNotEmpty
+                              ? goalProvider.intro
+                              : '건강한 이너뷰티',
                           style: TextStyle(
                             fontSize: 12,
                             color: greyColor3,
@@ -297,64 +373,66 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                             letterSpacing: -0.24,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 190, top: 60),
-                          child: Container(
-                            width: 98.774,
-                            height: 28.871,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(51, 42, 42, 42),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  onTap: () => toggleLike, // 좋아요/취소
-                                child:SvgPicture.asset(
-                                  'assets/admit.svg',
-                                  width: 10,
-                                  height: 14,
-                                ),
-                              ),
-                                SizedBox(width: 8),
-                                Text(
-                                  '$likeCount', // 좋아요 수 반환
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.1,
-                                    letterSpacing: -0.24,
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                GestureDetector(
-                                  onTap: toggleDislike,
-                                child: SvgPicture.asset(
-                                  'assets/no_admit.svg',
-                                  width: 10,
-                                  height: 14,
-                                ),
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  '$isDisliked', //  싫어요 수 반환
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.1,
-                                    letterSpacing: -0.24,
-                                  ),
-                                ),
-                              ],
+                      ],
+                    ),
+                  ),
+                  // 좋아요/싫어요 박스
+                  Positioned(
+                    left: 200,
+                    top: 165,
+                    child: Container(
+                      width: 98.774,
+                      height: 28.871,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(51, 42, 42, 42),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: toggleLike,
+                            child: SvgPicture.asset(
+                              'assets/admit.svg',
+                              width: 10,
+                              height: 14,
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 8),
+                          Text(
+                            '$likeCount',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.1,
+                              letterSpacing: -0.24,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          GestureDetector(
+                            onTap: toggleDislike,
+                            child: SvgPicture.asset(
+                              'assets/no_admit.svg',
+                              width: 10,
+                              height: 14,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            '$dislikeCount',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.1,
+                              letterSpacing: -0.24,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -372,9 +450,12 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 19.91, left: 16.5, right:170),
+                        padding:
+                            EdgeInsets.only(top: 19.91, left: 16.5, right: 170),
                         child: Text(
-                          goal!.title,
+                          goalProvider.contentTitle.isNotEmpty
+                              ? goalProvider.contentTitle
+                              : "기본 목표 제목",
                           style: TextStyle(
                             fontSize: 14,
                             color: greyColor1,
@@ -399,7 +480,9 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                           child: TextField(
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: goal!.content,
+                              hintText: goalProvider.content.isNotEmpty
+                                  ? goalProvider.content
+                                  : "기본 목표 설명",
                               hintStyle: TextStyle(
                                 fontSize: 12,
                                 color: greyColor1,
@@ -415,7 +498,9 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 15, left: 228),
                         child: Text(
-                          goal!.createdAt + '작성됨',
+                          goalProvider.date.isNotEmpty
+                              ? goalProvider.date
+                              : '24.01.01' + '작성됨',
                           style: TextStyle(
                             fontSize: 11,
                             color: mainBrownColor,
@@ -431,7 +516,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
               ),
               SizedBox(height: 24),
               Padding(
-                padding: EdgeInsets.only(left:20),
+                padding: EdgeInsets.only(left: 20),
                 child: CustomPaint(
                   painter: DashedLinePainter(),
                   size: Size(320, 0),
@@ -439,8 +524,8 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
               ),
               SizedBox(height: 29),
               Padding(
-                padding: EdgeInsets.only(left:20),
-                child:Text(
+                padding: EdgeInsets.only(left: 20),
+                child: Text(
                   '댓글 4개',
                   style: TextStyle(
                     fontSize: 14,
@@ -453,8 +538,10 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                 ),
               ),
               SizedBox(height: 11),
+// 댓글 리스트
+              // 첫 번째 댓글
               Padding(
-                padding: EdgeInsets.only(left:20),
+                padding: EdgeInsets.only(left: 20),
                 child: Container(
                   width: 319.921,
                   height: 71.224,
@@ -468,7 +555,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                     child: Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(-15, -17), 
+                          offset: Offset(-15, -17),
                           child: SvgPicture.asset(
                             'assets/paw_another.svg',
                             width: 16,
@@ -511,7 +598,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                '저까지 뿌듯해지는 인증샷이네여 멋져요!',
+                                '저까지 뿌듯해지는 인증샷이네요 멋져요!',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: greyColor1,
@@ -529,9 +616,12 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ),
                 ),
               ),
-                            SizedBox(height: 11),
+
+              SizedBox(height: 11),
+
+// 두 번째 댓글
               Padding(
-                padding: EdgeInsets.only(left:20),
+                padding: EdgeInsets.only(left: 20),
                 child: Container(
                   width: 319.921,
                   height: 71.224,
@@ -545,7 +635,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                     child: Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(-15, -17), 
+                          offset: Offset(-15, -17),
                           child: SvgPicture.asset(
                             'assets/paw_another.svg',
                             width: 16,
@@ -588,7 +678,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                '저도 갑자기 밥이 먹고싶어지는 거 같습니다~!',
+                                '저도 갑자기 밥이 먹고 싶어지는 것 같습니다~!',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: greyColor1,
@@ -606,9 +696,12 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ),
                 ),
               ),
-                            SizedBox(height: 11),
+
+              SizedBox(height: 11),
+
+// 세 번째 댓글
               Padding(
-                padding: EdgeInsets.only(left:20),
+                padding: EdgeInsets.only(left: 20),
                 child: Container(
                   width: 319.921,
                   height: 71.224,
@@ -622,7 +715,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                     child: Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(-15, -17), 
+                          offset: Offset(-15, -17),
                           child: SvgPicture.asset(
                             'assets/paw_another.svg',
                             width: 16,
@@ -665,7 +758,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                '와우 나도 얼른 라면 먹으러 가야겠다',
+                                '와우 나도 얼른 라면 먹으러 가야겠다!',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: greyColor1,
@@ -683,9 +776,12 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ),
                 ),
               ),
-                            SizedBox(height: 11),
+
+              SizedBox(height: 11),
+
+// 네 번째 댓글
               Padding(
-                padding: EdgeInsets.only(left:20),
+                padding: EdgeInsets.only(left: 20),
                 child: Container(
                   width: 319.921,
                   height: 71.224,
@@ -699,7 +795,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                     child: Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(-15, -17), 
+                          offset: Offset(-15, -17),
                           child: SvgPicture.asset(
                             'assets/paw_another.svg',
                             width: 16,
@@ -731,7 +827,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                     '03/31 14:29',
                                     style: TextStyle(
                                       fontSize: 11,
-                                      color: lightColor2,
+                                      color: greyColor4,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
                                       height: 1.1,
@@ -742,8 +838,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                '물 마시는 거 진짜 중요한건데 넘 굿굿이네요~~ '
-                                + '    화이팅 제가 응원할게요',
+                                '물 마시는 거 진짜 중요한 건데 넘 굿굿이네요~ 화이팅 제가 응원할게요!',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: greyColor1,
@@ -765,16 +860,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
           ),
         ),
       ),
+      bottomNavigationBar: CommentBottomNavigationBar(),
     );
   }
-}
-
-
-void main() {
-  runApp(MaterialApp(
-    home: CheckpagePhotodetailMemo(
-      token: '',
-      confirmId: '',
-    ),
-  ));
 }

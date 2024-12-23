@@ -4,10 +4,12 @@ import 'package:outfoot/colors/colors.dart';
 
 class CommentBottomNavigationBar extends StatefulWidget {
   @override
-  _CommentBottomNavigationBarState createState() => _CommentBottomNavigationBarState();
+  _CommentBottomNavigationBarState createState() =>
+      _CommentBottomNavigationBarState();
 }
 
-class _CommentBottomNavigationBarState extends State<CommentBottomNavigationBar> {
+class _CommentBottomNavigationBarState
+    extends State<CommentBottomNavigationBar> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -18,35 +20,30 @@ class _CommentBottomNavigationBarState extends State<CommentBottomNavigationBar>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Bottom Navigation Bar'),
-      ),
-      body: Center(child: Text('Body')),
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        height: 84.0,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              offset: Offset(0, -4),
-              blurRadius: 8,
-            ),
-          ],
+    return Container(
+      width: double.infinity,
+      height: 84.0,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: Offset(0, -4),
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: 16.0, right: 13.0),
               child: Container(
-                width: 335.0, 
                 height: 38.0,
                 decoration: BoxDecoration(
                   color: lightColor,
@@ -54,7 +51,7 @@ class _CommentBottomNavigationBarState extends State<CommentBottomNavigationBar>
                 ),
                 child: TextField(
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom:13, left:13), 
+                    contentPadding: EdgeInsets.only(bottom: 13, left: 13),
                     border: InputBorder.none,
                     hintText: '댓글을 입력해주세요',
                     hintStyle: TextStyle(
@@ -69,24 +66,17 @@ class _CommentBottomNavigationBarState extends State<CommentBottomNavigationBar>
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: SvgPicture.asset(
-                'assets/paw_another.svg',
-                width: 27.0,
-                height: 32.0, 
-              ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 16.0), // 우측 여백
+            child: SvgPicture.asset(
+              'assets/paw_another.svg',
+              width: 27.0,
+              height: 32.0,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    home: CommentBottomNavigationBar(),
-  ));
-}
-

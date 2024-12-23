@@ -9,6 +9,7 @@ import 'package:outfoot/screens/friend_list_screen.dart';
 import 'package:outfoot/screens/upload.dart';
 import 'package:outfoot/utils/goal_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:outfoot/screens/checkpage_photodetail_memo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 초기화
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Upload(),
+      home: CheckpagePhotodetailMemo(
+        token: 'token',
+        confirmId: '1',
+      ),
     );
   }
 }

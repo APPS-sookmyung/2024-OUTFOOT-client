@@ -20,6 +20,7 @@ const lightColor = Color(0xFFF5F5F5);
 const lightMainColor = Color(0xFFFFFFFF);
 const greenColor = Color(0xFFC8EF2F);
 const yellowColor = Color(0xFFFFEAA5);
+const yellowColor2 = Color(0xFFF3E7C9);
 const beigeColor = Color(0xFFFDFBF7);
 
 // 추가 색상
