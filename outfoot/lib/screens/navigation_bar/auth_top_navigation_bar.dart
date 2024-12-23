@@ -1,39 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/checkpage_delete_api.dart';
 
-class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
+class AuthTopNavigationBar extends StatefulWidget
+    implements PreferredSizeWidget {
   final int checkPageId; // 삭제할 도장판 ID
 
-  TopNavigationBar({required this.checkPageId});
-
-  final CheckPageApi _checkPageApi = CheckPageApi(); // CheckPageApi 객체 생성
+  AuthTopNavigationBar({required this.checkPageId});
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   @override
+  _MeterialTopNavigationBarState createState() =>
+      _MeterialTopNavigationBarState();
+}
+
+class _MeterialTopNavigationBarState extends State<AuthTopNavigationBar> {
+  final CheckPageApi _checkPageApi = CheckPageApi(); // CheckPageApi 객체 생성
+
+  @override
   Widget build(BuildContext context) {
     return AppBar(
+      scrolledUnderElevation: 0,
       backgroundColor: lightColor1,
       elevation: 0,
-      title: SvgPicture.asset(
-        'assets/logo.svg',
-        width: 118,
-        height: 33,
+      leading: IconButton(
+        icon: _buildCustomItem(
+          'assets/back_icon.svg',
+          width: 17.375,
+          height: 18.688,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
       ),
-      centerTitle: false,
+      title: Text(
+        '인증 보기',
+        style: TextStyle(
+          color: Color(0xFF3F3F3F),
+          fontSize: 16,
+          fontFamily: 'Pretendard',
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w600,
+          height: 1.1,
+          letterSpacing: -0.32,
+        ),
+      ),
+      centerTitle: true,
       actions: <Widget>[
         IconButton(
           icon: _buildCustomItem(
-            'assets/alarm_icon.svg',
-            width: 19,
-            height: 22,
+            'assets/icon/edit.svg',
+            width: 18.945,
+            height: 22.219,
           ),
           onPressed: () {
-            // 알림 버튼을 누른 뒤 다음 동작
+            // 수정 버튼을 누른 뒤 다음 동작
+          },
+        ),
+        IconButton(
+          icon: _buildCustomItem(
+            'assets/share_icon.svg',
+            width: 18.945,
+            height: 22.219,
+          ),
+          onPressed: () {
+            // 공유 버튼을 누른 뒤 다음 동작
           },
         ),
         IconButton(
@@ -43,7 +77,7 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
             height: 21.565,
           ),
           onPressed: () =>
-              _showDeleteConfirmationDialog(context), // 삭제 확인 다이얼로그
+              _showDeleteConfirmationDialog(context), // 삭제 확인 다이얼로그 표시
         ),
       ],
     );
@@ -71,14 +105,14 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
             TextButton(
               child: Text('취소'),
               onPressed: () {
-                Navigator.of(context).pop(); // 다이얼로그 닫기
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
               child: Text('삭제'),
               onPressed: () {
                 Navigator.of(context).pop(); // 다이얼로그 닫기
-                _deleteCheckPage(context); // 삭제 API 호출
+                _deleteCheckPage(context); // 삭제 요청 수행
               },
             ),
           ],
@@ -87,10 +121,10 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  // 삭제 API 호출 함수
+  // 삭제 요청 수행 함수
   Future<void> _deleteCheckPage(BuildContext context) async {
     try {
-      await _checkPageApi.deleteCheckPage(checkPageId); // 반환값 사용하지 않음
+      await _checkPageApi.deleteCheckPage(widget.checkPageId); // 반환값 사용하지 않음
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('도장판이 성공적으로 삭제되었습니다.')),
       );
@@ -121,7 +155,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopNavigationBar(checkPageId: 1), // 예시로 ID 1 전달
+      appBar: AuthTopNavigationBar(checkPageId: 1), // 예시로 ID 1 전달
       body: Center(child: Text('body')),
     );
   }

@@ -99,8 +99,9 @@ class _UploadState extends State<Upload> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final goalProvider =
           Provider.of<utils_goal_provider.GoalProvider>(context, listen: false);
-      _titleController.text = ""; // GoalProvider 데이터와 분리
-      _contentController.text = ""; // GoalProvider 데이터와 분리
+      _titleController.text =
+          goalProvider.contentTitle; // GoalProvider에서 가져온 데이터
+      _contentController.text = goalProvider.content; // GoalProvider에서 가져온 데이터
     });
   }
 
@@ -134,9 +135,10 @@ class _UploadState extends State<Upload> {
       return;
     }
 
-    Provider.of<utils_goal_provider.GoalProvider>(context, listen: false)
-        .updateGoal(
-            _titleController.text, _contentController.text, _image?.path);
+    final goalProvider =
+        Provider.of<utils_goal_provider.GoalProvider>(context, listen: false);
+    goalProvider.updateContentTitle(_titleController.text); // contentTitle 업데이트
+    goalProvider.updateContent(_contentController.text); // content 업데이트
 
     String token = 'your_token_here'; // 실제 토큰 값으로 대체
     String checkPageId = 'your_check_page_id_here'; // 실제 체크 페이지 ID로 대체
@@ -231,7 +233,7 @@ class _UploadState extends State<Upload> {
                     Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: Text(
-                        goalProvider.content,
+                        goalProvider.intro,
                         style: TextStyle(
                           fontSize: 12,
                           color: greyColor3,

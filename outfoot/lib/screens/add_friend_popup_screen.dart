@@ -18,8 +18,7 @@ class _AddFriendPopupState extends State<AddFriendPopup> {
 
   Future<void> _onAddFriend() async {
     final friendCode = _codeController.text.trim();
-    final token =
-        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6ImZmOTdmYTc1LTE1ODMtNGMxNi04ZjZmLWJjZTQyM2RlMDYxMCIsIm5pY2tuYW1lIjoi7KCV7ISc7JewIiwiaWF0IjoxNzMzODIwNzI0LCJleHAiOjE3MzM4Mjc5MjR9.t1z4SAtA-6_OUHmdO1tquvrdKEfNFKjTeocwXYMMSaI8ZQDcBL9NXnIesWDFgHxV'; // 인증 토큰 제공
+    final token = 'token'; // 인증 토큰 제공
 
     if (friendCode.isEmpty) {
       _showPopup('친구 코드를 입력해주세요.');
