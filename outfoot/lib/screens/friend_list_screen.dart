@@ -55,7 +55,7 @@ class _FriendListState extends State<FriendList> {
   }
 
   Future<void> _deleteFriend(String friendId) async {
-    final token = 'YOUR_TOKEN_HERE'; // 실제 토큰 값으로 교체
+    final token = 'token'; // 실제 토큰 값으로 교체
     try {
       await _friendService.deleteFriend(token, friendId);
       setState(() {

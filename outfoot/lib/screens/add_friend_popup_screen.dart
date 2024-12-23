@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/api/add_friend_api.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 import 'package:outfoot/api/add_friend_api.dart';
@@ -29,14 +30,13 @@ class _AddFriendPopupState extends State<AddFriendPopup> {
   }
 
   TextStyle _textStyle(double fontSize, FontWeight fontWeight, Color color,
-      double letterSpacing) {
+      double height, double letterSpacing) {
     return TextStyle(
       fontSize: fontSize,
       fontFamily: 'Pretendard',
-      fontStyle: FontStyle.normal,
       fontWeight: fontWeight,
       color: color,
-      height: 0.8,
+      height: height,
       letterSpacing: letterSpacing,
     );
   }
@@ -154,7 +154,6 @@ class _AddFriendPopupState extends State<AddFriendPopup> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
