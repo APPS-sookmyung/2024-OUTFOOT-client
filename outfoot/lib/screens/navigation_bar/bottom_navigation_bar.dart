@@ -2,19 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
 
+// 이동 페이지
+import 'package:outfoot/screens/home_page.dart';
+import 'package:outfoot/screens/profile_my_page.dart';
+
 class CustomBottomNavigationBar extends StatefulWidget {
+  final int selectedIndex;
+
+  const CustomBottomNavigationBar({
+    Key? key,
+    this.selectedIndex = 0, // 기본값은 0
+  }) : super(key: key);
+
   @override
   _CustomBottomNavigationBarState createState() =>
       _CustomBottomNavigationBarState();
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex; // 초기값 설정
+  }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    switch (index) {
+      // case 0: // 둘러보기
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => ),// 둘러보기 페이지
+      //   );
+      //   break;
+      case 1: // 홈
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+        break;
+      case 2: // 마이페이지
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfileMyPage()),
+        );
+        break;
+    }
   }
 
   @override
@@ -118,4 +156,3 @@ void main() {
     ),
   ));
 }
-

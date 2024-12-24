@@ -4,6 +4,8 @@ import 'package:outfoot/colors/colors.dart';
 import 'package:dio/dio.dart';
 import 'package:outfoot/api/friend_list_check_api.dart';
 import 'package:outfoot/models/friend_list_check_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 
 class FriendList extends StatefulWidget {
   const FriendList({super.key});
@@ -16,6 +18,7 @@ class _FriendListState extends State<FriendList> {
   final FriendService _friendService = FriendService();
   List<Friend> _friendList = [];
   bool _isLoading = true;
+  String? token;
 
   @override
   void initState() {
@@ -24,9 +27,17 @@ class _FriendListState extends State<FriendList> {
   }
 
   Future<void> _fetchFriendList() async {
-    final token = 'token';
+    token = dotenv.env['TOKEN'];
+    if (token == null) {
+      debugPrint("Error: TOKEN is not defined in .env");
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     try {
-      final response = await _friendService.getFriendList(token);
+      final response = await _friendService.getFriendList(token!);
       setState(() {
         _friendList = response.friendLists;
         _isLoading = false;
@@ -110,14 +121,23 @@ class _FriendListState extends State<FriendList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: lightColor1,
-        leading: _svgIcon('assets/icon/before_arrow.svg',
-            width: 17.38, height: 8.69),
-        centerTitle: true,
+        backgroundColor: lightMainColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            'assets/back_icon.svg',
+            width: 17.375,
+            height: 18.688,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text(
           '친구 목록',
-          style: _textStyle(16.0, FontWeight.w600, greycolor0, 0.8, -0.32),
+          style: _textStyle(16, FontWeight.w600, greyColor1, 0.8, -0.28),
         ),
+        centerTitle: true,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -204,15 +224,25 @@ class _FriendListState extends State<FriendList> {
                                 SizedBox(width: 16.0),
                                 Container(
                                   width: 49.0,
-                                  height: 26.0,
+                                  height: 30.0,
                                   decoration: _boxDecoration(lightMainColor),
                                   child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      minimumSize: Size(49.0, 30.0),
+                                      alignment: Alignment.center,
+                                    ),
                                     onPressed: () => _deleteFriend(
-                                        friend.id.toString()), // 친구 ID를 전달
+                                        friend.id.toString()), // 삭제 동작
                                     child: Text(
                                       '삭제',
-                                      style: _textStyle(14.0, FontWeight.w400,
-                                          redColor, 1.1, -0.28),
+                                      style: _textStyle(
+                                        14.0,
+                                        FontWeight.w400,
+                                        redColor,
+                                        1.3, // 줄 간격 조정
+                                        -0.28,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -226,6 +256,7 @@ class _FriendListState extends State<FriendList> {
                 ),
               ),
             ),
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 2),
     );
   }
 }

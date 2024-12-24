@@ -8,6 +8,11 @@ import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 import 'package:outfoot/models/profile_my_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+// 이동 페이지
+import 'package:outfoot/screens/add_friend_popup_screen.dart';
+import 'package:outfoot/screens/friend_list_screen.dart';
+import 'package:outfoot/screens/edit_profile_page.dart';
+
 class ProfileMyPage extends StatefulWidget {
   const ProfileMyPage({super.key});
 
@@ -19,6 +24,7 @@ class _ProfileState extends State<ProfileMyPage> {
   final ProfileMyApi _profileApi = ProfileMyApi();
   Profile? _profile;
   bool _isLoading = true;
+  String? token;
 
   @override
   void initState() {
@@ -27,7 +33,7 @@ class _ProfileState extends State<ProfileMyPage> {
   }
 
   Future<void> _fetchProfile() async {
-    final String? token = dotenv.env['TOKEN'];
+    token = dotenv.env['TOKEN'];
     if (token == null) {
       debugPrint("Error: TOKEN is not defined in .env");
       setState(() {
@@ -36,7 +42,15 @@ class _ProfileState extends State<ProfileMyPage> {
       return;
     }
 
-    final profile = await _profileApi.profileMy(token);
+    final profile = await _profileApi.profileMy(token!);
+    if (profile == null) {
+      debugPrint("Error: Profile data is null");
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     setState(() {
       _profile = profile;
       _isLoading = false;
@@ -121,13 +135,28 @@ class _ProfileState extends State<ProfileMyPage> {
                             right: screenWidth * 0.05,
                             child: Row(
                               children: [
-                                _svgIcon('assets/icon/edit.svg',
+                                InkWell(
+                                  onTap: () {
+                                    // 페이지 이동 로직
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditProfile(),
+                                      ),
+                                    );
+                                  },
+                                  child: _svgIcon(
+                                    'assets/icon/edit.svg',
                                     width: screenWidth * 0.02,
-                                    height: screenHeight * 0.03),
+                                    height: screenHeight * 0.03,
+                                  ),
+                                ),
                                 SizedBox(width: screenWidth * 0.04),
-                                _svgIcon('assets/icon/setting.svg',
-                                    width: screenWidth * 0.06,
-                                    height: screenHeight * 0.03),
+                                _svgIcon(
+                                  'assets/icon/setting.svg',
+                                  width: screenWidth * 0.06,
+                                  height: screenHeight * 0.03,
+                                ),
                               ],
                             ),
                           ),
@@ -152,13 +181,27 @@ class _ProfileState extends State<ProfileMyPage> {
                                     Positioned(
                                       left: screenWidth * 0.14,
                                       top: screenHeight * 0.06,
-                                      child: Container(
-                                        child: Center(
-                                          child: SizedBox(
-                                            width: 36,
-                                            height: 36,
-                                            child: _svgIcon('assets/edit2.svg',
-                                                fit: BoxFit.contain),
+                                      child: InkWell(
+                                        onTap: () {
+                                          // 페이지 이동 로직
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditProfile(),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          child: Center(
+                                            child: SizedBox(
+                                              width: 36,
+                                              height: 36,
+                                              child: _svgIcon(
+                                                'assets/edit2.svg',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -243,31 +286,45 @@ class _ProfileState extends State<ProfileMyPage> {
                                   width: screenWidth * 0.25,
                                   height: screenHeight * 0.08,
                                   decoration: _boxDecoration(mainBrownColor2),
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '친구 수',
-                                          style: _textStyle(
+                                  child: InkWell(
+                                    onTap: () {
+                                      // 페이지 이동 로직
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              FriendList(), // 이동할 페이지
+                                        ),
+                                      );
+                                    },
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '친구 수',
+                                            style: _textStyle(
                                               screenWidth * 0.03,
                                               FontWeight.w400,
                                               greyColor1,
                                               0.24,
-                                              0.8),
-                                        ),
-                                        SizedBox(height: screenHeight * 0.01),
-                                        Text(
-                                          '${_profile?.friendCount ?? 0}',
-                                          style: _textStyle(
+                                              0.8,
+                                            ),
+                                          ),
+                                          SizedBox(height: screenHeight * 0.01),
+                                          Text(
+                                            '${_profile?.friendCount ?? 0}',
+                                            style: _textStyle(
                                               screenWidth * 0.04,
                                               FontWeight.w500,
                                               greyColor1,
                                               0.32,
-                                              0.8),
-                                        ),
-                                      ],
+                                              0.8,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -276,53 +333,66 @@ class _ProfileState extends State<ProfileMyPage> {
                                   width: screenWidth * 0.6,
                                   height: screenHeight * 0.08,
                                   decoration: _boxDecoration(milkBrownColor1),
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(width: screenWidth * 0.05),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '코드를 통해',
-                                              style: _textStyle(
-                                                  screenWidth * 0.03,
-                                                  FontWeight.w400,
-                                                  lightMainColor,
-                                                  0.24,
-                                                  0.8),
-                                            ),
-                                            SizedBox(
-                                                height: screenHeight * 0.01),
-                                            Text(
-                                              '친구 추가하기',
-                                              style: _textStyle(
-                                                  screenWidth * 0.04,
-                                                  FontWeight.w500,
-                                                  lightMainColor,
-                                                  0.28,
-                                                  0.8),
-                                            ),
-                                          ],
+                                  child: InkWell(
+                                    // 터치 이벤트를 처리하기 위해 InkWell 사용
+                                    onTap: () {
+                                      // 페이지 이동 로직
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AddFriendPopup(
+                                              memberId: '21', token: token!),
                                         ),
-                                        Spacer(),
-                                        Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                right: screenWidth * 0.05),
-                                            child: _svgIcon(
-                                                'assets/people_icon.svg',
-                                                width: screenWidth * 0.15,
-                                                height: screenHeight * 0.06),
+                                      );
+                                    },
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(width: screenWidth * 0.05),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '코드를 통해',
+                                                style: _textStyle(
+                                                    screenWidth * 0.03,
+                                                    FontWeight.w400,
+                                                    lightMainColor,
+                                                    0.24,
+                                                    0.8),
+                                              ),
+                                              SizedBox(
+                                                  height: screenHeight * 0.01),
+                                              Text(
+                                                '친구 추가하기',
+                                                style: _textStyle(
+                                                    screenWidth * 0.04,
+                                                    FontWeight.w500,
+                                                    lightMainColor,
+                                                    0.28,
+                                                    0.8),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+                                          Spacer(),
+                                          Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: screenWidth * 0.05),
+                                              child: _svgIcon(
+                                                  'assets/people_icon.svg',
+                                                  width: screenWidth * 0.15,
+                                                  height: screenHeight * 0.06),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -343,6 +413,7 @@ class _ProfileState extends State<ProfileMyPage> {
                     ],
                   ),
                 ),
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 2),
     );
   }
 }

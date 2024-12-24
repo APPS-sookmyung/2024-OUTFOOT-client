@@ -9,6 +9,9 @@ import 'package:outfoot/utils/goal_provider.dart' as utils_goal_provider;
 import 'package:provider/provider.dart';
 import 'package:outfoot/screens/navigation_bar/material_top_navigation_bar.dart';
 
+// 이동 페이지
+import 'package:outfoot/screens/checkpage_photodetail_memo.dart';
+
 class DashedBorder extends StatelessWidget {
   final Widget child;
 
@@ -153,6 +156,16 @@ class _UploadState extends State<Upload> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(result)),
+    );
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CheckpagePhotodetailMemo(
+          token: token,
+          confirmId: '1',
+        ),
+      ),
     );
   }
 
@@ -460,7 +473,7 @@ class _UploadState extends State<Upload> {
             ),
           ),
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(),
+        bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 1),
       ),
     );
   }
