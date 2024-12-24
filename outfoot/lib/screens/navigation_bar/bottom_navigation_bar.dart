@@ -20,10 +20,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 360.0,
+      width: double.infinity,
       height: 84.0,
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -42,6 +41,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           topRight: Radius.circular(16),
         ),
         child: BottomNavigationBar(
+          backgroundColor: lightMainColor, // 여기에 배경색을 설정
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: _buildCustomItem(
@@ -71,24 +71,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           currentIndex: _selectedIndex,
           selectedItemColor: mainBrownColor,
           unselectedItemColor: greyColor6,
-          backgroundColor: Colors.white, // 배경 색상을 명시적으로 설정
           onTap: _onItemTapped,
-          selectedLabelStyle: TextStyle(
-            fontSize: 11,
-            fontFamily: 'Pretendard',
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w500,
-            height: 1.1,
-            letterSpacing: -0.22,
-          ),
-          unselectedLabelStyle: TextStyle(
-            fontSize: 11,
-            fontFamily: 'Pretendard',
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w500,
-            height: 1.1,
-            letterSpacing: -0.22,
-          ),
           showSelectedLabels: false,
           showUnselectedLabels: false,
         ),
@@ -127,11 +110,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 }
 
-// void main() {
-//   runApp(MaterialApp(
-//     home: Scaffold(
-//       body: Center(child: Text("Main Content")),
-//       bottomNavigationBar: CustomBottomNavigationBar(),
-//     ),
-//   ));
-// }
+void main() {
+  runApp(MaterialApp(
+    home: Scaffold(
+      body: Center(child: Text("Main Content")),
+      bottomNavigationBar: CustomBottomNavigationBar(),
+    ),
+  ));
+}
+
