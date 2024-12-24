@@ -6,6 +6,7 @@ import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/view_single_api.dart';
 import 'package:outfoot/models/view_single_model.dart';
+import 'package:outfoot/services/data/checkpage_data.dart';
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -28,6 +29,8 @@ class DashedCircle extends StatelessWidget {
     );
   }
 }
+
+final Data = CheckpageData("24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티");
 
 class DashedCirclePainter extends CustomPainter {
   final Color color;
@@ -105,7 +108,7 @@ class _CheckPageImageState extends State<CheckPageImage> {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    goal?.createdAt ?? '날짜 정보 없음',  
+                    Data.date,  
                     style: TextStyle(
                       fontSize: 11,
                       color: blackBrownColor,
@@ -122,7 +125,7 @@ class _CheckPageImageState extends State<CheckPageImage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      goal?.title ?? '제목 없음', // 불러온 데이터의 제목 표시
+                      Data.title,
                       style: TextStyle(
                         fontSize: 18,
                         color: blackBrownColor,
@@ -149,7 +152,7 @@ class _CheckPageImageState extends State<CheckPageImage> {
                 ),
                 SizedBox(height: 10.63),
                 Text(
-                  goal?.intro ?? '설명 없음', // 불러온 데이터의 설명 표시
+                  Data.intro,
                   style: TextStyle(
                     fontSize: 12,
                     color: greyColor3,
@@ -232,12 +235,4 @@ class _CheckPageImageState extends State<CheckPageImage> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: CheckPageImage(
-      token: '', checkPageId: ''
-    ),
-  ));
 }

@@ -8,6 +8,7 @@ import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 import 'package:outfoot/utils/goal_provider.dart' as utils_goal_provider;
 import 'package:provider/provider.dart';
 import 'package:outfoot/screens/navigation_bar/material_top_navigation_bar.dart';
+import 'package:outfoot/services/data/upload_data.dart';
 
 class DashedBorder extends StatelessWidget {
   final Widget child;
@@ -86,6 +87,8 @@ class Upload extends StatefulWidget {
   @override
   _UploadState createState() => _UploadState();
 }
+
+final Data = UploadData("24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티");
 
 class _UploadState extends State<Upload> {
   final AuthAdditionApi _api = AuthAdditionApi();
@@ -185,7 +188,8 @@ class _UploadState extends State<Upload> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          goalProvider.date,
+                          // goalProvider.date,
+                          Data.date,
                           style: TextStyle(
                             fontSize: 11,
                             color: blackBrownColor,
@@ -204,7 +208,8 @@ class _UploadState extends State<Upload> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            goalProvider.title,
+                            // goalProvider.title,
+                            Data.title,
                             style: TextStyle(
                               fontSize: 18,
                               color: blackBrownColor,
@@ -233,7 +238,8 @@ class _UploadState extends State<Upload> {
                     Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: Text(
-                        goalProvider.intro,
+                        // goalProvider.intro,
+                        Data.intro,
                         style: TextStyle(
                           fontSize: 12,
                           color: greyColor3,
@@ -411,7 +417,8 @@ class _UploadState extends State<Upload> {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  '${_contentController.text.length}/50',
+                                  // '${_contentController.text.length}/50',
+                                  " ",
                                   style: TextStyle(
                                     fontSize: 11,
                                     color: mainBrownColor,
@@ -464,4 +471,12 @@ class _UploadState extends State<Upload> {
       ),
     );
   }
+}
+
+void main() {
+
+  runApp(MaterialApp(
+    home: Upload(
+    ),
+  ));
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/services/data/editprofile_data.dart';
 import 'package:outfoot/widgets/dashed_line_painter.dart';
 
 class EditProfile extends StatelessWidget {
-  const EditProfile({super.key});
+  EditProfile({super.key});
 
   TextStyle _textStyle(double fontSize, FontWeight fontWeight, Color color,
       double letterSpacing) {
@@ -26,6 +27,8 @@ class EditProfile extends StatelessWidget {
       boxShadow: boxShadow,
     );
   }
+
+  final Data = EditprofileData("정지원", "안녕하세요 만나서 반가워요", "outfootfe@sookmyung.ac.kr");
 
   Widget _svgIcon(String assetName,
       {double? width, double? height, BoxFit fit = BoxFit.none}) {
@@ -78,7 +81,7 @@ class EditProfile extends StatelessWidget {
                     alignment: Alignment.center,
                     children: [
                       Text(
-                        '문',
+                        (Data.name)[0],
                         style: _textStyle(
                             24.0, FontWeight.bold, Colors.white, 0.0),
                       ),
@@ -109,7 +112,7 @@ class EditProfile extends StatelessWidget {
                       top: 78.0,
                       left: 159.0,
                       child: Text(
-                        '문서영',
+                        Data.name,
                         style: _textStyle(
                             16.0, FontWeight.w500, greyColor1, -0.32),
                       ),
@@ -147,7 +150,7 @@ class EditProfile extends StatelessWidget {
             top: 264.0,
             right: 42.0,
             child: Text(
-              '19/20',
+              ' ',
               style: _textStyle(11, FontWeight.w400, mainBrownColor, -0.22),
             ),
           ),

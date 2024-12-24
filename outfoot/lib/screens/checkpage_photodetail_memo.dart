@@ -8,6 +8,7 @@ import 'package:outfoot/api/dislike_post_api.dart';
 import 'package:outfoot/api/dislike_delete_api.dart';
 import 'package:outfoot/screens/navigation_bar/comment_bottom_navigation_bar.dart';
 import 'package:outfoot/screens/navigation_bar/auth_top_navigation_bar.dart';
+import 'package:outfoot/services/data/memo_data.dart';
 import 'package:outfoot/utils/goal_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -35,6 +36,14 @@ class DashedLinePainter extends CustomPainter {
     return false;
   }
 }
+
+final Data = MemoData("정지원", "안녕하세요 만나서 반가워요", "24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티", "오늘도 뿌듯한 하루~~", "마치 하마가 된 거 같고, 뿌듯함ㅋㅋ", "24.12.26 작성됨");
+final List<CommentData>dataList = [
+  CommentData("이해림", "12/26 14:29", "저까지 뿌듯해지는 인증샷입니다!"),
+  CommentData("정서연", "12/26 14:39", "나도 도전할게게"),
+  CommentData("Sam Kim", "12/26 16:12", "NICE"),
+  CommentData("Sam Kim", "12/26 16:13", "Good"),
+];
 
 class CheckpagePhotodetailMemo extends StatefulWidget {
   final String token;
@@ -91,9 +100,9 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
 
         // Update GoalProvider
         final goalProvider = Provider.of<GoalProvider>(context, listen: false);
-        goalProvider.updateGoal(data['title'] ?? '기본 목표 제목',
-            data['intro'] ?? '기본 목표 설명', data['imageUrl'] ?? '');
-        goalProvider.updateDate(data['date'] ?? '24.01.01');
+        goalProvider.updateGoal(Data.title ?? '기본 목표 제목',
+            Data.intro ?? '기본 목표 설명', data['imageUrl'] ?? '');
+        goalProvider.updateDate( Data.date1 ?? '24.01.01');
       } else {
         throw Exception('Failed to fetch goal data');
       }
@@ -206,7 +215,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                       ),
                       child: Center(
                         child: Text(
-                          '문',
+                          (Data.name)[0],
                           style: TextStyle(
                             fontSize: 13.834,
                             color: Colors.white,
@@ -226,7 +235,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                           Padding(
                             padding: EdgeInsets.only(top: 11),
                             child: Text(
-                              '문서영',
+                              Data.name,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: greyColor1,
@@ -241,7 +250,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                           Text(
                             goalProvider.content.isNotEmpty
                                 ? goalProvider.content
-                                : "기본 목표 설명",
+                                : Data.myintro,
                             style: TextStyle(
                               fontSize: 12,
                               color: greyColor1,
@@ -315,7 +324,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                           child: Text(
                             goalProvider.date.isNotEmpty
                                 ? goalProvider.date
-                                : '24.03.31',
+                                : Data.date1,
                             style: TextStyle(
                               fontSize: 11,
                               color: blackBrownColor,
@@ -334,7 +343,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                             Text(
                               goalProvider.title.isNotEmpty
                                   ? goalProvider.title
-                                  : '하루에 물 2리터 마시기',
+                                  : Data.title,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: yellowColor2,
@@ -363,7 +372,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                         Text(
                           goalProvider.content.isNotEmpty
                               ? goalProvider.intro
-                              : '건강한 이너뷰티',
+                              : Data.intro,
                           style: TextStyle(
                             fontSize: 12,
                             color: greyColor3,
@@ -455,7 +464,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                         child: Text(
                           goalProvider.contentTitle.isNotEmpty
                               ? goalProvider.contentTitle
-                              : "기본 목표 제목",
+                              : Data.content1,
                           style: TextStyle(
                             fontSize: 14,
                             color: greyColor1,
@@ -482,7 +491,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               border: InputBorder.none,
                               hintText: goalProvider.content.isNotEmpty
                                   ? goalProvider.content
-                                  : "기본 목표 설명",
+                                  : Data.content2,
                               hintStyle: TextStyle(
                                 fontSize: 12,
                                 color: greyColor1,
@@ -500,7 +509,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                         child: Text(
                           goalProvider.date.isNotEmpty
                               ? goalProvider.date
-                              : '24.01.01' + '작성됨',
+                              : Data.date1 + '작성됨',
                           style: TextStyle(
                             fontSize: 11,
                             color: mainBrownColor,
@@ -571,7 +580,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      '물 먹는 하마',
+                                      dataList[0].nickname,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: greyColor1,
@@ -584,7 +593,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ),
                                   SizedBox(width: 7),
                                   Text(
-                                    '03/31 14:29',
+                                    dataList[0].date,
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: greyColor4,
@@ -598,7 +607,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                '저까지 뿌듯해지는 인증샷이네요 멋져요!',
+                                dataList[0].comment,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: greyColor1,
@@ -651,7 +660,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      '밥 먹는 사람',
+                                      dataList[1].nickname,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: greyColor1,
@@ -664,7 +673,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ),
                                   SizedBox(width: 7),
                                   Text(
-                                    '03/31 14:29',
+                                    dataList[1].date,
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: greyColor4,
@@ -678,7 +687,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                '저도 갑자기 밥이 먹고 싶어지는 것 같습니다~!',
+                                dataList[1].comment,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: greyColor1,
@@ -731,7 +740,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      '강호동',
+                                      dataList[2].nickname,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: greyColor1,
@@ -744,7 +753,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ),
                                   SizedBox(width: 7),
                                   Text(
-                                    '03/31 14:29',
+                                    dataList[2].date,
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: greyColor4,
@@ -758,7 +767,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                '와우 나도 얼른 라면 먹으러 가야겠다!',
+                                dataList[2].comment,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: greyColor1,
@@ -811,7 +820,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      '용산구 카리나',
+                                      dataList[3].nickname,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: greyColor1,
@@ -824,7 +833,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ),
                                   SizedBox(width: 7),
                                   Text(
-                                    '03/31 14:29',
+                                    dataList[3].date,
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: greyColor4,
@@ -838,7 +847,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                '물 마시는 거 진짜 중요한 건데 넘 굿굿이네요~ 화이팅 제가 응원할게요!',
+                                dataList[3].comment,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: greyColor1,

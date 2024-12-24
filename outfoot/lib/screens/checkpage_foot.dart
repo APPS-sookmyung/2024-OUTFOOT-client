@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:outfoot/utils/goal_provider.dart';
+import 'package:outfoot/services/data/checkpage_data.dart';
 
 class CheckPageFoot extends StatefulWidget {
   final String token; // 토큰 전달
@@ -11,6 +12,8 @@ class CheckPageFoot extends StatefulWidget {
   @override
   _CheckPageFootState createState() => _CheckPageFootState();
 }
+
+final Data = CheckpageData("24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티");
 
 class _CheckPageFootState extends State<CheckPageFoot> {
   String? goalTitle;
@@ -50,7 +53,7 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      "2024.12.31", // 예제 날짜
+                      Data.date,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.black54,
@@ -66,7 +69,7 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        goalTitle ?? "목표 없음",
+                        Data.title,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -81,7 +84,7 @@ class _CheckPageFootState extends State<CheckPageFoot> {
 
                   // 목표 설명 표시
                   Text(
-                    goalIntro ?? "",
+                    Data.intro,
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black54,

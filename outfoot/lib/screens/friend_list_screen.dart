@@ -4,6 +4,7 @@ import 'package:outfoot/colors/colors.dart';
 import 'package:dio/dio.dart';
 import 'package:outfoot/api/friend_list_check_api.dart';
 import 'package:outfoot/models/friend_list_check_model.dart';
+import 'package:outfoot/services/data/friendlist_data.dart';
 
 class FriendList extends StatefulWidget {
   const FriendList({super.key});
@@ -11,6 +12,12 @@ class FriendList extends StatefulWidget {
   @override
   _FriendListState createState() => _FriendListState();
 }
+
+final List<FriendlistData> dataList = [
+  FriendlistData("이해림", "플러터 같이 공유해요"),
+  FriendlistData("정서연", "귤 드세요"),
+  FriendlistData("Sam Kim", "hello everyone"),
+];
 
 class _FriendListState extends State<FriendList> {
   final FriendService _friendService = FriendService();
@@ -130,7 +137,8 @@ class _FriendListState extends State<FriendList> {
                   children: <Widget>[
                     SizedBox(height: 20.0),
                     Text(
-                      '총 ${_friendList.length}명',
+                      // '총 ${_friendList.length}명',
+                      '',
                       style: _textStyle(
                           14.0, FontWeight.w400, greyColor3, 0.8, -0.28),
                     ),
@@ -160,7 +168,8 @@ class _FriendListState extends State<FriendList> {
                                   child: Center(
                                     child: Text(
                                       friend.nickname.isNotEmpty
-                                          ? friend.nickname[0]
+                                          // ? friend.nickname[0]
+                                          ? (dataList[0].name)[0]
                                           : '친구',
                                       style: _textStyle(20.0, FontWeight.w600,
                                           greyColor1, 0.8, -0.4),
@@ -193,7 +202,8 @@ class _FriendListState extends State<FriendList> {
                                       SizedBox(height: 5.0),
                                       Text(
                                         friend.intro.isNotEmpty
-                                            ? friend.intro
+                                            // ? friend.intro
+                                            ? dataList[0].intro
                                             : '소개글이 없습니다',
                                         style: _textStyle(12.0, FontWeight.w400,
                                             greyColor2, 1.1, -0.22),

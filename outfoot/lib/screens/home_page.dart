@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfoot/services/data/homepage_data.dart';
 import '/widgets/custom_floating_action_button.dart';
 import '/widgets/target_view.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/services/data/homepage_data.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -27,6 +29,13 @@ class DashedLinePainter extends CustomPainter {
     return false;
   }
 }
+
+final List<HomepageData> dataList = [
+  HomepageData("2024-01-01", "OUTFOOT FE 모각코"),
+  HomepageData("2024-01-01", "OUTFOOT BE 모각코"),
+  HomepageData("2024-01-01", "OUTFOOT 배포"),
+];
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -138,8 +147,8 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ProgressCard(
-                    startDate: '2024-01-01',
-                    title: 'OUTFOOT 백엔드 모각코',
+                    startDate: dataList[0].date,
+                    title: dataList[0].title,
                     progressPercentage: 78,
                     assetPath: 'assets/lock_icon.svg',
                   ),
@@ -157,8 +166,8 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ProgressCard(
-                    startDate: '2024-01-01',
-                    title: 'OUTFOOT 백엔드 모각코',
+                    startDate: dataList[1].date,
+                    title: dataList[1].title,
                     progressPercentage: 78,
                     assetPath: '',
                   ),
@@ -176,8 +185,8 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ProgressCard(
-                    startDate: '2024-01-01',
-                    title: 'OUTFOOT 백엔드 모각코',
+                    startDate: dataList[2].title,
+                    title: dataList[2].title,
                     progressPercentage: 78,
                     assetPath: '',
                   ),
@@ -200,8 +209,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: HomePage(),
-  ));
-}

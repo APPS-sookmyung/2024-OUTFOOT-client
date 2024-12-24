@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/api/profile_my_page_api.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/services/data/mypage_data.dart';
 import '../widgets/target_view.dart';
 import 'package:outfoot/widgets/dashed_path_painter.dart';
 import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 import 'package:outfoot/models/profile_my_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:outfoot/services/data/mypage_data.dart';
 
 class ProfileMyPage extends StatefulWidget {
   const ProfileMyPage({super.key});
@@ -64,6 +66,8 @@ class _ProfileState extends State<ProfileMyPage> {
     );
   }
 
+  final Data = SettingData("정지원", "안녕하세요 만나서 반가워요", "시작일: 2024-12-26 ", "OUTFOOT FE 모각코");
+
   Widget _svgIcon(String assetName,
       {double? width, double? height, BoxFit fit = BoxFit.none}) {
     return SvgPicture.asset(
@@ -75,15 +79,15 @@ class _ProfileState extends State<ProfileMyPage> {
   }
 
   String getDisplayName(String? name) {
-    if (name == null || name.isEmpty) {
-      return "사"; // 기본값 지정
+    if (Data.name == null || Data.name.isEmpty) {
+      return " "; // 기본값 지정
     }
-    return name[0]; // 이름의 첫 번째 글자 반환
+    return Data.name[0]; // 이름의 첫 번째 글자 반환
   }
 
   String truncateIntro(String? intro) {
     if (intro == null) return "소개글을 작성해주세요";
-    return intro.length > 20 ? intro.substring(0, 20) + '…' : intro;
+    return intro.length > 20 ? Data.myintro.substring(0, 20) + '…' : Data.myintro;
   }
 
   @override
@@ -170,7 +174,8 @@ class _ProfileState extends State<ProfileMyPage> {
                                         height: screenWidth * 0.2,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          getDisplayName(_profile?.name),
+                                          // getDisplayName(_profile?.name),
+                                          Data.name,
                                           style: _textStyle(
                                               screenWidth * 0.07,
                                               FontWeight.w600,
@@ -199,7 +204,8 @@ class _ProfileState extends State<ProfileMyPage> {
                                     Row(
                                       children: [
                                         Text(
-                                          _profile?.name ?? '사용자',
+                                          // _profile?.name ?? '사용자',
+                                          Data.name,
                                           style: _textStyle(
                                               screenWidth * 0.05,
                                               FontWeight.w700,
