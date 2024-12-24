@@ -30,13 +30,12 @@ class _AddFriendPopupState extends State<AddFriendPopup> {
   }
 
   TextStyle _textStyle(double fontSize, FontWeight fontWeight, Color color,
-      double height, double letterSpacing) {
+      double letterSpacing) {
     return TextStyle(
       fontSize: fontSize,
       fontFamily: 'Pretendard',
       fontWeight: fontWeight,
       color: color,
-      height: height,
       letterSpacing: letterSpacing,
     );
   }
@@ -154,6 +153,7 @@ class _AddFriendPopupState extends State<AddFriendPopup> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -260,7 +260,7 @@ class _AddFriendPopupState extends State<AddFriendPopup> {
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(),
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 2),
     );
   }
 

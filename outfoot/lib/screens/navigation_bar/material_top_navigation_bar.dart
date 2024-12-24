@@ -6,8 +6,10 @@ import 'package:outfoot/api/checkpage_delete_api.dart';
 class MeterialTopNavigationBar extends StatefulWidget
     implements PreferredSizeWidget {
   final int checkPageId; // 삭제할 도장판 ID
+  final Color backgroundColor; // 앱바 배경색
 
-  MeterialTopNavigationBar({required this.checkPageId});
+  MeterialTopNavigationBar(
+      {required this.checkPageId, this.backgroundColor = lightColor1});
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -24,7 +26,7 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
   Widget build(BuildContext context) {
     return AppBar(
       scrolledUnderElevation: 0,
-      backgroundColor: lightColor1,
+      backgroundColor: widget.backgroundColor,
       elevation: 0,
       leading: IconButton(
         icon: _buildCustomItem(
