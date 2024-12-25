@@ -5,6 +5,7 @@ import 'package:outfoot/colors/colors.dart';
 // 이동 페이지
 import 'package:outfoot/screens/home_page.dart';
 import 'package:outfoot/screens/profile_my_page.dart';
+import 'package:outfoot/screens/checkpage_foot.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int selectedIndex;
@@ -33,13 +34,18 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       _selectedIndex = index;
     });
     switch (index) {
-      // case 0: // 둘러보기
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => ),// 둘러보기 페이지
-      //   );
-      //   break;
+      case 0: // 둘러보기
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CheckPageFoot(
+                    token:
+                        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6ImZmOTdmYTc1LTE1ODMtNGMxNi04ZjZmLWJjZTQyM2RlMDYxMCIsIm5pY2tuYW1lIjoi7KCV7ISc7JewIiwiaWF0IjoxNzM1MDkzMDA0LCJleHAiOjE3MzUxMDAyMDR9.6XdQxmfXW8Gn2a9L9u1iqTuaV47eoASnrYxz8Cj5x24OqZJ6mgSvOgBDgct6jxV0',
+                    checkPageId: '1',
+                    goalImagePath: 'default_image_path',
+                  )), // 둘러보기 페이지
+        );
+        break;
       case 1: // 홈
         Navigator.pushReplacement(
           context,

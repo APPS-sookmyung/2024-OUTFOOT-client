@@ -6,6 +6,7 @@ import 'package:outfoot/api/friend_list_check_api.dart';
 import 'package:outfoot/models/friend_list_check_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FriendList extends StatefulWidget {
   const FriendList({super.key});
@@ -89,7 +90,7 @@ class _FriendListState extends State<FriendList> {
   TextStyle _textStyle(double fontSize, FontWeight fontWeight, Color color,
       double height, double letterSpacing) {
     return TextStyle(
-      fontSize: fontSize,
+      fontSize: fontSize.sp,
       fontFamily: 'Pretendard',
       fontStyle: FontStyle.normal,
       fontWeight: fontWeight,
@@ -101,7 +102,7 @@ class _FriendListState extends State<FriendList> {
 
   BoxDecoration _boxDecoration(Color color, [List<BoxShadow>? boxShadow]) {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(10.0.r),
       color: color,
       boxShadow: boxShadow,
     );
@@ -126,8 +127,8 @@ class _FriendListState extends State<FriendList> {
         leading: IconButton(
           icon: SvgPicture.asset(
             'assets/back_icon.svg',
-            width: 17.375,
-            height: 18.688,
+            width: 17.375.w,
+            height: 18.688.h,
           ),
           onPressed: () {
             Navigator.of(context).pop();
@@ -144,35 +145,35 @@ class _FriendListState extends State<FriendList> {
           : Container(
               color: lightColor1,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 20.0.h),
                     Text(
                       '총 ${_friendList.length}명',
                       style: _textStyle(
                           14.0, FontWeight.w400, greyColor3, 0.8, -0.28),
                     ),
-                    SizedBox(height: 8.0),
+                    SizedBox(height: 8.0.h),
                     Expanded(
                       child: ListView.builder(
                         itemCount: _friendList.length,
                         itemBuilder: (context, index) {
                           final friend = _friendList[index];
                           return Container(
-                            width: 320.0,
-                            height: 88.0,
-                            margin: EdgeInsets.only(bottom: 10.0),
+                            width: 320.0.w,
+                            height: 88.0.h,
+                            margin: EdgeInsets.only(bottom: 10.0.h),
                             padding: EdgeInsets.symmetric(
-                                vertical: 13.0, horizontal: 19.0),
+                                vertical: 13.0.h, horizontal: 19.0.w),
                             decoration: _boxDecoration(lightColor2),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  width: 61.0,
-                                  height: 61.0,
+                                  width: 61.0.w,
+                                  height: 61.0.h,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: yellowColor,
@@ -187,7 +188,7 @@ class _FriendListState extends State<FriendList> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 16.0),
+                                SizedBox(width: 16.0.w),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -205,12 +206,12 @@ class _FriendListState extends State<FriendList> {
                                                 0.8,
                                                 -0.32),
                                           ),
-                                          SizedBox(width: 8.0),
+                                          SizedBox(width: 8.0.w),
                                           _svgIcon('assets/icon/next_arrow.svg',
                                               width: 20.0, height: 20.0),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      SizedBox(height: 5.0.h),
                                       Text(
                                         friend.intro.isNotEmpty
                                             ? friend.intro
@@ -221,15 +222,15 @@ class _FriendListState extends State<FriendList> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 16.0),
+                                SizedBox(width: 16.0.w),
                                 Container(
-                                  width: 49.0,
-                                  height: 30.0,
+                                  width: 49.0.w,
+                                  height: 30.0.h,
                                   decoration: _boxDecoration(lightMainColor),
                                   child: TextButton(
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      minimumSize: Size(49.0, 30.0),
+                                      minimumSize: Size(49.0.w, 30.0.h),
                                       alignment: Alignment.center,
                                     ),
                                     onPressed: () => _deleteFriend(

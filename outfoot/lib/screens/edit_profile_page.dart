@@ -223,7 +223,7 @@ class EditProfile extends StatelessWidget {
                   height: 46.h,
                   decoration: _boxDecoration(lightColor2),
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(20.0.w),
                     child: TextField(
                       obscureText: true,
                       decoration: InputDecoration(

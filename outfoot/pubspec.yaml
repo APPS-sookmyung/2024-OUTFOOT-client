@@ -102,6 +102,9 @@ flutter:
     - assets/logo_white.svg
     - assets/bell.svg
     - assets/crown.svg
+    - assets/stamp.svg
+
+    - assets/animal_illust/polarBear.svg
 
     - assets/config/.env
     - assets/testImg.png
