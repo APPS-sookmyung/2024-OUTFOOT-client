@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/screens/login/user_controller.dart';
+import 'package:provider/provider.dart';
 
 class StartLoginPageScreen extends StatelessWidget {
   @override
@@ -110,12 +112,14 @@ class StartLoginPageScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         _loginButton(
+                          context,
                           '카카오 계정으로 로그인',
                           Color(0xFFFAE100),
                           Colors.black,
                         ),
                         SizedBox(height: 8),
                         _loginButton(
+                          context,
                           '네이버 로그인',
                           Color(0xFF03CF5D),
                           Colors.white,
@@ -133,13 +137,31 @@ class StartLoginPageScreen extends StatelessWidget {
     );
   }
 
-  Widget _loginButton(String text, Color bgColor, Color textColor) {
+  Widget _loginButton(
+      BuildContext context, String text, Color bgColor, Color textColor) {
     return SizedBox(
       width: double.infinity,
       height: 46,
       child: ElevatedButton(
-        onPressed: () {
-          print("$text button pressed");
+        onPressed: () async {
+          if (text == '카카오 계정으로 로그인') {
+            // 카카오 로그인 로직 호출
+            final userController = context.read<UserController>();
+            await userController.kakaoLogin();
+            final user = context.read<UserController>().user;
+            if (user != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text('로그인 성공: ${user.properties?["nickname"]}')),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('로그인 실패')),
+              );
+            }
+          } else {
+            print("$text button pressed");
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
