@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:outfoot/api/profile_my_page_api.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/services/data/mypage_data.dart';
 import '../widgets/target_view.dart';
 import 'package:outfoot/widgets/dashed_path_painter.dart';
 import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
-import 'package:outfoot/models/profile_my_model.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:outfoot/services/data/mypage_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // 이동 페이지
@@ -16,6 +12,8 @@ import 'package:outfoot/screens/add_friend_popup_screen.dart';
 import 'package:outfoot/screens/friend_list_screen.dart';
 import 'package:outfoot/screens/edit_profile_page.dart';
 import 'package:outfoot/screens/setting.dart';
+import 'package:outfoot/screens/checkpage_foot.dart';
+import 'package:outfoot/screens/add_friend_screen.dart';
 
 class ProfileMyPage extends StatefulWidget {
   const ProfileMyPage({super.key});
@@ -25,41 +23,7 @@ class ProfileMyPage extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfileMyPage> {
-  final ProfileMyApi _profileApi = ProfileMyApi();
-  Profile? _profile;
-  bool _isLoading = true;
-  String? token;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchProfile();
-  }
-
-  Future<void> _fetchProfile() async {
-    token = dotenv.env['TOKEN'];
-    if (token == null) {
-      debugPrint("Error: TOKEN is not defined in .env");
-      setState(() {
-        _isLoading = false;
-      });
-      return;
-    }
-
-    final profile = await _profileApi.profileMy(token!);
-    if (profile == null) {
-      debugPrint("Error: Profile data is null");
-      setState(() {
-        _isLoading = false;
-      });
-      return;
-    }
-
-    setState(() {
-      _profile = profile;
-      _isLoading = false;
-    });
-  }
+  bool _isLoading = false; // API 호출 제거로 항상 false
 
   TextStyle _textStyle(double fontSize, FontWeight fontWeight, Color color,
       double letterSpacing, double height) {
@@ -111,7 +75,7 @@ class _ProfileState extends State<ProfileMyPage> {
     return Scaffold(
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : _profile == null
+          : Data.name == null
               ? Center(child: Text('No data found')) // 데이터가 없을 때 처리
               : SingleChildScrollView(
                   child: Column(
@@ -225,8 +189,7 @@ class _ProfileState extends State<ProfileMyPage> {
                                         height: 0.2.sw,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          // getDisplayName(_profile?.name),
-                                          Data.name,
+                                          getDisplayName("정"),
                                           style: _textStyle(
                                               0.07.sw,
                                               FontWeight.w600,
@@ -255,8 +218,7 @@ class _ProfileState extends State<ProfileMyPage> {
                                     Row(
                                       children: [
                                         Text(
-                                          // _profile?.name ?? '사용자',
-                                          Data.name,
+                                          '정지원',
                                           style: _textStyle(
                                               0.05.sw,
                                               FontWeight.w700,
@@ -277,7 +239,7 @@ class _ProfileState extends State<ProfileMyPage> {
                                     ),
                                     SizedBox(height: 0.02.sh),
                                     Text(
-                                      truncateIntro(_profile?.myIntro),
+                                      '안녕하세요 만나서 반가워요',
                                       style: _textStyle(
                                           0.04.sw,
                                           FontWeight.w400,
@@ -326,7 +288,7 @@ class _ProfileState extends State<ProfileMyPage> {
                                           ),
                                           SizedBox(height: 0.01.sh),
                                           Text(
-                                            '${_profile?.friendCount ?? 0}',
+                                            '5',
                                             style: _textStyle(
                                               0.04.sw,
                                               FontWeight.w500,
@@ -350,8 +312,7 @@ class _ProfileState extends State<ProfileMyPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => AddFriendPopup(
-                                              memberId: '21', token: token!),
+                                          builder: (context) => const AddFriend(),
                                         ),
                                       );
                                     },
@@ -388,22 +349,10 @@ class _ProfileState extends State<ProfileMyPage> {
                                               ),
                                             ],
                                           ),
-                                          Spacer(),
-                                          Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: 0.05.sw),
-                                              child: _svgIcon(
-                                                  'assets/people_icon.svg',
-                                                  width: 0.15.sw,
-                                                  height: 0.06.sh),
-                                            ),
-                                          ),
                                         ],
-                                      ),
                                     ),
                                   ),
+                                ),
                                 ),
                               ],
                             ),
@@ -414,9 +363,59 @@ class _ProfileState extends State<ProfileMyPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Username: ${_profile?.name ?? 'Unknown'}'),
-                            Text('Email: ${_profile?.code ?? 'N/A'}'),
+                            // Text('Username: ${_profile?.name ?? 'Unknown'}'),
+                            // Text('Email: ${_profile?.code ?? 'N/A'}'),
                           ],
+                        ),
+                        
+                      ),
+                      SizedBox(height: 16.h),
+ // 첫 번째 카드 (완성도 99%)
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: Container(
+                      width: 330.w,
+                      height: 113.h,
+                      padding: EdgeInsets.all(16.0.w),
+                      decoration: BoxDecoration(
+                        color: lightColor,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: ProgressCard(
+                        startDate: '2024-03-01',
+                        title: 'OUTFOOT 모각코',
+                        progressPercentage: 99, // 완성도 99% 수정
+                        assetPath: 'assets/lock_icon.svg',
+                      ),
+                    ),
+                  ),
+                   SizedBox(height: 8.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.sp),
+                    child: GestureDetector( // 클릭 이벤트 추가
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CheckPageFoot(), // 이동할 페이지
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 330.w,
+                        height: 113.h,
+                        padding: EdgeInsets.all(16.0.sp),
+                        decoration: BoxDecoration(
+                          color: lightColor2,
+                          borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: ProgressCard(
+                            startDate: '2024-12-01',
+                            title: '하루에 물 2리터 마시기기 ',
+                            progressPercentage: 78,
+                            assetPath: '',
+                            ),
+                          ),
                         ),
                       ),
                     ],

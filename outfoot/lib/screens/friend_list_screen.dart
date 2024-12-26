@@ -159,110 +159,91 @@ class _FriendListState extends State<FriendList> {
                     SizedBox(height: 20.0.h),
                     Text(
                       // '총 ${_friendList.length}명',
-                      '',
+                      '총 5명',
                       style: _textStyle(
                           14.0, FontWeight.w400, greyColor3, 0.8, -0.28),
                     ),
                     SizedBox(height: 8.0.h),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: _friendList.length,
-                        itemBuilder: (context, index) {
-                          final friend = _friendList[index];
-                          return Container(
-                            width: 320.0.w,
-                            height: 88.0.h,
-                            margin: EdgeInsets.only(bottom: 10.0.h),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 13.0.h, horizontal: 19.0.w),
-                            decoration: _boxDecoration(lightColor2),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: 61.0.w,
-                                  height: 61.0.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: yellowColor,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      friend.nickname.isNotEmpty
-                                          // ? friend.nickname[0]
-                                          ? (dataList[0].name)[0]
-                                          : '친구',
-                                      style: _textStyle(20.0, FontWeight.w600,
-                                          greyColor1, 0.8, -0.4),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 16.0.w),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            friend.nickname,
-                                            style: _textStyle(
-                                                16.0,
-                                                FontWeight.w500,
-                                                greyColor1,
-                                                0.8,
-                                                -0.32),
-                                          ),
-                                          SizedBox(width: 8.0.w),
-                                          _svgIcon('assets/icon/next_arrow.svg',
-                                              width: 20.0, height: 20.0),
-                                        ],
-                                      ),
-                                      SizedBox(height: 5.0.h),
-                                      Text(
-                                        friend.intro.isNotEmpty
-                                            // ? friend.intro
-                                            ? dataList[0].intro
-                                            : '소개글이 없습니다',
-                                        style: _textStyle(12.0, FontWeight.w400,
-                                            greyColor2, 1.1, -0.22),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 16.0.w),
-                                Container(
-                                  width: 49.0.w,
-                                  height: 30.0.h,
-                                  decoration: _boxDecoration(lightMainColor),
-                                  child: TextButton(
-                                    style: TextButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      minimumSize: Size(49.0.w, 30.0.h),
-                                      alignment: Alignment.center,
-                                    ),
-                                    onPressed: () => _deleteFriend(
-                                        friend.id.toString()), // 삭제 동작
-                                    child: Text(
-                                      '삭제',
-                                      style: _textStyle(
-                                        14.0,
-                                        FontWeight.w400,
-                                        redColor,
-                                        1.3, // 줄 간격 조정
-                                        -0.28,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  final friends = [
+                    {'name': '정서연', 'intro': '안녕하세요 OUTFOOT PM입니다'},
+                    {'name': '이해림', 'intro': '안녕하세요 OUTFOOT FE입니다'},
+                    {'name': '이지은', 'intro': '안녕하세요 OUTFOOT BE입니다'},
+                    {'name': '주아정', 'intro': '안녕하세요 OUTFOOT BE입니다'},
+                    {'name': '윤현서', 'intro': '안녕하세요 OUTFOOT BE입니다'}
+                  ];
+
+                  final friend = friends[index];
+                  final initials = friend['name']![0];
+
+                  return Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(bottom: 10.0.h),
+                    padding: EdgeInsets.symmetric(
+                        vertical: 13.0.h, horizontal: 19.0.w),
+                    decoration: _boxDecoration(Colors.white),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 48.0.w,
+                          height: 48.0.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: index == 0
+                                ? Colors.yellow[100]
+                                : index == 1
+                                    ? Colors.brown[200]
+                                    : Colors.brown[300],
+                          ),
+                          child: Center(
+                            child: Text(
+                              initials,
+                              style: _textStyle(16, FontWeight.w600, Colors.black, 1.2, -0.4),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                        SizedBox(width: 16.0.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                friend['name']!,
+                                style: _textStyle(16, FontWeight.w500, Colors.black, 1.2, -0.32),
+                              ),
+                              SizedBox(height: 4.0.h),
+                              Text(
+                                friend['intro']!,
+                                style: _textStyle(12, FontWeight.w400, Colors.grey, 1.2, -0.22),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 16.0.w),
+                        Container(
+                          width: 60.0.w,
+                          height: 30.0.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0.r),
+                            border: Border.all(color: Colors.red),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '삭제',
+                              style: _textStyle(14, FontWeight.w400, Colors.red, 1.2, -0.28),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                  );
+                },
+              ),
+            ),
+                  
                   ],
                 ),
               ),

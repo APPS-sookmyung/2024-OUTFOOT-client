@@ -223,14 +223,37 @@ class _CheckPageImageState extends State<CheckPageImage> {
                           color: mainBrownColor,
                         );
                       }
+                    
                     },
+                    
                   ),
+                  
                 ),
+                Positioned(
+  top: 60.h,
+  left: 300.w,
+  child: GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CheckPageFoot(),
+        ),
+      );
+    },
+    child: SvgPicture.asset(
+      'assets/shuffle_icon.svg',
+      width: 24.w,
+      height: 24.h,
+    ),
+  ),
+),
               ],
             ),
           ],
         ),
       ),
+      
       bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 1),
     );
   }

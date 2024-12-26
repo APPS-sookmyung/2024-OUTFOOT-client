@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 
 class AddFriend extends StatelessWidget {
   const AddFriend({super.key});
@@ -41,8 +42,13 @@ class AddFriend extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: lightColor1,
-        leading: _svgIcon('assets/icon/before_arrow.svg',
-            width: 17.38, height: 8.69),
+        leading: IconButton(
+          icon: _svgIcon('assets/icon/before_arrow.svg',
+              width: 17.38, height: 8.69),
+          onPressed: () {
+            Navigator.of(context).pop(); // 이전 페이지로 이동
+          },
+        ),
         centerTitle: true,
         title: Text(
           '친구 추가하기',
@@ -215,47 +221,10 @@ class AddFriend extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        height: 84.0,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: lightMainColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16.0),
-            topRight: Radius.circular(16.0),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.10),
-              spreadRadius: 4,
-              blurRadius: 30,
-              offset: Offset(4, 4),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          unselectedLabelStyle:
-              _textStyle(11.0, FontWeight.w500, greyColor6, -0.22),
-          selectedLabelStyle:
-              _textStyle(11.0, FontWeight.w500, mainBrownColor, -0.22),
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: _svgIcon('assets/search.svg', width: 25.57, height: 25.34),
-              label: '둘러보기',
-            ),
-            BottomNavigationBarItem(
-              icon: _svgIcon('assets/home.svg', width: 23.25, height: 27.04),
-              label: '홈',
-            ),
-            BottomNavigationBarItem(
-              icon: _svgIcon('assets/profile.svg', width: 27.59, height: 25.8),
-              label: '마이페이지',
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 2)
+
+      
     );
+
   }
 }
