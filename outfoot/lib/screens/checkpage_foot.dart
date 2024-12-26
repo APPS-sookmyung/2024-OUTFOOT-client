@@ -132,77 +132,57 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                 SizedBox(height: 10.h),
                 Container(
                   padding: EdgeInsets.symmetric(
-                      horizontal: 16.83.w, vertical: 5.7.h),
+                    horizontal: 16.83.w,
+                    vertical: 5.7.h,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
-                    goal?.createdAt ?? '날짜 정보 없음',
+                    Data.date,
                     style: TextStyle(
-                      fontSize: 11.sp,
+                      fontSize: 18.sp,
                       color: blackBrownColor,
                       fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       height: 1.1,
-                      letterSpacing: -0.22,
+                      letterSpacing: -0.36,
                     ),
-                    child: Text(
-                      Data.date,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        color: blackBrownColor,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w600,
-                        height: 1.1,
-                        letterSpacing: -0.36,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 20),
-
-                  // 목표 제목 표시
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        Data.title,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      Data.title,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10.63.h),
+                SizedBox(height: 10),
                 Text(
-                  goal?.intro ?? '설명 없음', // 불러온 데이터의 설명 표시
+                  Data.intro,
                   style: TextStyle(
-                    fontSize: 12.sp,
-                    color: greyColor3,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                    height: 1.1,
-                    letterSpacing: -0.24,
+                    fontSize: 14,
+                    color: Colors.black54,
                   ),
-                  SizedBox(height: 10),
-
-                  // 목표 설명 표시
-                  Text(
-                    Data.intro,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
+                  textAlign: TextAlign.center,
                 ),
+                SizedBox(height: 40),
                 Container(
                   padding: EdgeInsets.only(
-                      left: 16.95.w,
-                      right: 16.95.w,
-                      top: 17.35.h,
-                      bottom: 35.23.h),
+                    left: 16.95.w,
+                    right: 16.95.w,
+                    top: 17.35.h,
+                    bottom: 35.23.h,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.r),
@@ -218,7 +198,6 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                     itemBuilder: (context, index) {
                       if (goal != null &&
                           index < goal!.confirmResponses.length) {
-                        // 이미지 URL을 불러온 데이터의 confirmResponses에서 가져오기
                         return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -227,8 +206,8 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                           child: Padding(
                             padding: EdgeInsets.all(7.18.w),
                             child: Image.network(
-                              goal!.confirmResponses[index]
-                                  .imageUrl, // 동적으로 이미지 URL 표시                              fit: BoxFit.contain,
+                              goal!.confirmResponses[index].imageUrl,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         );
@@ -245,21 +224,6 @@ class _CheckPageFootState extends State<CheckPageFoot> {
               ],
             ),
             Positioned(
-              bottom: 12.h,
-              right: 20.w,
-              child: customFloatingActionButton(
-                'assets/floating_action.svg',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Upload(), // 이동할 페이지
-                    ),
-                  );
-                },
-              ),
-            ),
-            Positioned(
               top: 60.h,
               left: 300.w,
               child: FloatingActionButton(
@@ -270,7 +234,7 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                       builder: (context) => CheckPageImage(
                         token: token!,
                         checkPageId: '1',
-                      ), // 이동할 페이지
+                      ),
                     ),
                   );
                 },
