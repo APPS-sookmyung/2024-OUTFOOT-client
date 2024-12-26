@@ -72,7 +72,6 @@ class DashedCirclePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-
 class CheckPageFoot extends StatefulWidget {
   const CheckPageFoot({Key? key}) : super(key: key);
 
@@ -136,12 +135,12 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                   child: Text(
                     Data.date,
                     style: TextStyle(
-                      fontSize: 18.sp,
+                      fontSize: 11.sp,
                       color: blackBrownColor,
                       fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w400,
                       height: 1.1,
-                      letterSpacing: -0.36,
+                      letterSpacing: -0.22,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -153,9 +152,25 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                     Text(
                       Data.title,
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        fontSize: 18.sp,
+                        color: blackBrownColor,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w600,
+                        height: 1.1,
+                        letterSpacing: -0.36,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(width: 3.69.w),
+                    Transform.translate(
+                      offset: Offset(0, -9.0.h),
+                      child: Container(
+                        width: 7.991.w,
+                        height: 7.991.h,
+                        decoration: BoxDecoration(
+                          color: yellowColor,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
                   ],
@@ -190,7 +205,8 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                       crossAxisSpacing: 10.75.w,
                     ),
                     itemBuilder: (context, index) {
-                      if (index < 26) { // 26개는 배경과 아이콘
+                      if (index < 26) {
+                        // 26개는 배경과 아이콘
                         return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -204,7 +220,8 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                             ),
                           ),
                         );
-                      } else { // 나머지는 점선 동그라미
+                      } else {
+                        // 나머지는 점선 동그라미
                         return DashedCircle(
                           size: 24.57.w,
                           color: mainBrownColor,
@@ -217,41 +234,39 @@ class _CheckPageFootState extends State<CheckPageFoot> {
               ],
             ),
             // 플로팅 액션 버튼
-                  Padding(
-                    padding:
-                        EdgeInsets.only(right: 20.w, left: 275.w, top: 578.h),
-                    child: customFloatingActionButton(
-                      'assets/floating_action.svg',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                Upload(), // 이동할 페이지
-                          ),
-                        );
-                      },
+            Padding(
+              padding: EdgeInsets.only(right: 20.w, left: 275.w, top: 578.h),
+              child: customFloatingActionButton(
+                'assets/floating_action.svg',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Upload(), // 이동할 페이지
                     ),
-                  ),
+                  );
+                },
+              ),
+            ),
             Positioned(
-  top: 60.h,
-  left: 300.w,
-  child: GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CheckPageImage(),
-        ),
-      );
-    },
-    child: SvgPicture.asset(
-      'assets/shuffle_icon.svg',
-      width: 24.w,
-      height: 24.h,
-    ),
-  ),
-),
+              top: 60.h,
+              left: 300.w,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CheckPageImage(),
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/shuffle_icon.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
+              ),
+            ),
           ],
         ),
       ),

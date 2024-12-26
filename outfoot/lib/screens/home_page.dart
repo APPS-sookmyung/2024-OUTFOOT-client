@@ -163,15 +163,16 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                   SizedBox(height: 8.h),
+                  SizedBox(height: 8.h),
                   Padding(
                     padding: EdgeInsets.only(left: 20.sp),
-                    child: GestureDetector( // 클릭 이벤트 추가
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CheckPageFoot(), // 이동할 페이지
+                    child: GestureDetector(
+                      // 클릭 이벤트 추가
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CheckPageFoot(), // 이동할 페이지
                           ),
                         );
                       },
@@ -182,17 +183,16 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           color: lightColor2,
                           borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          child: ProgressCard(
-                            startDate: '2024-12-01',
-                            title: '하루에 물 2리터 마시기기 ',
-                            progressPercentage: 78,
-                            assetPath: '',
-                            ),
-                          ),
+                        ),
+                        child: ProgressCard(
+                          startDate: '2024-12-01',
+                          title: '하루에 물 2리터 마시기',
+                          progressPercentage: 78,
+                          assetPath: '',
                         ),
                       ),
-
+                    ),
+                  ),
 
                   // 플로팅 액션 버튼
                   Padding(

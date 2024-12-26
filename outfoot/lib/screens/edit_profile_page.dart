@@ -29,7 +29,8 @@ class EditProfile extends StatelessWidget {
     );
   }
 
-  final Data = EditprofileData("정지원", "안녕하세요 만나서 반가워요", "outfootfe@sookmyung.ac.kr");
+  final Data =
+      EditprofileData("정지원", "안녕하세요 만나서 반가워요", "outfootfe@sookmyung.ac.kr");
 
   Widget _svgIcon(String assetName,
       {double? width, double? height, BoxFit fit = BoxFit.none}) {
@@ -158,7 +159,8 @@ class EditProfile extends StatelessWidget {
             right: 135.w,
             child: Text(
               '안녕하세요 만나서 반가워요',
-              style: _textStyle(11, FontWeight.w600, mainBrownColor, -0.22),  selectionColor: Colors.black,
+              style: _textStyle(11, FontWeight.w600, mainBrownColor, -0.22),
+              selectionColor: Colors.black,
             ),
           ),
           Positioned(
@@ -183,20 +185,19 @@ class EditProfile extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Container(
-  width: double.infinity,
-  height: 46.h,
-  decoration: _boxDecoration(lightColor2),
-  child: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: TextField(
-      decoration: InputDecoration(
-        hintText: 'appsoutfoot.sookmyung.ac.kr',
-        border: InputBorder.none,
-      ),
-    ),
-  ),
-),
-
+                  width: double.infinity,
+                  height: 46.h,
+                  decoration: _boxDecoration(lightColor2),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'appsoutfoot@sookmyung.ac.kr',
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 16.h),
                 Text(
                   '비밀번호 변경',

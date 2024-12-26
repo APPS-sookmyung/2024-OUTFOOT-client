@@ -38,8 +38,9 @@ class DashedLinePainter extends CustomPainter {
   }
 }
 
-final Data = MemoData("정지원", "안녕하세요 만나서 반가워요", "24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티", "오늘도 뿌듯한 하루~~", "마치 하마가 된 거 같고, 뿌듯함ㅋㅋ", "24.12.26 작성됨");
-final List<CommentData>dataList = [
+final Data = MemoData("정지원", "안녕하세요 만나서 반가워요", "24.12.27", "하루에 물 2리터 마시기",
+    "건강한 이너뷰티", "오늘도 뿌듯한 하루~~", "마치 하마가 된 거 같고, 뿌듯함ㅋㅋ", "24.12.27 작성됨");
+final List<CommentData> dataList = [
   CommentData("이해림", "12/26 14:29", "저까지 뿌듯해지는 인증샷입니다!"),
   CommentData("정서연", "12/26 14:39", "나도 도전할게게"),
   CommentData("Sam Kim", "12/26 16:12", "NICE"),
@@ -103,7 +104,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
         final goalProvider = Provider.of<GoalProvider>(context, listen: false);
         goalProvider.updateGoal(Data.title ?? '기본 목표 제목',
             Data.intro ?? '기본 목표 설명', data['imageUrl'] ?? '');
-        goalProvider.updateDate( Data.date1 ?? '24.01.01');
+        goalProvider.updateDate(Data.date1 ?? '24.01.01');
       } else {
         throw Exception('Failed to fetch goal data');
       }

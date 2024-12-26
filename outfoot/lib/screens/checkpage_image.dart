@@ -38,7 +38,7 @@ class DashedCircle extends StatelessWidget {
   }
 }
 
-final Data = CheckpageData("24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티");
+final Data = CheckpageData("24.12.27", "하루에 물 2리터 마시기", "건강한 이너뷰티");
 
 class DashedCirclePainter extends CustomPainter {
   final Color color;
@@ -169,17 +169,14 @@ class _CheckPageImageState extends State<CheckPageImage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10.63.h),
+                SizedBox(height: 10),
                 Text(
                   Data.intro,
                   style: TextStyle(
-                    fontSize: 12.sp,
-                    color: greyColor3,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                    height: 1.1,
-                    letterSpacing: -0.24,
+                    fontSize: 14,
+                    color: Colors.black54,
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40), // 이미지 그리드 상단 여백
                 Container(
@@ -223,37 +220,49 @@ class _CheckPageImageState extends State<CheckPageImage> {
                           color: mainBrownColor,
                         );
                       }
-                    
                     },
-                    
                   ),
-                  
                 ),
-                Positioned(
-  top: 60.h,
-  left: 300.w,
-  child: GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CheckPageFoot(),
-        ),
-      );
-    },
-    child: SvgPicture.asset(
-      'assets/shuffle_icon.svg',
-      width: 24.w,
-      height: 24.h,
-    ),
-  ),
-),
+                Spacer(),
               ],
+            ),
+            // 플로팅 액션 버튼
+            Padding(
+              padding: EdgeInsets.only(right: 20.w, left: 275.w, top: 578.h),
+              child: customFloatingActionButton(
+                'assets/floating_action.svg',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Upload(), // 이동할 페이지
+                    ),
+                  );
+                },
+              ),
+            ),
+            Positioned(
+              top: 60.h,
+              left: 300.w,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CheckPageImage(),
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/shuffle_icon.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
+              ),
             ),
           ],
         ),
       ),
-      
       bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 1),
     );
   }

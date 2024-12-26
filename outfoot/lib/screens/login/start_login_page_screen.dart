@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:outfoot/screens/home_page.dart';
 
 class StartLoginPageScreen extends StatelessWidget {
   @override
@@ -65,9 +66,14 @@ class StartLoginPageScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 50.h,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFD1B6A1), // 버튼 색상 설정
+                    backgroundColor: Color(0xFFD1B6A1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0.r),
                     ),

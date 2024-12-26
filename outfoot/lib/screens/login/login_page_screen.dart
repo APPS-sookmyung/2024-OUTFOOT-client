@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:outfoot/screens/login/start_login_page_screen.dart';
 
 class LoginPageScreen extends StatefulWidget {
   @override
@@ -138,9 +139,14 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   TextButton(
                     onPressed: () {
                       print("다른 방법으로 로그인 pressed");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StartLoginPageScreen()),
+                      );
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: greyColor2,
+                      foregroundColor: Color(0xFF656565),
                       textStyle: TextStyle(fontSize: 12.sp),
                     ),
                     child: Text('다른 방법으로 로그인'),

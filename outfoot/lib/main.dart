@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:outfoot/screens/login/login_page_screen.dart';
+import 'package:outfoot/screens/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:outfoot/utils/goal_provider.dart';
@@ -66,7 +68,7 @@ class _MyAppState extends State<MyApp> {
                     child: CircularProgressIndicator(),
                   ),
                 )
-              : (_isLoggedIn ? HomePage() : StartLoginPageScreen()),
+              : (_isLoggedIn ? SplashScreen() : StartLoginPageScreen()),
         );
       },
     );

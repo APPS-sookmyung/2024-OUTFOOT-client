@@ -86,6 +86,7 @@ flutter:
     - assets/lock_icon.svg
     - assets/alarm_icon.svg
     - assets/logo.svg
+    - assets/splash_logo.svg
     - assets/arrow.svg
     - assets/icon/before_arrow.svg
     - assets/icon/copy.svg

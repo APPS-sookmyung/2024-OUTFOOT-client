@@ -46,7 +46,8 @@ class _ProfileState extends State<ProfileMyPage> {
     );
   }
 
-  final Data = SettingData("정지원", "안녕하세요 만나서 반가워요", "시작일: 2024-12-26 ", "OUTFOOT FE 모각코");
+  final Data = SettingData(
+      "정지원", "안녕하세요 만나서 반가워요", "시작일: 2024-12-26 ", "OUTFOOT FE 모각코");
 
   Widget _svgIcon(String assetName,
       {double? width, double? height, BoxFit fit = BoxFit.none}) {
@@ -67,7 +68,9 @@ class _ProfileState extends State<ProfileMyPage> {
 
   String truncateIntro(String? intro) {
     if (intro == null) return "소개글을 작성해주세요";
-    return intro.length > 20 ? Data.myintro.substring(0, 20) + '…' : Data.myintro;
+    return intro.length > 20
+        ? Data.myintro.substring(0, 20) + '…'
+        : Data.myintro;
   }
 
   @override
@@ -312,7 +315,8 @@ class _ProfileState extends State<ProfileMyPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const AddFriend(),
+                                          builder: (context) =>
+                                              const AddFriend(),
                                         ),
                                       );
                                     },
@@ -350,9 +354,9 @@ class _ProfileState extends State<ProfileMyPage> {
                                             ],
                                           ),
                                         ],
+                                      ),
                                     ),
                                   ),
-                                ),
                                 ),
                               ],
                             ),
@@ -367,53 +371,54 @@ class _ProfileState extends State<ProfileMyPage> {
                             // Text('Email: ${_profile?.code ?? 'N/A'}'),
                           ],
                         ),
-                        
                       ),
                       SizedBox(height: 16.h),
- // 첫 번째 카드 (완성도 99%)
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: Container(
-                      width: 330.w,
-                      height: 113.h,
-                      padding: EdgeInsets.all(16.0.w),
-                      decoration: BoxDecoration(
-                        color: lightColor,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: ProgressCard(
-                        startDate: '2024-03-01',
-                        title: 'OUTFOOT 모각코',
-                        progressPercentage: 99, // 완성도 99% 수정
-                        assetPath: 'assets/lock_icon.svg',
-                      ),
-                    ),
-                  ),
-                   SizedBox(height: 8.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.sp),
-                    child: GestureDetector( // 클릭 이벤트 추가
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CheckPageFoot(), // 이동할 페이지
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 330.w,
-                        height: 113.h,
-                        padding: EdgeInsets.all(16.0.sp),
-                        decoration: BoxDecoration(
-                          color: lightColor2,
-                          borderRadius: BorderRadius.circular(10.r),
+                      // 첫 번째 카드 (완성도 99%)
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.w),
+                        child: Container(
+                          width: 330.w,
+                          height: 113.h,
+                          padding: EdgeInsets.all(16.0.w),
+                          decoration: BoxDecoration(
+                            color: lightColor,
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: ProgressCard(
-                            startDate: '2024-12-01',
-                            title: '하루에 물 2리터 마시기기 ',
-                            progressPercentage: 78,
-                            assetPath: '',
+                            startDate: '2024-03-01',
+                            title: 'OUTFOOT 모각코',
+                            progressPercentage: 99, // 완성도 99% 수정
+                            assetPath: 'assets/lock_icon.svg',
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.sp),
+                        child: GestureDetector(
+                          // 클릭 이벤트 추가
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CheckPageFoot(), // 이동할 페이지
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 330.w,
+                            height: 113.h,
+                            padding: EdgeInsets.all(16.0.sp),
+                            decoration: BoxDecoration(
+                              color: lightColor2,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: ProgressCard(
+                              startDate: '2024-12-01',
+                              title: '하루에 물 2리터 마시기',
+                              progressPercentage: 78,
+                              assetPath: '',
                             ),
                           ),
                         ),

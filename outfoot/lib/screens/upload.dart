@@ -92,12 +92,11 @@ class Upload extends StatefulWidget {
   _UploadState createState() => _UploadState();
 }
 
-final Data = UploadData("24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티");
+final Data = UploadData("24.12.27", "하루에 물 2리터 마시기", "건강한 이너뷰티");
 
 class _UploadState extends State<Upload> {
   final AuthAdditionApi _api = AuthAdditionApi();
-  final TextEditingController _titleController =
-      TextEditingController(text: "");
+  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   File? _image;
 
