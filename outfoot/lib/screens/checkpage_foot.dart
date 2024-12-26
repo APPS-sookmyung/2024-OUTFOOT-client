@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '/widgets/custom_floating_action_button.dart';
+import 'package:outfoot/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/view_single_api.dart';
 import 'package:outfoot/models/view_single_model.dart';
@@ -72,22 +72,15 @@ class DashedCirclePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class CheckPageFoot extends StatefulWidget {
-  final String token; // API 인증 토큰
-  final String checkPageId; // 조회할 체크 페이지 ID
-  final String goalImagePath;
 
-  CheckPageFoot({
-    required this.token,
-    required this.checkPageId,
-    this.goalImagePath = 'default_image_path',
-  });
+class CheckPageFoot extends StatefulWidget {
+  const CheckPageFoot({Key? key}) : super(key: key);
 
   @override
   _CheckPageFootState createState() => _CheckPageFootState();
 }
 
-final Data = CheckpageData("24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티");
+final Data = CheckpageData("24.12.27", "하루에 물 2리터 마시기", "건강한 이너뷰티");
 
 class _CheckPageFootState extends State<CheckPageFoot> {
   ViewGoal? goal; // API에서 불러온 데이터를 저장할 변수
@@ -101,13 +94,14 @@ class _CheckPageFootState extends State<CheckPageFoot> {
 
   Future<void> _fetchGoal() async {
     final api = ViewSingleApi(dio: Dio());
-    final fetchedGoal = await api.getGoal(widget.token, widget.checkPageId);
 
     token = dotenv.env['TOKEN'];
     if (token == null) {
       debugPrint("Error: TOKEN is not defined in .env");
       return;
     }
+
+    final fetchedGoal = await api.getGoal(token!, '1');
 
     setState(() {
       goal = fetchedGoal; // 불러온 데이터를 상태에 저장
@@ -196,22 +190,21 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                       crossAxisSpacing: 10.75.w,
                     ),
                     itemBuilder: (context, index) {
-                      if (goal != null &&
-                          index < goal!.confirmResponses.length) {
+                      if (index < 26) { // 26개는 배경과 아이콘
                         return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: mainBrownColor2,
+                            color: Color(0xFFDFC4B6),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(7.18.w),
-                            child: Image.network(
-                              goal!.confirmResponses[index].imageUrl,
+                            child: SvgPicture.asset(
+                              'assets/paw.svg',
                               fit: BoxFit.contain,
                             ),
                           ),
                         );
-                      } else {
+                      } else { // 나머지는 점선 동그라미
                         return DashedCircle(
                           size: 24.57.w,
                           color: mainBrownColor,
@@ -223,30 +216,42 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                 Spacer(),
               ],
             ),
-            Positioned(
-              top: 60.h,
-              left: 300.w,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CheckPageImage(
-                        token: token!,
-                        checkPageId: '1',
-                      ),
+            // 플로팅 액션 버튼
+                  Padding(
+                    padding:
+                        EdgeInsets.only(right: 20.w, left: 275.w, top: 578.h),
+                    child: customFloatingActionButton(
+                      'assets/floating_action.svg',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                Upload(), // 이동할 페이지
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                child: SvgPicture.asset(
-                  'assets/shuffle_icon.svg',
-                  width: 24.w,
-                  height: 24.h,
-                ),
-              ),
-            ),
+                  ),
+            Positioned(
+  top: 60.h,
+  left: 300.w,
+  child: GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CheckPageImage(),
+        ),
+      );
+    },
+    child: SvgPicture.asset(
+      'assets/shuffle_icon.svg',
+      width: 24.w,
+      height: 24.h,
+    ),
+  ),
+),
           ],
         ),
       ),

@@ -11,6 +11,7 @@ import 'package:outfoot/services/data/homepage_data.dart';
 
 // 이동 페이지 import
 import 'package:outfoot/screens/make_goal/make_personal_goal.dart';
+import 'package:outfoot/screens/checkpage_foot.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -35,12 +36,6 @@ class DashedLinePainter extends CustomPainter {
     return false;
   }
 }
-
-final List<HomepageData> dataList = [
-  HomepageData("2024-01-01", "OUTFOOT FE 모각코"),
-  HomepageData("2024-01-01", "OUTFOOT BE 모각코"),
-  HomepageData("2024-01-01", "OUTFOOT 배포"),
-];
 
 class HomePage extends StatefulWidget {
   @override
@@ -148,6 +143,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(height: 24.h),
+
+                  // 첫 번째 카드 (완성도 99%)
                   Padding(
                     padding: EdgeInsets.only(left: 20.w),
                     child: Container(
@@ -159,36 +156,48 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: ProgressCard(
-                        startDate: '2024-01-01',
-                        title: 'OUTFOOT 백엔드 모각코',
-                        progressPercentage: 78,
+                        startDate: '2024-03-01',
+                        title: 'OUTFOOT 모각코',
+                        progressPercentage: 99, // 완성도 99% 수정
                         assetPath: 'assets/lock_icon.svg',
                       ),
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                   SizedBox(height: 8.h),
                   Padding(
                     padding: EdgeInsets.only(left: 20.sp),
-                    child: Container(
-                      width: 330.w,
-                      height: 113.h,
-                      padding: EdgeInsets.all(16.0.sp),
-                      decoration: BoxDecoration(
-                        color: lightColor2,
-                        borderRadius: BorderRadius.circular(10.r),
+                    child: GestureDetector( // 클릭 이벤트 추가
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CheckPageFoot(), // 이동할 페이지
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 330.w,
+                        height: 113.h,
+                        padding: EdgeInsets.all(16.0.sp),
+                        decoration: BoxDecoration(
+                          color: lightColor2,
+                          borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: ProgressCard(
+                            startDate: '2024-12-01',
+                            title: '하루에 물 2리터 마시기기 ',
+                            progressPercentage: 78,
+                            assetPath: '',
+                            ),
+                          ),
+                        ),
                       ),
-                      child: ProgressCard(
-                        startDate: '2024-01-01',
-                        title: 'OUTFOOT 백엔드 모각코',
-                        progressPercentage: 78,
-                        assetPath: '',
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
+
+
+                  // 플로팅 액션 버튼
                   Padding(
                     padding:
-                        EdgeInsets.only(right: 20.w, left: 275.w, top: 100.h),
+                        EdgeInsets.only(right: 20.w, left: 275.w, top: 250.h),
                     child: customFloatingActionButton(
                       'assets/floating_action.svg',
                       onPressed: () {
@@ -200,25 +209,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       },
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Container(
-                      width: 330,
-                      height: 113,
-                      padding: EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: lightColor2,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ProgressCard(
-                        startDate: dataList[2].date,
-                        title: dataList[2].title,
-                        progressPercentage: 78,
-                        assetPath: '',
-                      ),
                     ),
                   ),
                 ],

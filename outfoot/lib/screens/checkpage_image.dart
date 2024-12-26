@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '/widgets/custom_floating_action_button.dart';
+import 'package:outfoot/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/view_single_api.dart';
 import 'package:outfoot/models/view_single_model.dart';
@@ -73,10 +73,7 @@ class DashedCirclePainter extends CustomPainter {
 }
 
 class CheckPageImage extends StatefulWidget {
-  final String token; // API 인증 토큰
-  final String checkPageId; // 조회할 체크 페이지 ID
-
-  CheckPageImage({required this.token, required this.checkPageId});
+  const CheckPageImage({Key? key}) : super(key: key);
 
   @override
   _CheckPageImageState createState() => _CheckPageImageState();
@@ -84,7 +81,6 @@ class CheckPageImage extends StatefulWidget {
 
 class _CheckPageImageState extends State<CheckPageImage> {
   ViewGoal? goal; // API에서 불러온 데이터를 저장할 변수
-  String? token;
 
   @override
   void initState() {
@@ -93,18 +89,18 @@ class _CheckPageImageState extends State<CheckPageImage> {
   }
 
   Future<void> _fetchGoal() async {
+    const String defaultToken = 'default_token';
+    const String defaultCheckPageId = '1';
+
     final api = ViewSingleApi(dio: Dio());
-    final fetchedGoal = await api.getGoal(widget.token, widget.checkPageId);
-
-    token = dotenv.env['TOKEN'];
-    if (token == null) {
-      debugPrint("Error: TOKEN is not defined in .env");
-      return;
+    try {
+      final fetchedGoal = await api.getGoal(defaultToken, defaultCheckPageId);
+      setState(() {
+        goal = fetchedGoal; // 불러온 데이터를 상태에 저장
+      });
+    } catch (e) {
+      debugPrint("Error fetching goal data: $e");
     }
-
-    setState(() {
-      goal = fetchedGoal; // 불러온 데이터를 상태에 저장
-    });
   }
 
   @override
@@ -185,92 +181,53 @@ class _CheckPageImageState extends State<CheckPageImage> {
                     letterSpacing: -0.24,
                   ),
                 ),
-                SizedBox(height: 22.42.h),
-                Container(
-                  padding: EdgeInsets.only(
-                      left: 16.95.w,
-                      right: 16.95.w,
-                      top: 17.35.h,
-                      bottom: 35.23.h),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: 30,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      mainAxisSpacing: 10.63.h,
-                      crossAxisSpacing: 10.75.w,
-                    ),
-                    itemBuilder: (context, index) {
-                      if (goal != null &&
-                          index < goal!.confirmResponses.length) {
-                        // 이미지 URL을 불러온 데이터의 confirmResponses에서 가져오기
-                        return Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: mainBrownColor2,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(7.18.w),
-                            child: Image.network(
-                              goal!.confirmResponses[index]
-                                  .imageUrl, // 동적으로 이미지 URL 표시                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        );
-                      } else {
-                        return DashedCircle(
-                          size: 24.57.w,
-                          color: mainBrownColor,
-                        );
-                      }
-                    },
-                  ),
-                ),
-                Spacer(),
+                SizedBox(height: 40), // 이미지 그리드 상단 여백
+Container(
+  padding: EdgeInsets.only(
+    left: 16.95.w,
+    right: 16.95.w,
+    top: 17.35.h,
+    bottom: 35.23.h,
+  ),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(10.r),
+  ),
+  child: GridView.builder(
+  shrinkWrap: true,
+  itemCount: 30, // 총 30개로 변경
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 5,
+    mainAxisSpacing: 10.63.h,
+    crossAxisSpacing: 10.75.w,
+  ),
+  itemBuilder: (context, index) {
+    if (index < 26) { // 이미지가 있는 경우
+      return Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(7.18.w),
+          child: Image.asset(
+            'assets/data/${index + 1}.svg', // 이미지 경로
+            fit: BoxFit.contain,
+          ),
+        ),
+      );
+    } else { // 나머지 빈칸은 점선 원으로 표시
+      return DashedCircle(
+        size: 24.57.w,
+        color: mainBrownColor,
+      );
+    }
+  },
+),
+
+),
+
               ],
-            ),
-            Positioned(
-              bottom: 12.h,
-              right: 20.w,
-              child: customFloatingActionButton(
-                'assets/floating_action.svg',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Upload(), // 이동할 페이지
-                    ),
-                  );
-                },
-              ),
-            ),
-            Positioned(
-              top: 60.h,
-              left: 300.w,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CheckPageFoot(
-                        token: token!,
-                        checkPageId: '1',
-                      ), // 이동할 페이지
-                    ),
-                  );
-                },
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                child: SvgPicture.asset(
-                  'assets/shuffle_icon.svg',
-                  width: 24.w,
-                  height: 24.h,
-                ),
-              ),
             ),
           ],
         ),
