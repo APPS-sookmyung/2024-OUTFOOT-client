@@ -411,7 +411,7 @@ class _ProfileState extends State<ProfileMyPage> {
                           ),
                           child: ProgressCard(
                             startDate: '2024-12-01',
-                            title: '하루에 물 2리터 마시기기 ',
+                            title: '하루에 물 2리터 마시기',
                             progressPercentage: 78,
                             assetPath: '',
                             ),

@@ -38,7 +38,7 @@ class DashedCircle extends StatelessWidget {
   }
 }
 
-final Data = CheckpageData("24.12.26", "하루에 물 2리터 마시기", "건강한 이너뷰티");
+final Data = CheckpageData("24.12.27", "하루에 물 2리터 마시기", "건강한 이너뷰티");
 
 class DashedCirclePainter extends CustomPainter {
   final Color color;

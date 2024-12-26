@@ -190,7 +190,7 @@ class EditProfile extends StatelessWidget {
     padding: const EdgeInsets.all(8.0),
     child: TextField(
       decoration: InputDecoration(
-        hintText: 'appsoutfoot.sookmyung.ac.kr',
+        hintText: 'appsoutfoot@sookmyung.ac.kr',
         border: InputBorder.none,
       ),
     ),
