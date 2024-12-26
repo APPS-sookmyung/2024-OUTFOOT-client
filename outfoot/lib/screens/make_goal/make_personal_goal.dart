@@ -33,8 +33,8 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
 
     token = dotenv.env['TOKEN'];
     if (token == null) {
-      debugPrint("Error: TOKEN is not defined in .env");
-      return;
+      // debugPrint("Error: TOKEN is not defined in .env");
+      // return;
     }
 
     // 목표 생성 API 호출
