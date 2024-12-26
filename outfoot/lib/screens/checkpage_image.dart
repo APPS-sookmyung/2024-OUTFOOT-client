@@ -127,7 +127,7 @@ class _CheckPageImageState extends State<CheckPageImage> {
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
-                    Data.date,  
+                    Data.date,
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: blackBrownColor,
@@ -182,51 +182,50 @@ class _CheckPageImageState extends State<CheckPageImage> {
                   ),
                 ),
                 SizedBox(height: 40), // 이미지 그리드 상단 여백
-Container(
-  padding: EdgeInsets.only(
-    left: 16.95.w,
-    right: 16.95.w,
-    top: 17.35.h,
-    bottom: 35.23.h,
-  ),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10.r),
-  ),
-  child: GridView.builder(
-  shrinkWrap: true,
-  itemCount: 30, // 총 30개로 변경
-  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: 5,
-    mainAxisSpacing: 10.63.h,
-    crossAxisSpacing: 10.75.w,
-  ),
-  itemBuilder: (context, index) {
-    if (index < 26) { // 이미지가 있는 경우
-      return Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(7.18.w),
-          child: Image.asset(
-            'assets/data/${index + 1}.svg', // 이미지 경로
-            fit: BoxFit.contain,
-          ),
-        ),
-      );
-    } else { // 나머지 빈칸은 점선 원으로 표시
-      return DashedCircle(
-        size: 24.57.w,
-        color: mainBrownColor,
-      );
-    }
-  },
-),
-
-),
-
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 16.95.w,
+                    right: 16.95.w,
+                    top: 17.35.h,
+                    bottom: 35.23.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: 30, // 총 30개로 변경
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                      mainAxisSpacing: 10.63.h,
+                      crossAxisSpacing: 10.75.w,
+                    ),
+                    itemBuilder: (context, index) {
+                      if (index < 26) {
+                        // 이미지가 있는 경우
+                        return Container(
+                          child: ClipOval(
+                            // 자식 위젯(SvgPicture)을 원형으로 클리핑합니다.
+                            child: Padding(
+                              padding: EdgeInsets.all(0.w),
+                              child: SvgPicture.asset(
+                                'assets/data/${index + 1}.svg', // 이미지 경로
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        // 나머지 빈칸은 점선 원으로 표시
+                        return DashedCircle(
+                          size: 24.57.w,
+                          color: mainBrownColor,
+                        );
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           ],
