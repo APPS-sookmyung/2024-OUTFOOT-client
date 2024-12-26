@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '/widgets/custom_floating_action_button.dart';
+import 'package:outfoot/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/view_single_api.dart';
 import 'package:outfoot/models/view_single_model.dart';
 import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 import 'package:outfoot/screens/navigation_bar/material_top_navigation_bar.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+import 'package:outfoot/utils/goal_provider.dart';
 
 // 이동 페이지
 import 'package:outfoot/screens/upload.dart';
@@ -69,20 +71,15 @@ class DashedCirclePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class CheckPageFoot extends StatefulWidget {
-  final String token; // API 인증 토큰
-  final String checkPageId; // 조회할 체크 페이지 ID
-  final String goalImagePath;
 
-  CheckPageFoot({
-    required this.token,
-    required this.checkPageId,
-    this.goalImagePath = 'default_image_path',
-  });
+class CheckPageFoot extends StatefulWidget {
+  const CheckPageFoot({Key? key}) : super(key: key);
 
   @override
   _CheckPageFootState createState() => _CheckPageFootState();
 }
+
+// final Data = CheckpageData("24.12.27", "하루에 물 2리터 마시기", "건강한 이너뷰티");
 
 class _CheckPageFootState extends State<CheckPageFoot> {
   ViewGoal? goal; // API에서 불러온 데이터를 저장할 변수
@@ -96,13 +93,14 @@ class _CheckPageFootState extends State<CheckPageFoot> {
 
   Future<void> _fetchGoal() async {
     final api = ViewSingleApi(dio: Dio());
-    final fetchedGoal = await api.getGoal(widget.token, widget.checkPageId);
 
     token = dotenv.env['TOKEN'];
     if (token == null) {
       debugPrint("Error: TOKEN is not defined in .env");
       return;
     }
+
+    final fetchedGoal = await api.getGoal(token!, '1');
 
     setState(() {
       goal = fetchedGoal; // 불러온 데이터를 상태에 저장
@@ -127,73 +125,57 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                 SizedBox(height: 10.h),
                 Container(
                   padding: EdgeInsets.symmetric(
-                      horizontal: 16.83.w, vertical: 5.7.h),
+                    horizontal: 16.83.w,
+                    vertical: 5.7.h,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
-                    goal?.createdAt ?? '날짜 정보 없음',
+                    "24.12.27",
                     style: TextStyle(
-                      fontSize: 11.sp,
+                      fontSize: 18.sp,
                       color: blackBrownColor,
                       fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       height: 1.1,
-                      letterSpacing: -0.22,
+                      letterSpacing: -0.36,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 18.76.h),
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      goal?.title ?? '제목 없음', // 불러온 데이터의 제목 표시
+                      "하루에 물 2리터 마시기",
                       style: TextStyle(
-                        fontSize: 18.sp,
-                        color: blackBrownColor,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w600,
-                        height: 1.1,
-                        letterSpacing: -0.36,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(width: 3.69.w),
-                    Transform.translate(
-                      offset: Offset(0, -9.0.h),
-                      child: Container(
-                        width: 7.991.w,
-                        height: 7.991.h,
-                        decoration: BoxDecoration(
-                          color: yellowColor,
-                          shape: BoxShape.circle,
-                        ),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10.63.h),
+                SizedBox(height: 10),
                 Text(
-                  goal?.intro ?? '설명 없음', // 불러온 데이터의 설명 표시
+                  '건강한 이너뷰티',
                   style: TextStyle(
-                    fontSize: 12.sp,
-                    color: greyColor3,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                    height: 1.1,
-                    letterSpacing: -0.24,
+                    fontSize: 14,
+                    color: Colors.black54,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 22.42.h),
+                SizedBox(height: 40),
                 Container(
                   padding: EdgeInsets.only(
-                      left: 16.95.w,
-                      right: 16.95.w,
-                      top: 17.35.h,
-                      bottom: 35.23.h),
+                    left: 16.95.w,
+                    right: 16.95.w,
+                    top: 17.35.h,
+                    bottom: 35.23.h,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.r),
@@ -207,23 +189,21 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                       crossAxisSpacing: 10.75.w,
                     ),
                     itemBuilder: (context, index) {
-                      if (goal != null &&
-                          index < goal!.confirmResponses.length) {
-                        // 이미지 URL을 불러온 데이터의 confirmResponses에서 가져오기
+                      if (index < 27) { // 27개는 배경과 아이콘
                         return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: mainBrownColor2,
+                            color: Color(0xFFDFC4B6),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(7.18.w),
-                            child: Image.network(
-                              goal!.confirmResponses[index]
-                                  .imageUrl, // 동적으로 이미지 URL 표시                              fit: BoxFit.contain,
+                            child: SvgPicture.asset(
+                              'assets/paw.svg',
+                              fit: BoxFit.contain,
                             ),
                           ),
                         );
-                      } else {
+                      } else { // 나머지는 점선 동그라미
                         return DashedCircle(
                           size: 24.57.w,
                           color: mainBrownColor,
@@ -235,45 +215,42 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                 Spacer(),
               ],
             ),
-            Positioned(
-              bottom: 12.h,
-              right: 20.w,
-              child: customFloatingActionButton(
-                'assets/floating_action.svg',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Upload(), // 이동할 페이지
+            // 플로팅 액션 버튼
+                  Padding(
+                    padding:
+                        EdgeInsets.only(right: 20.w, left: 275.w, top: 578.h),
+                    child: customFloatingActionButton(
+                      'assets/floating_action.svg',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                Upload(), // 이동할 페이지
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
             Positioned(
-              top: 60.h,
-              left: 300.w,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CheckPageImage(
-                        token: token!,
-                        checkPageId: '1',
-                      ), // 이동할 페이지
-                    ),
-                  );
-                },
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                child: SvgPicture.asset(
-                  'assets/shuffle_icon.svg',
-                  width: 24.w,
-                  height: 24.h,
-                ),
-              ),
-            ),
+  top: 60.h,
+  left: 300.w,
+  child: GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CheckPageImage(token: '', checkPageId: ''),
+        ),
+      );
+    },
+    child: SvgPicture.asset(
+      'assets/shuffle_icon.svg',
+      width: 24.w,
+      height: 24.h,
+    ),
+  ),
+),
           ],
         ),
       ),

@@ -254,8 +254,6 @@ class _CheckPageImageState extends State<CheckPageImage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => CheckPageFoot(
-                        token: token!,
-                        checkPageId: '1',
                       ), // 이동할 페이지
                     ),
                   );
