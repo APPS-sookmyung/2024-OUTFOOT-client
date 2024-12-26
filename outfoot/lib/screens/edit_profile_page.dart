@@ -154,11 +154,11 @@ class EditProfile extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 264.h,
-            right: 42.w,
+            top: 230.h,
+            right: 135.w,
             child: Text(
-              ' ',
-              style: _textStyle(11, FontWeight.w400, mainBrownColor, -0.22),
+              '안녕하세요 만나서 반가워요',
+              style: _textStyle(11, FontWeight.w600, mainBrownColor, -0.22),  selectionColor: Colors.black,
             ),
           ),
           Positioned(
@@ -183,18 +183,20 @@ class EditProfile extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Container(
-                  width: double.infinity,
-                  height: 46.h,
-                  decoration: _boxDecoration(lightColor2),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
+  width: double.infinity,
+  height: 46.h,
+  decoration: _boxDecoration(lightColor2),
+  child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: TextField(
+      decoration: InputDecoration(
+        hintText: 'appsoutfoot.sookmyung.ac.kr',
+        border: InputBorder.none,
+      ),
+    ),
+  ),
+),
+
                 SizedBox(height: 16.h),
                 Text(
                   '비밀번호 변경',
