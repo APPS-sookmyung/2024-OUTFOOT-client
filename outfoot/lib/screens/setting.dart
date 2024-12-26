@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/widgets/dashed_line_painter.dart';
 import 'package:outfoot/widgets/switch.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingUI extends StatefulWidget {
   const SettingUI({super.key});
@@ -12,14 +13,14 @@ class SettingUI extends StatefulWidget {
 }
 
 class _SettingUIState extends State<SettingUI> {
-  static const double horizontalPadding = 20.0;
-  static const double verticalPadding = 18.0;
+  static double horizontalPadding = 20.0.w;
+  static double verticalPadding = 18.0.h;
   bool isNotificationEnabled = false;
 
   TextStyle _textStyle(double fontSize, FontWeight fontWeight, Color color,
       double letterSpacing, double height) {
     return TextStyle(
-      fontSize: fontSize,
+      fontSize: fontSize.sp,
       fontFamily: 'Pretendard',
       fontStyle: FontStyle.normal,
       fontWeight: fontWeight,
@@ -31,7 +32,7 @@ class _SettingUIState extends State<SettingUI> {
 
   BoxDecoration _boxDecoration(Color color, [List<BoxShadow>? boxShadow]) {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(10.0.r),
       color: color,
       boxShadow: boxShadow,
     );
@@ -63,12 +64,12 @@ class _SettingUIState extends State<SettingUI> {
             ),
           ],
         ),
-        SizedBox(height: 19),
+        SizedBox(height: 19.h),
         CustomPaint(
           size: Size(MediaQuery.of(context).size.width, 1),
           painter: DashedLinePainter(color: greyColor8),
         ),
-        SizedBox(height: 18),
+        SizedBox(height: 18.h),
       ],
     );
   }
@@ -78,39 +79,48 @@ class _SettingUIState extends State<SettingUI> {
     return Scaffold(
       backgroundColor: lightColor1, // Scaffold 전체 배경색을 설정
       appBar: AppBar(
-        backgroundColor: lightColor1, // AppBar 배경색을 설정
-        leading: _svgIcon('assets/icon/before_arrow.svg',
-            width: 17.38, height: 8.69),
-        centerTitle: true,
+        backgroundColor: lightMainColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            'assets/back_icon.svg',
+            width: 17.375,
+            height: 18.688,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text(
           '설정',
-          style: _textStyle(16.0, FontWeight.w600, greycolor0, -0.32, 0.8),
+          style: _textStyle(16, FontWeight.w600, greyColor1, 0.8, -0.28),
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         // SingleChildScrollView로 감싸서 스크롤 가능하게
         child: Column(
           children: [
-            SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Container(
-              width: 320,
-              height: 92,
+              width: 320.w,
+              height: 92.h,
               decoration: _boxDecoration(mainBrownColor2),
               child: Row(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(width: 27),
+                      SizedBox(width: 27.w),
                       Container(
-                        width: 25,
-                        height: 30,
+                        width: 25.w,
+                        height: 30.h,
                         child: _svgIcon(
                           'assets/bell.svg',
                           fit: BoxFit.contain,
                         ),
                       ),
-                      SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -120,7 +130,7 @@ class _SettingUIState extends State<SettingUI> {
                             style: _textStyle(11, FontWeight.w400,
                                 lightMainColor, -0.22, 0.8),
                           ),
-                          SizedBox(height: 6),
+                          SizedBox(height: 6.h),
                           Text(
                             '알림 수신 동의',
                             style: _textStyle(14, FontWeight.w600,
@@ -130,7 +140,7 @@ class _SettingUIState extends State<SettingUI> {
                       ),
                     ],
                   ),
-                  SizedBox(width: 50),
+                  SizedBox(width: 50.w),
                   CustomSwitch(
                     onCheckChange: (isShow) {
                       setState(() {
@@ -141,25 +151,25 @@ class _SettingUIState extends State<SettingUI> {
                 ],
               ),
             ),
-            SizedBox(height: 9),
+            SizedBox(height: 9.h),
             Container(
-              width: 320,
-              height: 60,
+              width: 320.w,
+              height: 60.h,
               decoration: _boxDecoration(yellowColor),
               child: Row(
                 children: [
                   Row(
                     children: [
-                      SizedBox(width: 25),
+                      SizedBox(width: 25.w),
                       Container(
-                        width: 22,
-                        height: 20,
+                        width: 22.w,
+                        height: 20.h,
                         child: _svgIcon(
                           'assets/crown.svg',
                           fit: BoxFit.contain,
                         ),
                       ),
-                      SizedBox(width: 21),
+                      SizedBox(width: 21.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -171,10 +181,10 @@ class _SettingUIState extends State<SettingUI> {
                           ),
                         ],
                       ),
-                      SizedBox(width: 34),
+                      SizedBox(width: 34.w),
                       Container(
-                        width: 52,
-                        height: 13.5,
+                        width: 52.w,
+                        height: 13.5.h,
                         child: _svgIcon(
                           'assets/logo_white.svg',
                           fit: BoxFit.contain,
@@ -185,12 +195,12 @@ class _SettingUIState extends State<SettingUI> {
                 ],
               ),
             ),
-            SizedBox(height: 21),
+            SizedBox(height: 21.h),
             CustomPaint(
               size: Size(MediaQuery.of(context).size.width, 2),
               painter: DashedLinePainter(color: greyColor8),
             ),
-            SizedBox(height: 17),
+            SizedBox(height: 17.h),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: horizontalPadding, vertical: verticalPadding),
@@ -205,12 +215,12 @@ class _SettingUIState extends State<SettingUI> {
                     style:
                         _textStyle(14, FontWeight.w400, greyColor1, -0.28, 1.2),
                   ),
-                  SizedBox(height: 19),
+                  SizedBox(height: 19.h),
                   CustomPaint(
                     size: Size(MediaQuery.of(context).size.width, 1),
                     painter: DashedLinePainter(color: greyColor8),
                   ),
-                  SizedBox(height: 18),
+                  SizedBox(height: 18.h),
                   buildRowWithDivider('개인정보 처리방침', '개인정보 처리방침을 확인해보세요'),
                   Text(
                     '이용약관',
