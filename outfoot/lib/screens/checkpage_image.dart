@@ -1,12 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart'; 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_drawing/path_drawing.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/view_single_api.dart';
 import 'package:outfoot/models/view_single_model.dart';
+import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
+import 'package:outfoot/screens/navigation_bar/material_top_navigation_bar.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:outfoot/services/data/checkpage_data.dart';
+
+// 이동 페이지
+import 'package:outfoot/screens/upload.dart';
+import 'package:outfoot/screens/checkpage_foot.dart';
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -48,11 +56,13 @@ class DashedCirclePainter extends CustomPainter {
       ..strokeWidth = 2;
 
     final Path path = Path()
-      ..addOval(Rect.fromCircle(center: Offset(radius, radius), radius: radius));
+      ..addOval(
+          Rect.fromCircle(center: Offset(radius, radius), radius: radius));
 
     final Path dashedPath = dashPath(
       path,
-      dashArray: CircularIntervalList<double>(<double>[dashLength, spaceLength]),
+      dashArray:
+          CircularIntervalList<double>(<double>[dashLength, spaceLength]),
     );
 
     canvas.drawPath(dashedPath, paint);
@@ -61,6 +71,7 @@ class DashedCirclePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
 class CheckPageImage extends StatefulWidget {
   final String token; // API 인증 토큰
   final String checkPageId; // 조회할 체크 페이지 ID
@@ -73,6 +84,7 @@ class CheckPageImage extends StatefulWidget {
 
 class _CheckPageImageState extends State<CheckPageImage> {
   ViewGoal? goal; // API에서 불러온 데이터를 저장할 변수
+  String? token;
 
   @override
   void initState() {
@@ -84,6 +96,12 @@ class _CheckPageImageState extends State<CheckPageImage> {
     final api = ViewSingleApi(dio: Dio());
     final fetchedGoal = await api.getGoal(widget.token, widget.checkPageId);
 
+    token = dotenv.env['TOKEN'];
+    if (token == null) {
+      debugPrint("Error: TOKEN is not defined in .env");
+      return;
+    }
+
     setState(() {
       goal = fetchedGoal; // 불러온 데이터를 상태에 저장
     });
@@ -92,25 +110,30 @@ class _CheckPageImageState extends State<CheckPageImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MeterialTopNavigationBar(
+        checkPageId: 1,
+        backgroundColor: lightColor2,
+      ),
       backgroundColor: lightColor2,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0.w),
         child: Stack(
           children: <Widget>[
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 16.83.w, vertical: 5.7.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
                     Data.date,  
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 11.sp,
                       color: blackBrownColor,
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w400,
@@ -120,14 +143,14 @@ class _CheckPageImageState extends State<CheckPageImage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 18.76),
+                SizedBox(height: 18.76.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       Data.title,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         color: blackBrownColor,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w600,
@@ -136,12 +159,12 @@ class _CheckPageImageState extends State<CheckPageImage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(width: 3.69),
+                    SizedBox(width: 3.69.w),
                     Transform.translate(
-                      offset: Offset(0, -9.0),
+                      offset: Offset(0, -9.0.h),
                       child: Container(
-                        width: 7.991,
-                        height: 7.991,
+                        width: 7.991.w,
+                        height: 7.991.h,
                         decoration: BoxDecoration(
                           color: yellowColor,
                           shape: BoxShape.circle,
@@ -150,11 +173,11 @@ class _CheckPageImageState extends State<CheckPageImage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10.63),
+                SizedBox(height: 10.63.h),
                 Text(
                   Data.intro,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: greyColor3,
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w400,
@@ -162,23 +185,28 @@ class _CheckPageImageState extends State<CheckPageImage> {
                     letterSpacing: -0.24,
                   ),
                 ),
-                SizedBox(height: 22.42),
+                SizedBox(height: 22.42.h),
                 Container(
-                  padding: EdgeInsets.only(left: 16.95, right: 16.95, top: 17.35, bottom: 35.23),
+                  padding: EdgeInsets.only(
+                      left: 16.95.w,
+                      right: 16.95.w,
+                      top: 17.35.h,
+                      bottom: 35.23.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: GridView.builder(
                     shrinkWrap: true,
-                    itemCount: 30, 
+                    itemCount: 30,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
-                      mainAxisSpacing: 10.63,
-                      crossAxisSpacing: 10.75,
+                      mainAxisSpacing: 10.63.h,
+                      crossAxisSpacing: 10.75.w,
                     ),
                     itemBuilder: (context, index) {
-                      if (goal != null && index < goal!.confirmResponses.length) {
+                      if (goal != null &&
+                          index < goal!.confirmResponses.length) {
                         // 이미지 URL을 불러온 데이터의 confirmResponses에서 가져오기
                         return Container(
                           decoration: BoxDecoration(
@@ -186,16 +214,17 @@ class _CheckPageImageState extends State<CheckPageImage> {
                             color: mainBrownColor2,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(7.18),
+                            padding: EdgeInsets.all(7.18.w),
                             child: Image.network(
-                              goal!.confirmResponses[index].imageUrl, // 동적으로 이미지 URL 표시                              fit: BoxFit.contain,
+                              goal!.confirmResponses[index]
+                                  .imageUrl, // 동적으로 이미지 URL 표시                              fit: BoxFit.contain,
                             ),
                           ),
                         );
                       } else {
                         return DashedCircle(
-                          size: 24.57, 
-                          color: mainBrownColor, 
+                          size: 24.57.w,
+                          color: mainBrownColor,
                         );
                       }
                     },
@@ -205,34 +234,48 @@ class _CheckPageImageState extends State<CheckPageImage> {
               ],
             ),
             Positioned(
-              bottom: 12,
-              right: 20, 
+              bottom: 12.h,
+              right: 20.w,
               child: customFloatingActionButton(
-              'assets/floating_action.svg',  
-              onPressed: () {
-                  // 플로팅 액션 버튼 동작
+                'assets/floating_action.svg',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Upload(), // 이동할 페이지
+                    ),
+                  );
                 },
-            ),
+              ),
             ),
             Positioned(
-              top: 60, 
-              left: 330, 
+              top: 60.h,
+              left: 300.w,
               child: FloatingActionButton(
                 onPressed: () {
-                  // 셔플 버튼 동작
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CheckPageFoot(
+                        token: token!,
+                        checkPageId: '1',
+                      ), // 이동할 페이지
+                    ),
+                  );
                 },
-                backgroundColor: Colors.transparent, 
+                backgroundColor: Colors.transparent,
                 elevation: 0,
                 child: SvgPicture.asset(
                   'assets/shuffle_icon.svg',
-                  width: 24,
-                  height: 24,
+                  width: 24.w,
+                  height: 24.h,
                 ),
               ),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 1),
     );
   }
 }

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/api/add_friend_api.dart';
 import 'package:outfoot/colors/colors.dart';
-import 'package:outfoot/models/add_friend_model.dart';
+import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
+import 'package:outfoot/api/add_friend_api.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddFriendPopup extends StatefulWidget {
-  const AddFriendPopup({Key? key}) : super(key: key);
+  final String memberId;
+  final String token;
+
+  const AddFriendPopup(
+      {required this.memberId, required this.token, super.key});
 
   @override
   _AddFriendPopupState createState() => _AddFriendPopupState();
@@ -13,102 +20,30 @@ class AddFriendPopup extends StatefulWidget {
 
 class _AddFriendPopupState extends State<AddFriendPopup> {
   final TextEditingController _codeController = TextEditingController();
-  final AddFriendApi _addFriend = AddFriendApi();
-  bool _isAdding = false;
+  final FriendService _friendService = FriendService();
+  String? _inviteCode;
+  bool _isLoading = false;
 
-  Future<void> _onAddFriend() async {
-    final friendCode = _codeController.text.trim();
-    final token = 'token'; // 인증 토큰 제공
-
-    if (friendCode.isEmpty) {
-      _showPopup('친구 코드를 입력해주세요.');
-      return;
-    }
-
-    setState(() {
-      _isAdding = true;
-    });
-
-    try {
-      final FriendResponse response =
-          await _addFriend.inviteCode(friendCode, token);
-
-      String message = response.message;
-      if (response.status == '400') {
-        switch (response.errorCode) {
-          case 'NOT_FRIEND_SELF':
-            message = "자기 자신을 친구로 추가할 수 없습니다.";
-            break;
-          case 'MEMBER_NOT_FOUND':
-            message = "존재하지 않는 회원입니다.";
-            break;
-          case 'FRIEND_DUPLICATED':
-            message = "이미 존재하는 친구입니다.";
-            break;
-          default:
-            message = response.message;
-        }
-      }
-
-      _showPopup(message);
-    } catch (e) {
-      _showPopup('오류가 발생했습니다: $e');
-    } finally {
-      setState(() {
-        _isAdding = false;
-      });
-    }
-  }
-
-  void _showPopup(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          title: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: _textStyle(16.0, FontWeight.w400, greyColor2, 0.8, -0.32),
-            ),
-          ),
-          actions: <Widget>[
-            Center(
-              child: TextButton(
-                child: Text(
-                  '닫기',
-                  style: _textStyle(
-                      16.0, FontWeight.w600, mainBrownColor, 0.8, -0.32),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
+  @override
+  void initState() {
+    super.initState();
+    _fetchInviteCode();
   }
 
   TextStyle _textStyle(double fontSize, FontWeight fontWeight, Color color,
-      double height, double letterSpacing) {
+      double letterSpacing) {
     return TextStyle(
-      fontSize: fontSize,
+      fontSize: fontSize.sp,
       fontFamily: 'Pretendard',
       fontWeight: fontWeight,
       color: color,
-      height: height,
       letterSpacing: letterSpacing,
     );
   }
 
   BoxDecoration _boxDecoration(Color color, [List<BoxShadow>? boxShadow]) {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(10.0.r),
       color: color,
       boxShadow: boxShadow,
     );
@@ -124,78 +59,341 @@ class _AddFriendPopupState extends State<AddFriendPopup> {
     );
   }
 
+  void _copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text));
+  }
+
+  void _fetchInviteCode() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final inviteCode = await _friendService.fetchInviteCode(widget.token);
+      setState(() {
+        _inviteCode = inviteCode ?? "코드를 불러올 수 없습니다.";
+      });
+    } catch (e) {
+      print("초대 코드 가져오기 실패: $e");
+      setState(() {
+        _inviteCode = "코드를 불러올 수 없습니다.";
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _addFriend() async {
+    final code = _codeController.text.trim();
+    if (code.isEmpty) {
+      _showPopup(context, "코드를 입력해주세요.");
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final response =
+        await _friendService.addFriend(widget.memberId, code, widget.token);
+    print("addFriend 메서드 반환값: $response");
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    switch (response) {
+      case "200":
+        _showPopup(context, "친구 추가에 성공하였습니다!");
+        break;
+      case "400_self":
+        _showPopup(context, "자기 자신은 친구로 추가할 수 없습니다.");
+        break;
+      case "400_not_exist":
+        _showPopup(context, "존재하지 않는 친구 코드입니다.");
+        break;
+      case "400_already_friend":
+        _showPopup(context, "이미 추가된 친구입니다.");
+        break;
+      case "400_unknown":
+        _showPopup(context, "알 수 없는 오류가 발생했습니다. 다시 시도해주세요.");
+        break;
+      default:
+        _showPopup(context, "네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  }
+
+  void _showPopup(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          contentPadding: EdgeInsets.all(16.0.w),
+          title: Text(
+            message,
+            textAlign: TextAlign.center,
+            style: _textStyle(16.0, FontWeight.w500, greyColor1, -0.28),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                '닫기',
+                style: _textStyle(14.0, FontWeight.w600, mainBrownColor, -0.22),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      backgroundColor: lightColor1,
+      backgroundColor: lightMainColor,
       appBar: AppBar(
-        backgroundColor: lightColor1,
-        leading: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: _svgIcon('assets/icon/before_arrow.svg',
-              width: 17.0, height: 8.0),
+        backgroundColor: lightMainColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            'assets/back_icon.svg',
+            width: 17.375.w,
+            height: 18.688.h,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-        centerTitle: true,
         title: Text(
           '친구 추가하기',
-          style: _textStyle(16.0, FontWeight.w600, greyColor1, 0.8, -0.32),
+          style: _textStyle(16, FontWeight.w600, greyColor1, -0.28),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(left: 27.0.w, top: 27.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    '내 코드 공유하기',
+                    style: _textStyle(14.0, FontWeight.w500, greyColor1, -0.28),
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      '내 코드를 공유해 친구를 초대하세요',
+                      style:
+                          _textStyle(11.0, FontWeight.w400, greyColor2, -0.22),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+              _buildInviteCodeCard(screenWidth, screenHeight),
+              SizedBox(height: 16.h),
+              Center(
+                child: SvgPicture.asset(
+                  'assets/arrow.svg',
+                  width: screenWidth * 0.05.w,
+                  height: screenHeight * 0.03.h,
+                ),
+              ),
+              SizedBox(height: 32.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    '친구 추가하기',
+                    style: _textStyle(14.0, FontWeight.w500, greyColor1, -0.28),
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      '추가할 친구 코드를 입력하세요',
+                      style:
+                          _textStyle(11.0, FontWeight.w400, greyColor2, -0.22),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+              _buildFriendCodeInput(screenWidth, screenHeight),
+              SizedBox(height: 16.h),
+              GestureDetector(
+                onTap: _isLoading ? null : _addFriend,
+                child: Container(
+                  width: screenWidth * 0.85.w,
+                  height: screenHeight * 0.06.h,
+                  decoration: BoxDecoration(
+                    color: mainBrownColor,
+                    borderRadius: BorderRadius.circular(10.0.r),
+                  ),
+                  child: Center(
+                    child: _isLoading
+                        ? CircularProgressIndicator(color: Colors.white)
+                        : Text(
+                            "추가하기",
+                            style: _textStyle(
+                                16.0, FontWeight.w600, lightMainColor, -0.28),
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      body: _isAdding
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 24.0),
-                    Text(
-                      '내 코드 공유하기',
-                      style: _textStyle(
-                          14.0, FontWeight.w500, greyColor1, 1.2, -0.28),
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 2),
+    );
+  }
+
+  Widget _buildInviteCodeCard(double screenWidth, double screenHeight) {
+    return Container(
+      width: screenWidth * 0.85.w,
+      height: screenHeight * 0.18.h,
+      decoration: BoxDecoration(
+        color: darkBrownColor,
+        borderRadius: BorderRadius.circular(10.0.r),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: screenHeight * 0.03.h,
+            left: screenWidth * 0.08.w,
+            child: Text(
+              '친구를 초대해보세요',
+              style: TextStyle(
+                fontSize: screenWidth * 0.03,
+                fontWeight: FontWeight.w400,
+                color: lightMainColor,
+                letterSpacing: -0.22,
+              ),
+            ),
+          ),
+          Positioned(
+            top: screenHeight * 0.05.h,
+            left: screenWidth * 0.08.w,
+            child: Text(
+              '내 코드',
+              style: TextStyle(
+                fontSize: screenWidth * 0.035,
+                fontWeight: FontWeight.w500,
+                color: lightMainColor,
+                letterSpacing: -0.28,
+              ),
+            ),
+          ),
+          Positioned(
+            top: screenHeight * 0.12.h,
+            left: screenWidth * 0.08.w,
+            child: Row(
+              children: [
+                Text(
+                  _inviteCode ?? 'A29NB67',
+                  style:
+                      _textStyle(20.0, FontWeight.w600, lightMainColor, -0.4),
+                ),
+                SizedBox(width: screenWidth * 0.02.w),
+                GestureDetector(
+                  onTap: () =>
+                      _copyToClipboard(_inviteCode ?? '초대 코드를 불러올 수 없습니다.'),
+                  child: _svgIcon('assets/icon/copy.svg',
+                      width: screenWidth * 0.05.w,
+                      height: screenHeight * 0.03.h),
+                ),
+                SizedBox(width: screenWidth * 0.02.w),
+                GestureDetector(
+                  onTap: () =>
+                      _copyToClipboard(_inviteCode ?? '초대 코드를 불러올 수 없습니다.'),
+                  child: Text(
+                    '복사하기',
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.03,
+                      fontWeight: FontWeight.w400,
+                      color: lightMainColor,
+                      letterSpacing: -0.22,
                     ),
-                    const SizedBox(height: 20.0),
-                    Container(
-                      width: 320.0,
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: _boxDecoration(beigeColor),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '친구에게 받은 코드를 입력하세요.',
-                            style: _textStyle(
-                                12.0, FontWeight.w400, greyColor2, 0.8, -0.22),
-                          ),
-                          const SizedBox(height: 8.0),
-                          TextField(
-                            controller: _codeController,
-                            decoration: InputDecoration(
-                              hintText: '친구 코드 입력',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    GestureDetector(
-                      onTap: _onAddFriend,
-                      child: Container(
-                        width: 320.0,
-                        height: 50.0,
-                        alignment: Alignment.center,
-                        decoration: _boxDecoration(mainBrownColor),
-                        child: Text(
-                          '추가하기',
-                          style: _textStyle(16.0, FontWeight.w600,
-                              lightMainColor, 0.8, -0.28),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: screenHeight * 0.07.h,
+            left: screenWidth * 0.55.w,
+            child: _svgIcon('assets/icon/logo_basic.svg',
+                width: screenWidth * 0.05.w, height: screenHeight * 0.03.h),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFriendCodeInput(double screenWidth, double screenHeight) {
+    return Container(
+      width: screenWidth * 0.85.w,
+      height: screenHeight * 0.18.h,
+      decoration: BoxDecoration(
+        color: beigeColor,
+        borderRadius: BorderRadius.circular(10.0.r),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              '친구에게 받은 코드를 입력해주세요',
+              style: _textStyle(11.0, FontWeight.w400, greyColor2, -0.22),
+            ),
+            SizedBox(height: screenHeight * 0.01.h),
+            Text(
+              '친구 코드',
+              style: _textStyle(14.0, FontWeight.w500, greyColor1, -0.28),
+            ),
+            SizedBox(height: screenHeight * 0.02.h),
+            Container(
+              width: double.infinity,
+              height: screenHeight * 0.05.h,
+              decoration: BoxDecoration(
+                color: lightColor2,
+                borderRadius: BorderRadius.circular(10.0.r),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03.w),
+                child: TextField(
+                  controller: _codeController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '친구 코드 입력',
+                    hintStyle:
+                        _textStyle(12.0, FontWeight.w400, greyColor4, -0.28),
+                  ),
                 ),
               ),
             ),
+          ],
+        ),
+      ),
     );
   }
 }

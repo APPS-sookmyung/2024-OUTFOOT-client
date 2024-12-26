@@ -39,6 +39,8 @@ dependencies:
   flutter_svg: ^1.0.3
   http: ^0.13.4
   provider: ^6.1.2
+  shared_preferences: ^2.0.15
+  flutter_screenutil: ^5.9.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -102,6 +104,9 @@ flutter:
     - assets/logo_white.svg
     - assets/bell.svg
     - assets/crown.svg
+    - assets/stamp.svg
+
+    - assets/animal_illust/polarBear.svg
 
     - assets/config/.env
     - assets/testImg.png

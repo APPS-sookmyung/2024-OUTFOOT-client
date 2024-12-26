@@ -2,28 +2,71 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
 
+// 이동 페이지
+import 'package:outfoot/screens/home_page.dart';
+import 'package:outfoot/screens/profile_my_page.dart';
+import 'package:outfoot/screens/checkpage_foot.dart';
+
 class CustomBottomNavigationBar extends StatefulWidget {
+  final int selectedIndex;
+
+  const CustomBottomNavigationBar({
+    Key? key,
+    this.selectedIndex = 0, // 기본값은 0
+  }) : super(key: key);
+
   @override
   _CustomBottomNavigationBarState createState() =>
       _CustomBottomNavigationBarState();
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex; // 초기값 설정
+  }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    switch (index) {
+      case 0: // 둘러보기
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CheckPageFoot(
+                    token:
+                        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6ImZmOTdmYTc1LTE1ODMtNGMxNi04ZjZmLWJjZTQyM2RlMDYxMCIsIm5pY2tuYW1lIjoi7KCV7ISc7JewIiwiaWF0IjoxNzM1MDkzMDA0LCJleHAiOjE3MzUxMDAyMDR9.6XdQxmfXW8Gn2a9L9u1iqTuaV47eoASnrYxz8Cj5x24OqZJ6mgSvOgBDgct6jxV0',
+                    checkPageId: '1',
+                    goalImagePath: 'default_image_path',
+                  )), // 둘러보기 페이지
+        );
+        break;
+      case 1: // 홈
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+        break;
+      case 2: // 마이페이지
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfileMyPage()),
+        );
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 360.0,
+      width: double.infinity,
       height: 84.0,
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -42,6 +85,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           topRight: Radius.circular(16),
         ),
         child: BottomNavigationBar(
+          backgroundColor: lightMainColor, // 여기에 배경색을 설정
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: _buildCustomItem(
@@ -71,24 +115,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           currentIndex: _selectedIndex,
           selectedItemColor: mainBrownColor,
           unselectedItemColor: greyColor6,
-          backgroundColor: Colors.white, // 배경 색상을 명시적으로 설정
           onTap: _onItemTapped,
-          selectedLabelStyle: TextStyle(
-            fontSize: 11,
-            fontFamily: 'Pretendard',
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w500,
-            height: 1.1,
-            letterSpacing: -0.22,
-          ),
-          unselectedLabelStyle: TextStyle(
-            fontSize: 11,
-            fontFamily: 'Pretendard',
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w500,
-            height: 1.1,
-            letterSpacing: -0.22,
-          ),
           showSelectedLabels: false,
           showUnselectedLabels: false,
         ),
@@ -127,11 +154,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 }
 
-// void main() {
-//   runApp(MaterialApp(
-//     home: Scaffold(
-//       body: Center(child: Text("Main Content")),
-//       bottomNavigationBar: CustomBottomNavigationBar(),
-//     ),
-//   ));
-// }
+void main() {
+  runApp(MaterialApp(
+    home: Scaffold(
+      body: Center(child: Text("Main Content")),
+      bottomNavigationBar: CustomBottomNavigationBar(),
+    ),
+  ));
+}

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/services/data/homepage_data.dart';
 import '/widgets/custom_floating_action_button.dart';
 import '/widgets/target_view.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
+import 'package:outfoot/screens/navigation_bar/top_navigation_bar.dart';
 import 'package:outfoot/services/data/homepage_data.dart';
+
+// 이동 페이지 import
+import 'package:outfoot/screens/make_goal/make_personal_goal.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -43,127 +49,177 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isGroupGoalSelected = true;
+  bool _isGroupGoalSelected = false;
 
   @override
   Widget build(BuildContext context) {
+    // ScreenUtil 초기화 후 화면 크기 비례를 위한 변수 설정
     double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: lightColor1,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isGroupGoalSelected = true;
-                        });
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '그룹 목표',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: _isGroupGoalSelected
-                                  ? milkBrownColor1
-                                  : greyColor4,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.1,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                          SizedBox(height: 17),
-                          _isGroupGoalSelected
-                              ? Container(
-                                  width: 165,
-                                  height: 4,
-                                  color: milkBrownColor1,
-                                )
-                              : CustomPaint(
-                                  painter: DashedLinePainter(),
-                                  size: Size(screenWidth * 0.4, 0),
+
+    return ScreenUtilInit(
+      designSize: Size(375, 812),
+      builder: (context, child) {
+        return Scaffold(
+          appBar: TopNavigationBar(checkPageId: 1), // 예시로 ID 1 전달
+          backgroundColor: lightColor1,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 10.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isGroupGoalSelected = true;
+                            });
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '그룹 목표',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: _isGroupGoalSelected
+                                      ? milkBrownColor1
+                                      : greyColor4,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.1,
+                                  letterSpacing: -0.32,
                                 ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isGroupGoalSelected = false;
-                        });
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '내 목표',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: !_isGroupGoalSelected
-                                  ? milkBrownColor1
-                                  : greyColor4,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.1,
-                              letterSpacing: -0.32,
-                            ),
+                              ),
+                              SizedBox(height: 17.h),
+                              _isGroupGoalSelected
+                                  ? Container(
+                                      width: 165.w,
+                                      height: 4.h,
+                                      color: milkBrownColor1,
+                                    )
+                                  : CustomPaint(
+                                      painter: DashedLinePainter(),
+                                      size: Size(screenWidth * 0.4, 0),
+                                    ),
+                            ],
                           ),
-                          SizedBox(height: 17),
-                          !_isGroupGoalSelected
-                              ? Container(
-                                  width: 165,
-                                  height: 4,
-                                  color: milkBrownColor1,
-                                )
-                              : CustomPaint(
-                                  painter: DashedLinePainter(),
-                                  size: Size(screenWidth * 0.4, 0),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isGroupGoalSelected = false;
+                            });
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '내 목표',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: !_isGroupGoalSelected
+                                      ? milkBrownColor1
+                                      : greyColor4,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.1,
+                                  letterSpacing: -0.32,
                                 ),
-                        ],
-                      ),
+                              ),
+                              SizedBox(height: 17.h),
+                              !_isGroupGoalSelected
+                                  ? Container(
+                                      width: 165.w,
+                                      height: 4.h,
+                                      color: milkBrownColor1,
+                                    )
+                                  : CustomPaint(
+                                      painter: DashedLinePainter(),
+                                      size: Size(screenWidth * 0.4, 0),
+                                    ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 24),
-              Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Container(
-                  width: 330,
-                  height: 113,
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: lightColor,
-                    borderRadius: BorderRadius.circular(10),
                   ),
+                  SizedBox(height: 24.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: Container(
+                      width: 330.w,
+                      height: 113.h,
+                      padding: EdgeInsets.all(16.0.w),
+                      decoration: BoxDecoration(
+                        color: lightColor,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: ProgressCard(
+                        startDate: '2024-01-01',
+                        title: 'OUTFOOT 백엔드 모각코',
+                        progressPercentage: 78,
+                        assetPath: 'assets/lock_icon.svg',
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.sp),
+                    child: Container(
+                      width: 330.w,
+                      height: 113.h,
+                      padding: EdgeInsets.all(16.0.sp),
+                      decoration: BoxDecoration(
+                        color: lightColor2,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: ProgressCard(
+                        startDate: '2024-01-01',
+                        title: 'OUTFOOT 백엔드 모각코',
+                        progressPercentage: 78,
+                        assetPath: '',
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.sp),
+                    child: Container(
+                      width: 330.w,
+                      height: 113.h,
+                      padding: EdgeInsets.all(16.0.sp),
+                      decoration: BoxDecoration(
+                        color: lightColor2,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
                   child: ProgressCard(
                     startDate: dataList[0].date,
                     title: dataList[0].title,
                     progressPercentage: 78,
                     assetPath: 'assets/lock_icon.svg',
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(height: 8),
-              Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Container(
-                  width: 330,
-                  height: 113,
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: lightColor2,
-                    borderRadius: BorderRadius.circular(10),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(right: 20.w, left: 275.w, top: 100.h),
+                    child: customFloatingActionButton(
+                      'assets/floating_action.svg',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MakePersonalGoalPage(), // 이동할 페이지
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   child: ProgressCard(
                     startDate: dataList[1].date,
@@ -200,11 +256,10 @@ class _HomePageState extends State<HomePage> {
                   // 플로팅 액션 버튼 동작
                 },
             ),
-            ),
-            ],
           ),
-        ),
-      ),
+          bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 1),
+        );
+      },
     );
   }
 }

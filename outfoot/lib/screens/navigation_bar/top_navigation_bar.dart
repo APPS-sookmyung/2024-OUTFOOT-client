@@ -20,11 +20,12 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: lightColor1,
       elevation: 0,
       title: SvgPicture.asset(
-        'assets/logo.svg',
+        'assets/start_login_logo.svg',
         width: 118,
         height: 33,
       ),
       centerTitle: false,
+      leading: null,
       actions: <Widget>[
         IconButton(
           icon: _buildCustomItem(

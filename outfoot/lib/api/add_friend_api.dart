@@ -1,19 +1,21 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:outfoot/models/add_friend_model.dart';
 
-class AddFriendApi {
-  final Dio _dio = Dio();
+class FriendService {
+  final Dio dio = Dio();
+  final String? baseUrl = dotenv.env['BASE_URL'];
 
-  /// 친구 추가 API 요청
-  Future<FriendResponse> inviteCode(String code, String token) async {
-    final String? baseUrl = dotenv.env['BASE_URL'];
-
+  /// 친구 추가 API
+  Future<String> addFriend(String memberId, String code, String token) async {
     try {
-      print("Request URL: $baseUrl/friends?code=$code");
+      final url = '$baseUrl/friends?code=$code';
+      print("친구 추가 요청 시작");
+      print("Request URL: $url");
+      print("Request Headers: Authorization: Bearer $token");
 
-      final response = await _dio.post(
-        '$baseUrl/friends?code=$code',
+      final response = await dio.post(
+        url,
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -23,49 +25,104 @@ class AddFriendApi {
       );
 
       if (response.statusCode == 200) {
-        print("API 성공: 친구 추가 완료");
-        return FriendResponse(
-          status: '200',
-          message: '친구 추가에 성공하였습니다.',
-        );
+        return '200'; // 친구 추가 성공
       } else if (response.statusCode == 400) {
-        final error = response.data['error'] ?? '알 수 없는 오류';
-        print("API 400 오류: $error");
-        return FriendResponse(
-          status: '400',
-          message: '친구 추가 실패',
-          errorCode: error,
-        );
-      } else {
-        print("API 알 수 없는 상태 코드: ${response.statusCode}");
-        return FriendResponse(
-          status: response.statusCode.toString(),
-          message: '알 수 없는 상태 코드',
-        );
-      }
-    } on DioError catch (e) {
-      if (e.response != null) {
-        final statusCode = e.response?.statusCode.toString() ?? 'unknown';
-        final errorMessage = e.response?.data['message'] ?? 'Unknown error';
-        print("DioError 발생: 상태 코드: $statusCode, 메시지: $errorMessage");
+        final errorBody =
+            response.data is String ? jsonDecode(response.data) : response.data;
 
-        return FriendResponse(
-          status: statusCode,
-          message: errorMessage,
-        );
+        print("에러 응답 본문: $errorBody");
+
+        // 에러 코드에 따라 반환 값 설정
+        final errorCode = errorBody['response']?['errorCode'];
+        switch (errorCode) {
+          case 'NOT_FRIEND_SELF':
+            return '400_self';
+          case 'MEMBER_NOT_FOUND':
+            return '400_not_exist';
+          case 'FRIEND_DUPLICATED':
+            return '400_already_friend';
+          default:
+            print("알 수 없는 에러 코드: $errorCode");
+            return '400_unknown';
+        }
+      }
+
+      print("예상치 못한 상태 코드: ${response.statusCode}");
+      return '500'; // Unknown server error
+    } catch (e) {
+      if (e is DioException) {
+        print("DioException 발생: ${e.message}");
+        if (e.response != null) {
+          print("상태 코드: ${e.response?.statusCode}");
+          print("응답 데이터: ${e.response?.data}");
+
+          // 서버에서 반환된 데이터 처리
+          if (e.response?.statusCode == 400) {
+            final errorBody = e.response?.data;
+            final errorCode = errorBody['response']?['errorCode'];
+            switch (errorCode) {
+              case 'NOT_FRIEND_SELF':
+                return '400_self';
+              case 'MEMBER_NOT_FOUND':
+                return '400_not_exist';
+              case 'FRIEND_DUPLICATED':
+                return '400_already_friend';
+              default:
+                print("알 수 없는 에러 코드: $errorCode");
+                return '400_unknown';
+            }
+          }
+        } else {
+          print("서버에 도달하지 못함: ${e.message}");
+        }
       } else {
-        print("DioError 네트워크 오류: ${e.message}");
-        return FriendResponse(
-          status: 'error_network',
-          message: '네트워크 오류 발생',
-        );
+        print("알 수 없는 오류 발생: $e");
+      }
+      return 'network_error';
+    }
+  }
+
+  /// 초대 코드 가져오기 API
+  Future<String?> fetchInviteCode(String token) async {
+    try {
+      // 요청 정보 출력
+      print("초대 코드 요청 시작");
+      final requestUrl = '$baseUrl/my';
+      print("Request URL: $requestUrl");
+      print("Request Headers: Authorization: Bearer $token");
+
+      final response = await dio.get(
+        requestUrl,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        print("초대 코드 응답 데이터: $data");
+        return data['response']['code']; // 서버에서 반환된 초대 코드
+      } else {
+        print("초대 코드 요청 실패: 상태 코드 ${response.statusCode}");
+        return null;
       }
     } catch (e) {
-      print("예상치 못한 오류: $e");
-      return FriendResponse(
-        status: 'error_unknown',
-        message: '예상치 못한 오류 발생',
-      );
+      // DioException 처리
+      if (e is DioException) {
+        print("DioException 발생: ${e.message}");
+        if (e.response != null) {
+          print("상태 코드: ${e.response?.statusCode}");
+          print("응답 데이터: ${e.response?.data}");
+        } else {
+          print("서버에 도달하지 못함: ${e.message}");
+        }
+      } else {
+        print("알 수 없는 오류 발생: $e");
+      }
+      return null; // 요청 실패 시 null 반환
     }
   }
 }

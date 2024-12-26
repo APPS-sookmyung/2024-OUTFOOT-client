@@ -12,6 +12,7 @@ import 'package:outfoot/services/data/memo_data.dart';
 import 'package:outfoot/utils/goal_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -193,31 +194,31 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
       backgroundColor: lightColor1,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               // 기존 UI 유지
               Padding(
-                padding: EdgeInsets.only(left: 12),
+                padding: EdgeInsets.only(left: 12.w),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 19.64,
-                        vertical: 20.37,
+                        horizontal: 19.64.w,
+                        vertical: 20.37.h,
                       ),
                       decoration: BoxDecoration(
                         color: mainBrownColor,
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(30.r),
                       ),
                       child: Center(
                         child: Text(
                           (Data.name)[0],
                           style: TextStyle(
-                            fontSize: 13.834,
+                            fontSize: 13.834.sp,
                             color: Colors.white,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w600,
@@ -227,17 +228,17 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 17.03),
+                    SizedBox(width: 17.03.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(top: 11),
+                            padding: EdgeInsets.only(top: 11.w),
                             child: Text(
                               Data.name,
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 color: greyColor1,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w500,
@@ -246,13 +247,13 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5.5),
+                          SizedBox(height: 5.5.h),
                           Text(
                             goalProvider.content.isNotEmpty
                                 ? goalProvider.content
                                 : Data.myintro,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               color: greyColor1,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w400,
@@ -266,15 +267,15 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Stack(
                 children: [
                   // 이미지
                   Align(
                     alignment: Alignment.center,
                     child: Container(
-                      width: 320,
-                      height: 212,
+                      width: 320.w,
+                      height: 212.h,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: goalProvider.isAssetImage ||
@@ -284,7 +285,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               : NetworkImage(goalProvider.imagePath!),
                           fit: BoxFit.cover,
                         ),
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(15.r),
                       ),
                     ),
                   ),
@@ -292,10 +293,10 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   Align(
                     alignment: Alignment.center,
                     child: Container(
-                      width: 320,
-                      height: 212,
+                      width: 320.w,
+                      height: 212.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(15.r),
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -309,24 +310,24 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ),
                   // 텍스트
                   Padding(
-                    padding: EdgeInsets.only(left: 35.0, top: 15),
+                    padding: EdgeInsets.only(left: 35.0.w, top: 15.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // 날짜
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 16.83, vertical: 5.7),
+                              horizontal: 16.83.w, vertical: 5.7.h),
                           decoration: BoxDecoration(
                             color: lightColor2.withOpacity(1),
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(6.r),
                           ),
                           child: Text(
                             goalProvider.date.isNotEmpty
                                 ? goalProvider.date
                                 : Data.date1,
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 11.sp,
                               color: blackBrownColor,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w400,
@@ -335,7 +336,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 18.76),
+                        SizedBox(height: 18.76.h),
                         // 제목
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -345,7 +346,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ? goalProvider.title
                                   : Data.title,
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 color: yellowColor2,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w600,
@@ -353,12 +354,12 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                 letterSpacing: -0.36,
                               ),
                             ),
-                            SizedBox(width: 3.69),
+                            SizedBox(width: 3.69.w),
                             Transform.translate(
-                              offset: Offset(0, -9.0),
+                              offset: Offset(0, -9.0.h),
                               child: Container(
-                                width: 7.991,
-                                height: 7.991,
+                                width: 7.991.w,
+                                height: 7.991.h,
                                 decoration: BoxDecoration(
                                   color: yellowColor,
                                   shape: BoxShape.circle,
@@ -367,14 +368,14 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10.63),
+                        SizedBox(height: 10.63.h),
                         // 내용
                         Text(
                           goalProvider.content.isNotEmpty
                               ? goalProvider.intro
                               : Data.intro,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: greyColor3,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w400,
@@ -387,14 +388,14 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ),
                   // 좋아요/싫어요 박스
                   Positioned(
-                    left: 200,
-                    top: 165,
+                    left: 200.w,
+                    top: 165.h,
                     child: Container(
-                      width: 98.774,
-                      height: 28.871,
+                      width: 98.774.w,
+                      height: 28.871.h,
                       decoration: BoxDecoration(
                         color: Color.fromARGB(51, 42, 42, 42),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -403,15 +404,15 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                             onTap: toggleLike,
                             child: SvgPicture.asset(
                               'assets/admit.svg',
-                              width: 10,
-                              height: 14,
+                              width: 10.w,
+                              height: 14.h,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text(
                             '$likeCount',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               color: Colors.white,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w500,
@@ -419,20 +420,20 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                               letterSpacing: -0.24,
                             ),
                           ),
-                          SizedBox(width: 10),
+                          SizedBox(width: 10.w),
                           GestureDetector(
                             onTap: toggleDislike,
                             child: SvgPicture.asset(
                               'assets/no_admit.svg',
-                              width: 10,
-                              height: 14,
+                              width: 10.w,
+                              height: 14.h,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text(
                             '$dislikeCount',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               color: Colors.white,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w500,
@@ -446,27 +447,27 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 15.h),
               Padding(
-                padding: EdgeInsets.only(left: 20.3, right: 19.8),
+                padding: EdgeInsets.only(left: 20.3.w, right: 19.8.w),
                 child: Container(
-                  width: 319.921,
-                  height: 150.685,
+                  width: 319.921.w,
+                  height: 150.685.h,
                   decoration: BoxDecoration(
                     color: lightColor2,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Column(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.only(top: 19.91, left: 16.5, right: 170),
+                        padding: EdgeInsets.only(
+                            top: 19.91.h, left: 16.5.w, right: 170.w),
                         child: Text(
                           goalProvider.contentTitle.isNotEmpty
                               ? goalProvider.contentTitle
                               : Data.content1,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             color: greyColor1,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w400,
@@ -475,17 +476,17 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 14),
+                      SizedBox(height: 14.h),
                       Container(
-                        width: 294.058,
-                        height: 0,
+                        width: 294.058.w,
+                        height: 0.h,
                         child: CustomPaint(
                           painter: DashedLinePainter(),
                         ),
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(top: 2, left: 21.67),
+                          padding: EdgeInsets.only(top: 2.h, left: 21.67.w),
                           child: TextField(
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -493,7 +494,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ? goalProvider.content
                                   : Data.content2,
                               hintStyle: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: greyColor1,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w400,
@@ -505,13 +506,13 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 15, left: 228),
+                        padding: EdgeInsets.only(bottom: 15.h, left: 228.w),
                         child: Text(
                           goalProvider.date.isNotEmpty
                               ? goalProvider.date
                               : Data.date1 + '작성됨',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 11.sp,
                             color: mainBrownColor,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w400,
@@ -523,21 +524,21 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ),
                 ),
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 24.h),
               Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 20.w),
                 child: CustomPaint(
                   painter: DashedLinePainter(),
-                  size: Size(320, 0),
+                  size: Size(320.w, 0.h),
                 ),
               ),
-              SizedBox(height: 29),
+              SizedBox(height: 29.h),
               Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 20.w),
                 child: Text(
                   '댓글 4개',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     color: greyColor1,
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w400,
@@ -546,32 +547,32 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                   ),
                 ),
               ),
-              SizedBox(height: 11),
+              SizedBox(height: 11.h),
 // 댓글 리스트
               // 첫 번째 댓글
               Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 20.w),
                 child: Container(
-                  width: 319.921,
-                  height: 71.224,
+                  width: 319.921.w,
+                  height: 71.224.h,
                   decoration: BoxDecoration(
                     color: lightColor2,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                  padding: EdgeInsets.only(left: 20.3, right: 19.8),
+                  padding: EdgeInsets.only(left: 20.3.w, right: 19.8.h),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0.w),
                     child: Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(-15, -17),
+                          offset: Offset(-15.w, -17.h),
                           child: SvgPicture.asset(
                             'assets/paw_another.svg',
-                            width: 16,
-                            height: 16,
+                            width: 16.w,
+                            height: 16.h,
                           ),
                         ),
-                        SizedBox(width: 0),
+                        SizedBox(width: 0.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -582,7 +583,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                     child: Text(
                                       dataList[0].nickname,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                         color: greyColor1,
                                         fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.w500,
@@ -591,11 +592,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 7),
+                                  SizedBox(width: 7.w),
                                   Text(
                                     dataList[0].date,
                                     style: TextStyle(
-                                      fontSize: 11,
+                                      fontSize: 11.sp,
                                       color: greyColor4,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
@@ -605,11 +606,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 4),
+                              SizedBox(height: 4.h),
                               Text(
                                 dataList[0].comment,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   color: greyColor1,
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.w400,
@@ -626,32 +627,32 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                 ),
               ),
 
-              SizedBox(height: 11),
+              SizedBox(height: 11.h),
 
 // 두 번째 댓글
               Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 20.w),
                 child: Container(
-                  width: 319.921,
-                  height: 71.224,
+                  width: 319.921.w,
+                  height: 71.224.h,
                   decoration: BoxDecoration(
                     color: lightColor2,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                  padding: EdgeInsets.only(left: 20.3, right: 19.8),
+                  padding: EdgeInsets.only(left: 20.3.w, right: 19.8.w),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0.w),
                     child: Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(-15, -17),
+                          offset: Offset(-15.w, -17.h),
                           child: SvgPicture.asset(
                             'assets/paw_another.svg',
-                            width: 16,
-                            height: 16,
+                            width: 16.w,
+                            height: 16.h,
                           ),
                         ),
-                        SizedBox(width: 0),
+                        SizedBox(width: 0.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -662,7 +663,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                     child: Text(
                                       dataList[1].nickname,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                         color: greyColor1,
                                         fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.w500,
@@ -671,11 +672,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 7),
+                                  SizedBox(width: 7.w),
                                   Text(
                                     dataList[1].date,
                                     style: TextStyle(
-                                      fontSize: 11,
+                                      fontSize: 11.sp,
                                       color: greyColor4,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
@@ -685,11 +686,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 4),
+                              SizedBox(height: 4.h),
                               Text(
                                 dataList[1].comment,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   color: greyColor1,
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.w400,
@@ -706,32 +707,32 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                 ),
               ),
 
-              SizedBox(height: 11),
+              SizedBox(height: 11.h),
 
 // 세 번째 댓글
               Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 20.w),
                 child: Container(
-                  width: 319.921,
-                  height: 71.224,
+                  width: 319.921.w,
+                  height: 71.224.h,
                   decoration: BoxDecoration(
                     color: lightColor2,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                  padding: EdgeInsets.only(left: 20.3, right: 19.8),
+                  padding: EdgeInsets.only(left: 20.3.w, right: 19.8.w),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0.w),
                     child: Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(-15, -17),
+                          offset: Offset(-15.w, -17.h),
                           child: SvgPicture.asset(
                             'assets/paw_another.svg',
-                            width: 16,
-                            height: 16,
+                            width: 16.w,
+                            height: 16.h,
                           ),
                         ),
-                        SizedBox(width: 0),
+                        SizedBox(width: 0.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -742,7 +743,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                     child: Text(
                                       dataList[2].nickname,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                         color: greyColor1,
                                         fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.w500,
@@ -751,11 +752,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 7),
+                                  SizedBox(width: 7.w),
                                   Text(
                                     dataList[2].date,
                                     style: TextStyle(
-                                      fontSize: 11,
+                                      fontSize: 11.sp,
                                       color: greyColor4,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
@@ -765,11 +766,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 4),
+                              SizedBox(height: 4.h),
                               Text(
                                 dataList[2].comment,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   color: greyColor1,
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.w400,
@@ -786,32 +787,32 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                 ),
               ),
 
-              SizedBox(height: 11),
+              SizedBox(height: 11.h),
 
 // 네 번째 댓글
               Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 20.w),
                 child: Container(
-                  width: 319.921,
-                  height: 71.224,
+                  width: 319.921.w,
+                  height: 71.224.h,
                   decoration: BoxDecoration(
                     color: lightColor2,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                  padding: EdgeInsets.only(left: 20.3, right: 19.8),
+                  padding: EdgeInsets.only(left: 20.3.w, right: 19.8.w),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0.w),
                     child: Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(-15, -17),
+                          offset: Offset(-15.w, -17.h),
                           child: SvgPicture.asset(
                             'assets/paw_another.svg',
-                            width: 16,
-                            height: 16,
+                            width: 16.w,
+                            height: 16.h,
                           ),
                         ),
-                        SizedBox(width: 0),
+                        SizedBox(width: 0.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -822,7 +823,7 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                     child: Text(
                                       dataList[3].nickname,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                         color: greyColor1,
                                         fontFamily: 'Pretendard',
                                         fontWeight: FontWeight.w500,
@@ -831,11 +832,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 7),
+                                  SizedBox(width: 7.w),
                                   Text(
                                     dataList[3].date,
                                     style: TextStyle(
-                                      fontSize: 11,
+                                      fontSize: 11.sp,
                                       color: greyColor4,
                                       fontFamily: 'Pretendard',
                                       fontWeight: FontWeight.w400,
@@ -845,11 +846,11 @@ class _CheckpagePhotodetailMemoState extends State<CheckpagePhotodetailMemo> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 4),
+                              SizedBox(height: 4.h),
                               Text(
                                 dataList[3].comment,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   color: greyColor1,
                                   fontFamily: 'Pretendard',
                                   fontWeight: FontWeight.w400,
