@@ -42,7 +42,6 @@ final List<HomepageData> dataList = [
   HomepageData("2024-01-01", "OUTFOOT 배포"),
 ];
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -188,24 +187,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 8.h),
                   Padding(
-                    padding: EdgeInsets.only(left: 20.sp),
-                    child: Container(
-                      width: 330.w,
-                      height: 113.h,
-                      padding: EdgeInsets.all(16.0.sp),
-                      decoration: BoxDecoration(
-                        color: lightColor2,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                  child: ProgressCard(
-                    startDate: dataList[0].date,
-                    title: dataList[0].title,
-                    progressPercentage: 78,
-                    assetPath: 'assets/lock_icon.svg',
-                      ),
-                    ),
-                  ),
-                  Padding(
                     padding:
                         EdgeInsets.only(right: 20.w, left: 275.w, top: 100.h),
                     child: customFloatingActionButton(
@@ -221,40 +202,27 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
-                  child: ProgressCard(
-                    startDate: dataList[1].date,
-                    title: dataList[1].title,
-                    progressPercentage: 78,
-                    assetPath: '',
+                  SizedBox(height: 8.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Container(
+                      width: 330,
+                      height: 113,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: lightColor2,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ProgressCard(
+                        startDate: dataList[2].date,
+                        title: dataList[2].title,
+                        progressPercentage: 78,
+                        assetPath: '',
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-              SizedBox(height: 8),
-              Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Container(
-                  width: 330,
-                  height: 113,
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: lightColor2,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ProgressCard(
-                    startDate: dataList[2].title,
-                    title: dataList[2].title,
-                    progressPercentage: 78,
-                    assetPath: '',
-                  ),
-                ),
-              ),
-              Padding (padding: EdgeInsets.only(right:20, left:275, top:100),
-                             
-              child: customFloatingActionButton(
-              'assets/floating_action.svg',  
-              onPressed: () {
-                  // 플로팅 액션 버튼 동작
-                },
             ),
           ),
           bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 1),
@@ -263,4 +231,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
