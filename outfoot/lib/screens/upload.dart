@@ -96,19 +96,20 @@ final Data = UploadData("24.12.26", "하루에 물 2리터 마시기", "건강�
 
 class _UploadState extends State<Upload> {
   final AuthAdditionApi _api = AuthAdditionApi();
-  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _titleController =
+      TextEditingController(text: "");
   final TextEditingController _contentController = TextEditingController();
   File? _image;
 
   @override
   void initState() {
     super.initState();
+    _titleController.text = "";
+    _contentController.text = "";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final goalProvider =
           Provider.of<utils_goal_provider.GoalProvider>(context, listen: false);
-      _titleController.text =
-          goalProvider.contentTitle; // GoalProvider에서 가져온 데이터
-      _contentController.text = goalProvider.content; // GoalProvider에서 가져온 데이터
+      _titleController.text = goalProvider.contentTitle;
     });
   }
 
@@ -361,9 +362,9 @@ class _UploadState extends State<Upload> {
                                 controller: _titleController,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
-                                  border: InputBorder.none,
                                   hintText:
                                       '제목을 입력하세요', // GoalProvider와 분리된 hintText
+                                  border: InputBorder.none,
                                   hintStyle: TextStyle(
                                     fontSize: 14.sp,
                                     color: greyColor3,
@@ -490,9 +491,7 @@ class _UploadState extends State<Upload> {
 }
 
 void main() {
-
   runApp(MaterialApp(
-    home: Upload(
-    ),
+    home: Upload(),
   ));
 }
