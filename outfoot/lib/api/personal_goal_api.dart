@@ -2,11 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
 
-// 도장판 생성 
+// 도장판 생성
 
 class PersonalGoalApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
+  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
 
   Future<String> postGoal(
       String token, String title, String intro, int animalId) async {
@@ -23,7 +24,7 @@ class PersonalGoalApi {
         '$baseUrl/checkpages',
         options: Options(
           headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $accessToken',
             'Content-Type': 'application/json',
           },
         ),

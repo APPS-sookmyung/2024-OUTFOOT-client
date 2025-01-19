@@ -2,9 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:outfoot/models/profile_my_model.dart';
 
+// 내 정보 조회
+
 class ProfileMyApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
+  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
 
   Future<Profile?> profileMy(String token) async {
     try {
@@ -12,7 +15,7 @@ class ProfileMyApi {
         '$baseUrl/my',
         options: Options(
           headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $accessToken',
             'Content-Type': 'application/json',
           },
         ),

@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class DislikePostApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
+  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
 
   Future<void> PostDislikeConfirm(int confirmId) async {
     try {
@@ -14,10 +15,10 @@ class DislikePostApi {
       if (response.statusCode == 200) {
         print("부정 추가에 성공하셨습니다");
       } else {
-        print ("부정 추가에 실패하셨습니다 Status CodeL ${response.statusCode}");
+        print("부정 추가에 실패하셨습니다 Status CodeL ${response.statusCode}");
       }
     } catch (e) {
-      print ("오류 발생: $e");
+      print("오류 발생: $e");
     }
   }
 }

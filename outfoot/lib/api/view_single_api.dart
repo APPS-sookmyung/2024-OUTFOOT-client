@@ -6,18 +6,20 @@ import 'package:outfoot/models/view_single_model.dart';
 
 class ViewSingleApi {
   final Dio dio;
-  final String baseUrl;
+  final String? baseUrl;
+  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
 
+  // 생성자에서 dio와 baseUrl 주입받기
   ViewSingleApi({required this.dio})
-      : baseUrl = dotenv.env['BASE_URL'] ?? '';
+      : baseUrl = dotenv.env['BASE_URL']; // BASE_URL 초기화
 
-  Future<ViewGoal?> getGoal(String token, String checkPageId) async { 
+  Future<ViewGoal?> getGoal(String token, String checkPageId) async {
     try {
       final response = await dio.get(
         '$baseUrl/checkpages/$checkPageId/foot',
         options: Options(
           headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $accessToken',
             'Content-Type': 'application/json',
           },
         ),
