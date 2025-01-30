@@ -7,7 +7,7 @@ import 'package:outfoot/models/confirm_get_model.dart';
 class ConfirmGetApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
-  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
   Future<ConfirmGoal?> getGoal(String token, String confirmId) async {
     try {

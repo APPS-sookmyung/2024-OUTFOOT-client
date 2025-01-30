@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class FriendService {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
-  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
   /// 친구 추가 API
   Future<String> addFriend(String memberId, String code, String token) async {
@@ -19,7 +19,7 @@ class FriendService {
         url,
         options: Options(
           headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $accessToken',
             'Content-Type': 'application/json',
           },
         ),

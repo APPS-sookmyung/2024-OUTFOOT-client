@@ -7,7 +7,7 @@ import 'package:outfoot/models/view_single_model.dart';
 class ViewSingleApi {
   final Dio dio;
   final String? baseUrl;
-  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
   // 생성자에서 dio와 baseUrl 주입받기
   ViewSingleApi({required this.dio})

@@ -7,7 +7,7 @@ import 'package:outfoot/models/personal_goal_model.dart';
 class PersonalGoalApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
-  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
   Future<String> postGoal(
       String token, String title, String intro, int animalId) async {

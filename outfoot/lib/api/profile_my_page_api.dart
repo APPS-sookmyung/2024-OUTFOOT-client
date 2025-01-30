@@ -7,7 +7,7 @@ import 'package:outfoot/models/profile_my_model.dart';
 class ProfileMyApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
-  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
   Future<Profile?> profileMy(String token) async {
     try {

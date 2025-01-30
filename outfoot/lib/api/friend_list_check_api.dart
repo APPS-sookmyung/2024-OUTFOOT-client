@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class FriendService {
   final Dio _dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
-  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
   // 친구 목록 가져오기
   Future<FriendListResponse> getFriendList(String token) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 추가
 import 'package:outfoot/colors/colors.dart';
 
 // 이동 페이지
@@ -9,10 +10,12 @@ import 'package:outfoot/screens/checkpage_foot.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int selectedIndex;
+  final String? token;
 
   const CustomBottomNavigationBar({
     Key? key,
     this.selectedIndex = 0, // 기본값은 0
+    this.token,
   }) : super(key: key);
 
   @override
@@ -27,6 +30,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex; // 초기값 설정
+    print('Access Token: ${widget.token}');
   }
 
   void _onItemTapped(int index) {
@@ -39,8 +43,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           context,
           MaterialPageRoute(
               builder: (context) => CheckPageFoot(
-                    token:
-                        'eyJhbGciOiJIUzM4NCJ9.eyJ1c2VybmFtZSI6ImZmOTdmYTc1LTE1ODMtNGMxNi04ZjZmLWJjZTQyM2RlMDYxMCIsIm5pY2tuYW1lIjoi7KCV7ISc7JewIiwiaWF0IjoxNzM1MDkzMDA0LCJleHAiOjE3MzUxMDAyMDR9.6XdQxmfXW8Gn2a9L9u1iqTuaV47eoASnrYxz8Cj5x24OqZJ6mgSvOgBDgct6jxV0',
+                    token: widget.token ?? 'default_token',
                     checkPageId: '1',
                     goalImagePath: 'default_image_path',
                   )), // 둘러보기 페이지
@@ -154,11 +157,17 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "assets/config/.env"); // .env 파일 로드
+
   runApp(MaterialApp(
     home: Scaffold(
       body: Center(child: Text("Main Content")),
-      bottomNavigationBar: CustomBottomNavigationBar(),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        selectedIndex: 1,
+        token: dotenv.env['TOKEN']?? 'default_token',
+      ),
     ),
   ));
 }

@@ -7,7 +7,7 @@ import 'package:outfoot/models/auth_addition_model.dart';
 class AuthAdditionApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
-  final String? accessToken = dotenv.env['ACCESS_TOKEN'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
   Future<String> postGoal(String token, String checkPageId, String title,
       String content, String imageUrl) async {
