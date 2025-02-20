@@ -11,26 +11,29 @@ class Friend {
 
   factory Friend.fromJson(Map<String, dynamic> json) {
     return Friend(
-      id: json['id'] ?? 0,
-      nickname: json['nickname'] ?? '',
-      intro: json['intro'] ?? '',
+      id: json['id'] as int,
+      nickname: json['nickname'] as String,
+      intro: json['intro'] as String? ?? '',
     );
   }
 }
 
 class FriendListResponse {
+  final bool success;
   final int total;
   final List<Friend> friendLists;
 
   FriendListResponse({
+    required this.success,
     required this.total,
     required this.friendLists,
   });
 
   factory FriendListResponse.fromJson(Map<String, dynamic> json) {
     return FriendListResponse(
-      total: json['total'] ?? 0,
-      friendLists: (json['friendLists'] as List<dynamic>)
+      success: json['success'] as bool,
+      total: json['response']['total'] as int,
+      friendLists: (json['response']['friendLists'] as List)
           .map((item) => Friend.fromJson(item))
           .toList(),
     );

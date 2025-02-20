@@ -1,17 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart'; 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_drawing/path_drawing.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
-import 'package:outfoot/api/personal_goal_api.dart';
-import 'package:outfoot/models/personal_goal_model.dart';
-import 'package:outfoot/api/view_single_api.dart'; 
-import 'package:outfoot/models/view_single_model.dart'; 
+import 'package:outfoot/api/view_single_api.dart';
+import 'package:outfoot/models/view_single_model.dart';
+import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
+import 'package:outfoot/screens/navigation_bar/material_top_navigation_bar.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+// 이동 페이지
 import 'package:outfoot/screens/upload.dart';
 import 'package:outfoot/screens/checkpage_image.dart';
-import 'package:outfoot/screens/checkpage_image.dart';
-
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -51,11 +53,13 @@ class DashedCirclePainter extends CustomPainter {
       ..strokeWidth = 2;
 
     final Path path = Path()
-      ..addOval(Rect.fromCircle(center: Offset(radius, radius), radius: radius));
+      ..addOval(
+          Rect.fromCircle(center: Offset(radius, radius), radius: radius));
 
     final Path dashedPath = dashPath(
       path,
-      dashArray: CircularIntervalList<double>(<double>[dashLength, spaceLength]),
+      dashArray:
+          CircularIntervalList<double>(<double>[dashLength, spaceLength]),
     );
 
     canvas.drawPath(dashedPath, paint);
@@ -66,122 +70,72 @@ class DashedCirclePainter extends CustomPainter {
 }
 
 class CheckPageFoot extends StatefulWidget {
-  final String token; // 토큰 전달
-  final String checkPageId; // 개별 도장판 ID 전달
+  final String token; // API 인증 토큰
+  final String checkPageId; // 조회할 체크 페이지 ID
+  final String goalImagePath;
 
-  CheckPageFoot({required this.token, required this.checkPageId});
+  CheckPageFoot({
+    required this.token,
+    required this.checkPageId,
+    this.goalImagePath = 'default_image_path',
+  });
 
   @override
   _CheckPageFootState createState() => _CheckPageFootState();
 }
 
 class _CheckPageFootState extends State<CheckPageFoot> {
-  final ViewSingleApi _viewSingleApi = ViewSingleApi(dio: Dio());
-  final PersonalGoalApi _personalGoalApi = PersonalGoalApi(); // PersonalGoalApi 객체 생성
-  ViewGoal? goal; // 다일 도장 데이터 저장할 변수
-  int? selectedAnimalId;
-  int? tempSelectedAnimalId;
-  bool _isSubmitting = false; 
+  ViewGoal? goal; // API에서 불러온 데이터를 저장할 변수
+  String? token;
 
   @override
   void initState() {
     super.initState();
-    _fetchGoal();
+    _fetchGoal(); // 초기화 시 API 호출
   }
 
   Future<void> _fetchGoal() async {
-    try {
-      final fetchedGoal = await _viewSingleApi.getGoal(widget.token, widget.checkPageId);
-      setState(() {
-        goal = fetchedGoal; // 데이터를 저장하여 화면에서 접근 가능하게 
-      });
-    } catch (e) {
-      print('오류: $e'); //오류처리
-    }
-  }
-    void _showConfirmDetails(ConfirmResponse confirm) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('인증 ID: ${confirm.id}'),
-          content: Image.network(confirm.imageUrl),
-          actions: <Widget>[
-            TextButton(
-              child: Text('닫기'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+    final api = ViewSingleApi(dio: Dio());
+    final fetchedGoal = await api.getGoal(widget.token, widget.checkPageId);
 
-    // API 호출 함수 추가
-  Future<void> _createPersonalGoal() async {
-    if (tempSelectedAnimalId != null) {
-      print('Please select an animal before completing.');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select an animal before completing.')),
-      );
+    token = dotenv.env['TOKEN'];
+    if (token == null) {
+      debugPrint("Error: TOKEN is not defined in .env");
       return;
     }
-    if (_isSubmitting) return; 
 
     setState(() {
-      _isSubmitting = true;
+      goal = fetchedGoal; // 불러온 데이터를 상태에 저장
     });
+  }
 
-      try {
-        final result = await _personalGoalApi.postGoal(
-          widget.token,
-          goal?.title ?? 'Default Title', // title 전달
-          goal?.intro ?? 'Default Intro', // intro 전달 
-          tempSelectedAnimalId!, // animalId 전달
-        );
-        print(result);
-
-        setState(() {
-          selectedAnimalId = tempSelectedAnimalId; // 선택한 animalId 저장
-        });
-        Navigator.pop(context);
-      } catch (e) {
-        print('Goal 생성 중 오류 발생: $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to create goal. Please try again.')),
-        );
-      } finally {
-        setState(() {
-          _isSubmitting = false;
-        });
-      }
-    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MeterialTopNavigationBar(
+        checkPageId: 1,
+        backgroundColor: lightColor2,
+      ),
       backgroundColor: lightColor2,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child:goal == null
-          ? Center(child: CircularProgressIndicator()) //데이터 로딩 
-          : Stack(
+        padding: EdgeInsets.all(16.0.w),
+        child: Stack(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.83, vertical: 5.7),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 16.83.w, vertical: 5.7.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
-                    goal!.createdAt,
+                    goal?.createdAt ?? '날짜 정보 없음',
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 11.sp,
                       color: blackBrownColor,
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w400,
@@ -191,14 +145,14 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 18.76),
+                SizedBox(height: 18.76.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      goal!.title,     
+                      goal?.title ?? '제목 없음', // 불러온 데이터의 제목 표시
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         color: blackBrownColor,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w600,
@@ -207,12 +161,12 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(width: 3.69),
+                    SizedBox(width: 3.69.w),
                     Transform.translate(
-                      offset: Offset(0, -9.0),
+                      offset: Offset(0, -9.0.h),
                       child: Container(
-                        width: 7.991,
-                        height: 7.991,
+                        width: 7.991.w,
+                        height: 7.991.h,
                         decoration: BoxDecoration(
                           color: yellowColor,
                           shape: BoxShape.circle,
@@ -221,11 +175,11 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10.63),
+                SizedBox(height: 10.63.h),
                 Text(
-                  goal!.intro,
+                  goal?.intro ?? '설명 없음', // 불러온 데이터의 설명 표시
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: greyColor3,
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w400,
@@ -233,38 +187,48 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                     letterSpacing: -0.24,
                   ),
                 ),
-                SizedBox(height: 22.42),
+                SizedBox(height: 22.42.h),
                 Container(
-                  padding: EdgeInsets.only(left: 16.95, right: 16.95, top: 17.35, bottom: 35.23),
+                  padding: EdgeInsets.only(
+                      left: 16.95.w,
+                      right: 16.95.w,
+                      top: 17.35.h,
+                      bottom: 35.23.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: GridView.builder(
                     shrinkWrap: true,
-                    itemCount: goal!.confirmResponses.length, // API에서 가져온 도장 개수 사용
+                    itemCount: 30,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
-                      mainAxisSpacing: 10.63,
-                      crossAxisSpacing: 10.75,
+                      mainAxisSpacing: 10.63.h,
+                      crossAxisSpacing: 10.75.w,
                     ),
                     itemBuilder: (context, index) {
-                      final confirm = goal!.confirmResponses[index];
-                      return GestureDetector(
-                        onTap: () => _showConfirmDetails(confirm), // 도장을 클릭했을 때 상세 정보 표시
-                        child: Container(
+                      if (goal != null &&
+                          index < goal!.confirmResponses.length) {
+                        // 이미지 URL을 불러온 데이터의 confirmResponses에서 가져오기
+                        return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: mainBrownColor2,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(7.18),
-                            child: SvgPicture.asset(
-                              'assets/paw.svg', 
+                            padding: EdgeInsets.all(7.18.w),
+                            child: Image.network(
+                              goal!.confirmResponses[index]
+                                  .imageUrl, // 동적으로 이미지 URL 표시                              fit: BoxFit.contain,
                             ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        return DashedCircle(
+                          size: 24.57.w,
+                          color: mainBrownColor,
+                        );
+                      }
                     },
                   ),
                 ),
@@ -272,49 +236,48 @@ class _CheckPageFootState extends State<CheckPageFoot> {
               ],
             ),
             Positioned(
-              bottom: 12,
-              right: 20, 
+              bottom: 12.h,
+              right: 20.w,
               child: customFloatingActionButton(
-                'assets/floating_action.svg',  
+                'assets/floating_action.svg',
                 onPressed: () {
-                   Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Upload()),
-                  ); // Upload 페이지로 이동
+                    MaterialPageRoute(
+                      builder: (context) => Upload(), // 이동할 페이지
+                    ),
+                  );
                 },
               ),
             ),
             Positioned(
-              top: 60, 
-              left: 330, 
+              top: 60.h,
+              left: 300.w,
               child: FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CheckPageImage(token: '', checkPageId: '')),
+                    MaterialPageRoute(
+                      builder: (context) => CheckPageImage(
+                        token: token!,
+                        checkPageId: '1',
+                      ), // 이동할 페이지
+                    ),
                   );
                 },
-                backgroundColor: Colors.transparent, // 투명 배경
+                backgroundColor: Colors.transparent,
                 elevation: 0,
                 child: SvgPicture.asset(
                   'assets/shuffle_icon.svg',
-                  width: 24,
-                  height: 24,
+                  width: 24.w,
+                  height: 24.h,
                 ),
               ),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: 1),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: CheckPageFoot(
-      token: '', // 임시 값
-      checkPageId: '', // 임시 값
-    ),
-  ));
 }

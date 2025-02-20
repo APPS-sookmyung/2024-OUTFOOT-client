@@ -19,19 +19,19 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: lightColor1,
       elevation: 0,
-      title : SvgPicture.asset(
-        'assets/logo.svg',
+      title: SvgPicture.asset(
+        'assets/start_login_logo.svg',
         width: 118,
         height: 33,
-        
       ),
-    centerTitle: false,
+      centerTitle: false,
+      leading: null,
       actions: <Widget>[
         IconButton(
           icon: _buildCustomItem(
             'assets/alarm_icon.svg',
-            width: 19, 
-            height: 22, 
+            width: 19,
+            height: 22,
           ),
           onPressed: () {
             // 알림 버튼을 누른 뒤 다음 동작
@@ -40,16 +40,19 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: _buildCustomItem(
             'assets/delete_icon.svg',
-            width: 17.363,  
-            height: 21.565, 
+            width: 17.363,
+            height: 21.565,
           ),
-          onPressed: () => _showDeleteConfirmationDialog(context), // 삭제 확인 다이얼로그
+          onPressed: () =>
+              _showDeleteConfirmationDialog(context), // 삭제 확인 다이얼로그
         ),
       ],
     );
   }
- // 커스텀 아이콘 빌더
-  Widget _buildCustomItem(String iconPath, {required double width, required double height}) {
+
+  // 커스텀 아이콘 빌더
+  Widget _buildCustomItem(String iconPath,
+      {required double width, required double height}) {
     return SvgPicture.asset(
       iconPath,
       width: width,

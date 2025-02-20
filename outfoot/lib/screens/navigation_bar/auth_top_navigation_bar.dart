@@ -3,13 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/api/checkpage_delete_api.dart';
 
-class MeterialTopNavigationBar extends StatefulWidget
+class AuthTopNavigationBar extends StatefulWidget
     implements PreferredSizeWidget {
   final int checkPageId; // 삭제할 도장판 ID
-  final Color backgroundColor; // 앱바 배경색
 
-  MeterialTopNavigationBar(
-      {required this.checkPageId, this.backgroundColor = lightColor1});
+  AuthTopNavigationBar({required this.checkPageId});
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -19,14 +17,14 @@ class MeterialTopNavigationBar extends StatefulWidget
       _MeterialTopNavigationBarState();
 }
 
-class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
+class _MeterialTopNavigationBarState extends State<AuthTopNavigationBar> {
   final CheckPageApi _checkPageApi = CheckPageApi(); // CheckPageApi 객체 생성
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       scrolledUnderElevation: 0,
-      backgroundColor: widget.backgroundColor,
+      backgroundColor: lightColor1,
       elevation: 0,
       leading: IconButton(
         icon: _buildCustomItem(
@@ -39,7 +37,7 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
         },
       ),
       title: Text(
-        '내 목표',
+        '인증 보기',
         style: TextStyle(
           color: Color(0xFF3F3F3F),
           fontSize: 16,
@@ -52,6 +50,16 @@ class _MeterialTopNavigationBarState extends State<MeterialTopNavigationBar> {
       ),
       centerTitle: true,
       actions: <Widget>[
+        IconButton(
+          icon: _buildCustomItem(
+            'assets/icon/edit.svg',
+            width: 18.945,
+            height: 22.219,
+          ),
+          onPressed: () {
+            // 수정 버튼을 누른 뒤 다음 동작
+          },
+        ),
         IconButton(
           icon: _buildCustomItem(
             'assets/share_icon.svg',
@@ -147,7 +155,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MeterialTopNavigationBar(checkPageId: 1), // 예시로 ID 1 전달
+      appBar: AuthTopNavigationBar(checkPageId: 1), // 예시로 ID 1 전달
       body: Center(child: Text('body')),
     );
   }

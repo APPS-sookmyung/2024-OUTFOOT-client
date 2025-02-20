@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:outfoot/colors/colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPageScreen extends StatefulWidget {
   @override
@@ -15,13 +16,13 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   final List<Map<String, dynamic>> _carouselItems = [
     {
       "image": "assets/login_image1.svg",
-      "width": 315.0,
-      "height": 288.0,
+      "width": 315.0.w,
+      "height": 288.0.h,
     },
     {
       "image": "assets/login_image2.svg",
-      "width": 335.0,
-      "height": 369.0,
+      "width": 335.0.w,
+      "height": 369.0.h,
     },
   ];
 
@@ -38,31 +39,31 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         child: Stack(
           children: [
             Positioned(
-              left: 20,
-              top: 80,
+              left: 20.w,
+              top: 80.h,
               child: SvgPicture.asset(
                 'assets/logo.svg',
-                width: 137,
-                height: 45,
+                width: 137.w,
+                height: 45.h,
               ),
             ),
             Positioned(
-              left: 27,
-              right: 0,
-              top: 166,
+              left: 27.w,
+              right: 0.w,
+              top: 166.h,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     _carouselTexts[_currentPage],
                     style: TextStyle(
-                      fontSize: 23,
+                      fontSize: 23.sp,
                       fontWeight: FontWeight.bold,
                       color: blackBrownColor,
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  SizedBox(height: 25),
+                  SizedBox(height: 25.h),
                   CarouselSlider.builder(
                     carouselController: _carouselController,
                     itemCount: _carouselItems.length,
@@ -77,7 +78,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                       );
                     },
                     options: CarouselOptions(
-                      height: 400,
+                      height: 400.h,
                       enableInfiniteScroll: true,
                       viewportFraction: 1.0,
                       onPageChanged: (index, reason) {
@@ -93,17 +94,17 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
             Positioned(
               left: 0,
               right: 0,
-              bottom: 124 + 34 + 45,
+              bottom: 124.h + 34.h + 45.h,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: _carouselItems.asMap().entries.map((entry) {
                   return GestureDetector(
                     onTap: () => _carouselController.animateToPage(entry.key),
                     child: Container(
-                      width: 8.0,
-                      height: 8.0,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      width: 8.0.w,
+                      height: 8.0.h,
+                      margin: EdgeInsets.symmetric(
+                          vertical: 8.0.h, horizontal: 4.0.w),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _currentPage == entry.key
@@ -116,9 +117,9 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
               ),
             ),
             Positioned(
-              left: 30,
-              right: 30,
-              bottom: 45,
+              left: 30.w,
+              right: 30.w,
+              bottom: 45.h,
               child: Column(
                 children: [
                   _loginButton(
@@ -126,20 +127,20 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                     Color(0xFFFAE100),
                     Colors.black,
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   _loginButton(
                     '네이버 로그인',
                     Color(0xFF03CF5D),
                     Colors.white,
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 15.h),
                   TextButton(
                     onPressed: () {
                       print("다른 방법으로 로그인 pressed");
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: greyColor2,
-                      textStyle: TextStyle(fontSize: 12),
+                      textStyle: TextStyle(fontSize: 12.sp),
                     ),
                     child: Text('다른 방법으로 로그인'),
                   ),
@@ -155,18 +156,18 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   Widget _loginButton(String text, Color bgColor, Color textColor) {
     return SizedBox(
       width: double.infinity,
-      height: 46,
+      height: 46.h,
       child: ElevatedButton(
         onPressed: () {
           print("$text button pressed");
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 10.h),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
           ),
-          textStyle: TextStyle(fontSize: 16),
+          textStyle: TextStyle(fontSize: 16.sp),
         ),
         child: Text(
           text,
