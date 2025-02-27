@@ -1,43 +1,96 @@
 import 'package:flutter/material.dart';
 
 class GoalProvider with ChangeNotifier {
-  String _title = '';
-  String _intro = '';
-  String? _imagePath;
-  String _date = '24.01.01'; // 기본값으로 더미 날짜 설정
-  bool _isAssetImage = false;
-  String _contentTitle = ""; // 새로 추가된 contentTitle
-  String _content = ""; // 새로 추가된 content
+  Map<String, String> _goalTitles = {};
+  Map<String, String> _goalIntros = {};
+  Map<String, String> _goalDates = {};
+  Map<String, List<String>> _goalImages = {};
 
-  String get title => _title.isNotEmpty ? _title : '기본 목표 제목';
-  String get intro => _intro.isNotEmpty ? _intro : '기본 목표 설명';
-  String? get imagePath => _imagePath;
-  String get date => _date.isNotEmpty ? _date : '2024.01.01';
-  bool get isAssetImage => _isAssetImage;
-  String get contentTitle =>
-      _contentTitle.isNotEmpty ? _contentTitle : '제목을 입력하세요';
-  String get content =>
-      _content.isNotEmpty ? _content : '내용을 입력하세요 (최대 50자 작성 가능)';
+  List<Map<String, dynamic>> _goalList = [];
 
-  void updateGoal(String title, String intro, String? imagePath) {
-    _title = title;
-    _intro = intro;
-    _imagePath = imagePath;
+  List<Map<String, dynamic>> get goalList => _goalList;
+
+  String generateGoalId() {
+    return DateTime.now().millisecondsSinceEpoch.toString();
+  }
+
+  String getGoalTitle(String goalId) {
+    return _goalTitles[goalId] ?? "기본 목표 제목";
+  }
+
+  String getGoalIntro(String goalId) {
+    return _goalIntros[goalId] ?? '기본 목표 설명';
+  }
+
+  String getGoalDate(String goalId) {
+    return _goalDates[goalId] ?? "2024-01-01";
+  }
+
+  void updateGoalTitle(String goalId, String newTitle) {
+    _goalTitles[goalId] = newTitle;
     notifyListeners();
   }
 
-  void updateContentTitle(String newContentTitle) {
-    _contentTitle = newContentTitle;
+  void updateGoalDate(String goalId, String newDate) {
+    _goalDates[goalId] = newDate;
     notifyListeners();
   }
 
-  void updateContent(String newContent) {
-    _content = newContent;
+  List<String> getGoalImages(String goalId) {
+    return _goalImages[goalId] ?? [];
+  }
+
+  void updateGoal(String goalId, String title, String intro, String date) {
+    _goalTitles[goalId] = title;
+    _goalIntros[goalId] = intro;
+    _goalDates[goalId] = date;
+
+    int index = _goalList.indexWhere((goal) => goal["goalId"] == goalId);
+    if (index != -1) {
+      _goalList[index]["goalId"] = goalId.toString(); // ✅ goalId 유지
+      _goalList[index]["title"] = title;
+      _goalList[index]["startDate"] = date;
+    }
+
     notifyListeners();
   }
 
-  void updateDate(String date) {
-    _date = date;
+  void addImage(String goalId, String imageUrl) {
+    _goalImages[goalId] ??= [];
+    _goalImages[goalId]!.add(imageUrl);
+    notifyListeners();
+  }
+
+  bool goalExists(String goalId) {
+    return _goalTitles.containsKey(goalId) ||
+        _goalList.any((goal) => goal["goalId"] == goalId);
+  }
+
+  void addGoal(Map<String, dynamic> goal) {
+    String goalId = goal["goalId"];
+
+    if (!goalExists(goalId)) {
+      _goalTitles[goalId] = goal["title"]; // ✅ 목표 제목 저장
+      _goalDates[goalId] = goal["startDate"]; // ✅ 목표 날짜 저장
+
+      _goalList.add({
+        "goalId": goalId,
+        "title": goal["title"],
+        "startDate": goal["startDate"],
+        "progress": goal["progress"] ?? 0.0,
+        "imageUrl": goal["imageUrl"] ?? "",
+      });
+
+      notifyListeners();
+    }
+  }
+
+  void deleteGoal(String goalId) {
+    _goalTitles.remove(goalId);
+    _goalIntros.remove(goalId);
+    _goalDates.remove(goalId);
+    _goalImages.remove(goalId);
+    _goalList.removeWhere((goal) => goal["goalId"] == goalId);
     notifyListeners();
   }
 }

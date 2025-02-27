@@ -85,7 +85,7 @@ class EditProfile extends StatelessWidget {
                     alignment: Alignment.center,
                     children: [
                       Text(
-                        '문',
+                        '이',
                         style:
                             _textStyle(24, FontWeight.bold, Colors.white, 0.0),
                       ),
@@ -116,7 +116,7 @@ class EditProfile extends StatelessWidget {
                       top: 78.h,
                       left: 159.w,
                       child: Text(
-                        '문서영',
+                        '이해림',
                         style: _textStyle(
                             16.0, FontWeight.w500, greyColor1, -0.32),
                       ),

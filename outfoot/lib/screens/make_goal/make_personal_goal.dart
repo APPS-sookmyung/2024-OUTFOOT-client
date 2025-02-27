@@ -5,9 +5,13 @@ import 'package:outfoot/api/personal_goal_api.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 // 이동 페이지 import
 import 'package:outfoot/screens/home_page.dart';
+import 'package:outfoot/screens/checkpage_foot3.dart';
+import 'package:outfoot/utils/goal_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 
 class MakePersonalGoalPage extends StatefulWidget {
@@ -25,6 +29,10 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
   String? token;
   int? checkPageId;
 
+  String generateGoalId() {
+    return DateTime.now().millisecondsSinceEpoch.toString();
+  }
+
   void _postGoal() async {
     if (selectedAnimalId == null) {
       print('Please select an animal before submitting.');
@@ -37,15 +45,33 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
       return;
     }
 
-    // 목표 생성 API 호출
-    final response = await _goalApi.postGoal(
+    // ✅ 새로운 goalId 생성 (API가 아니라 앱 내부에서 생성)
+    String goalId = generateGoalId();
+
+    // ✅ GoalProvider에 목표 추가
+    final goalProvider = Provider.of<GoalProvider>(context, listen: false);
+    goalProvider.updateGoal(
+      goalId,
+      _goalNameController.text,
+      _goalDescriptionController.text,
+      DateTime.now().toString(),
+    );
+
+    // ✅ API 호출 (하지만 goalId는 API에서 받지 않음)
+    await _goalApi.postGoal(
       token!,
       _goalNameController.text,
       _goalDescriptionController.text,
       selectedAnimalId!,
     );
 
-    print(response);
+    // ✅ 목표 생성 후 HomePage로 데이터 전달
+    Navigator.pop(context, {
+      "goalId": goalId, // ✅ 생성한 goalId 전달
+      "title": _goalNameController.text,
+      "startDate": DateTime.now().toString().split(" ")[0],
+      "imageUrl": "", // ✅ 기본값으로 빈 값 설정
+    });
   }
 
   @override
@@ -217,19 +243,27 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
           onPressed: selectedAnimalId != null
               ? () async {
                   onPressed();
-                  // 페이지 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ),
-                  );
+
+                  if (_goalNameController.text.isNotEmpty) {
+                    // 📌 현재 날짜 가져오기
+                    String currentDate =
+                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+                    // 📌 새로운 목표 데이터 생성
+                    Map<String, dynamic> newGoal = {
+                      "title": _goalNameController.text,
+                      "startDate": currentDate,
+                      "progress": 0.0, // 기본값 0%
+                    };
+
+                    // 📌 HomePage로 목표 데이터 전달
+                    Navigator.pop(context, newGoal);
+                  }
                 }
-              : null, // selectedAnimalId가 null이면 비활성화
+              : null, // 📌 여기에서 `null` 닫힘을 올바르게 수정
           style: ElevatedButton.styleFrom(
-            backgroundColor: selectedAnimalId != null
-                ? apricotColor2 // 활성화 색상
-                : greyColor6, // 비활성화 색상
+            backgroundColor:
+                selectedAnimalId != null ? apricotColor2 : greyColor6,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.r),
             ),

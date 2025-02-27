@@ -1,15 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path_drawing/path_drawing.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
-import 'package:outfoot/api/view_single_api.dart';
-import 'package:outfoot/models/view_single_model.dart';
 import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 import 'package:outfoot/screens/navigation_bar/material_top_navigation_bar.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // 이동 페이지
 import 'package:outfoot/screens/upload.dart';
@@ -21,7 +16,7 @@ class DashedCircle extends StatelessWidget {
   final double dashLength;
   final double spaceLength;
 
-  DashedCircle({
+  const DashedCircle({
     required this.size,
     required this.color,
     this.dashLength = 6.0,
@@ -56,13 +51,7 @@ class DashedCirclePainter extends CustomPainter {
       ..addOval(
           Rect.fromCircle(center: Offset(radius, radius), radius: radius));
 
-    final Path dashedPath = dashPath(
-      path,
-      dashArray:
-          CircularIntervalList<double>(<double>[dashLength, spaceLength]),
-    );
-
-    canvas.drawPath(dashedPath, paint);
+    canvas.drawPath(path, paint);
   }
 
   @override
@@ -70,44 +59,23 @@ class DashedCirclePainter extends CustomPainter {
 }
 
 class CheckPageFoot extends StatefulWidget {
-  final String token; // API 인증 토큰
-  final String checkPageId; // 조회할 체크 페이지 ID
-  final String goalImagePath;
-
-  CheckPageFoot({
-    required this.token,
-    required this.checkPageId,
-    this.goalImagePath = 'default_image_path',
-  });
+  const CheckPageFoot({super.key});
 
   @override
   _CheckPageFootState createState() => _CheckPageFootState();
 }
 
 class _CheckPageFootState extends State<CheckPageFoot> {
-  ViewGoal? goal; // API에서 불러온 데이터를 저장할 변수
-  String? token;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchGoal(); // 초기화 시 API 호출
-  }
-
-  Future<void> _fetchGoal() async {
-    final api = ViewSingleApi(dio: Dio());
-    final fetchedGoal = await api.getGoal(widget.token, widget.checkPageId);
-
-    token = dotenv.env['TOKEN'];
-    if (token == null) {
-      debugPrint("Error: TOKEN is not defined in .env");
-      return;
-    }
-
-    setState(() {
-      goal = fetchedGoal; // 불러온 데이터를 상태에 저장
-    });
-  }
+  final String createdAt = "2024-12-27";
+  final String goalTitle = "아침 9시 기상하기";
+  final String goalIntro = "";
+  final List<String> goalImages = [
+    "assets/paw.svg",
+    "assets/paw.svg",
+    "assets/paw.svg",
+    "assets/paw.svg",
+    "assets/paw.svg",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +93,8 @@ class _CheckPageFootState extends State<CheckPageFoot> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 10.h),
+
+                // ✅ **날짜 표시**
                 Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: 16.83.w, vertical: 5.7.h),
@@ -133,7 +103,7 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
-                    goal?.createdAt ?? '날짜 정보 없음',
+                    createdAt,
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: blackBrownColor,
@@ -146,11 +116,13 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                   ),
                 ),
                 SizedBox(height: 18.76.h),
+
+                // ✅ **목표 제목**
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      goal?.title ?? '제목 없음', // 불러온 데이터의 제목 표시
+                      goalTitle,
                       style: TextStyle(
                         fontSize: 18.sp,
                         color: blackBrownColor,
@@ -176,8 +148,10 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                   ],
                 ),
                 SizedBox(height: 10.63.h),
+
+                // ✅ **목표 소개**
                 Text(
-                  goal?.intro ?? '설명 없음', // 불러온 데이터의 설명 표시
+                  goalIntro,
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: greyColor3,
@@ -188,18 +162,17 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                   ),
                 ),
                 SizedBox(height: 22.42.h),
+
+                // ✅ **목표 이미지 표시**
                 Container(
-                  padding: EdgeInsets.only(
-                      left: 16.95.w,
-                      right: 16.95.w,
-                      top: 17.35.h,
-                      bottom: 35.23.h),
+                  padding: EdgeInsets.all(16.0.w),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: GridView.builder(
                     shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: 30,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
@@ -207,19 +180,19 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                       crossAxisSpacing: 10.75.w,
                     ),
                     itemBuilder: (context, index) {
-                      if (goal != null &&
-                          index < goal!.confirmResponses.length) {
-                        // 이미지 URL을 불러온 데이터의 confirmResponses에서 가져오기
+                      if (index < goalImages.length) {
                         return Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: mainBrownColor2,
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(7.18.w),
-                            child: Image.network(
-                              goal!.confirmResponses[index]
-                                  .imageUrl, // 동적으로 이미지 URL 표시                              fit: BoxFit.contain,
+                            padding: EdgeInsets.all(6.0.w), // ✅ **패딩 조정**
+                            child: SvgPicture.asset(
+                              goalImages[index],
+                              fit: BoxFit.contain,
+                              width: 24.w,
+                              height: 24.w,
                             ),
                           ),
                         );
@@ -235,6 +208,8 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                 Spacer(),
               ],
             ),
+
+            // ✅ **업로드 버튼**
             Positioned(
               bottom: 12.h,
               right: 20.w,
@@ -244,12 +219,14 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Upload(), // 이동할 페이지
+                      builder: (context) => Upload(goalId: "default_goal"),
                     ),
                   );
                 },
               ),
             ),
+
+            // ✅ **체크 페이지 이미지 버튼**
             Positioned(
               top: 60.h,
               left: 300.w,
@@ -258,10 +235,7 @@ class _CheckPageFootState extends State<CheckPageFoot> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CheckPageImage(
-                        token: token!,
-                        checkPageId: '1',
-                      ), // 이동할 페이지
+                      builder: (context) => CheckPageImage(),
                     ),
                   );
                 },

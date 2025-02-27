@@ -7,9 +7,10 @@ import 'package:outfoot/models/auth_addition_model.dart';
 class AuthAdditionApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
-  Future<String> postGoal(
-      String token, String checkPageId, String title, String content, String imageUrl) async {
+  Future<String> postGoal(String token, String checkPageId, String title,
+      String content, String imageUrl) async {
     try {
       final requestData = {
         'title': title,
@@ -23,7 +24,7 @@ class AuthAdditionApi {
         '$baseUrl/confirm/$checkPageId',
         options: Options(
           headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $accessToken',
             'Content-Type': 'application/json',
           },
         ),

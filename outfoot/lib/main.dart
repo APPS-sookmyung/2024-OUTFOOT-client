@@ -12,6 +12,9 @@ import 'package:outfoot/screens/home_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 초기화
   await dotenv.load(fileName: 'assets/config/.env');
+
+  print(dotenv.env['ACCESS_TOKEN']); // 값을 출력해 확인
+
   runApp(
     MultiProvider(
       providers: [

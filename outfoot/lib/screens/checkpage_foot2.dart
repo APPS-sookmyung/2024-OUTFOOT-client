@@ -8,7 +8,7 @@ import 'package:outfoot/screens/navigation_bar/material_top_navigation_bar.dart'
 
 // 이동 페이지
 import 'package:outfoot/screens/upload.dart';
-import 'package:outfoot/screens/checkpage_foot.dart';
+import 'package:outfoot/screens/checkpage_image2.dart';
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -58,18 +58,23 @@ class DashedCirclePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class CheckPageImage extends StatelessWidget {
-  CheckPageImage({super.key});
+class CheckPageFoot2 extends StatefulWidget {
+  const CheckPageFoot2({super.key});
 
-  final String createdAt = "2024-12-27";
-  final String goalTitle = "아침 9시 기상하기";
+  @override
+  _CheckPageFootState createState() => _CheckPageFootState();
+}
+
+class _CheckPageFootState extends State<CheckPageFoot2> {
+  final String createdAt = "2024-12-01";
+  final String goalTitle = "하루에 물 2리터 마시기";
   final String goalIntro = "";
   final List<String> goalImages = [
-    "assets/sample1.svg",
-    "assets/sample1.svg",
-    "assets/sample1.svg",
-    "assets/sample1.svg",
-    "assets/sample1.svg",
+    "assets/paw.svg",
+    "assets/paw.svg",
+    "assets/paw.svg",
+    "assets/paw.svg",
+    "assets/paw.svg",
   ];
 
   @override
@@ -221,7 +226,7 @@ class CheckPageImage extends StatelessWidget {
               ),
             ),
 
-            // ✅ **체크 페이지 발자국 버튼**
+            // ✅ **체크 페이지 이미지 버튼**
             Positioned(
               top: 60.h,
               left: 300.w,
@@ -230,7 +235,7 @@ class CheckPageImage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CheckPageFoot(),
+                      builder: (context) => CheckPageImage2(),
                     ),
                   );
                 },

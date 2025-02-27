@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class ConfirmDeleteApi {
   final Dio dio = Dio();
   final String? baseUrl = dotenv.env['BASE_URL'];
+  final String? accessToken = dotenv.env['TOKEN'];
 
   Future<void> deleteConfirm(int ConfirmId) async {
     try {
@@ -17,7 +18,7 @@ class ConfirmDeleteApi {
         print("인증판 삭제 실패하셨습니다");
       }
     } catch (e) {
-      print ("오류 발생: $e");
+      print("오류 발생: $e");
     }
   }
 }
