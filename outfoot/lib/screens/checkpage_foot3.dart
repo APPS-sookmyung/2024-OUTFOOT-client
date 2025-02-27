@@ -5,10 +5,13 @@ import '/widgets/custom_floating_action_button.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:outfoot/screens/navigation_bar/bottom_navigation_bar.dart';
 import 'package:outfoot/screens/navigation_bar/material_top_navigation_bar.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+import 'package:outfoot/utils/goal_provider.dart'; // ✅ GoalProvider 가져오기
 
 // 이동 페이지
 import 'package:outfoot/screens/upload.dart';
-import 'package:outfoot/screens/checkpage_foot.dart';
+import 'package:outfoot/screens/checkpage_image3.dart';
 
 class DashedCircle extends StatelessWidget {
   final double size;
@@ -58,22 +61,48 @@ class DashedCirclePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class CheckPageImage extends StatelessWidget {
-  CheckPageImage({super.key});
+// ✅ **새로운 목표 정보를 동적으로 반영할 수 있도록 수정**
+class CheckPageFoot3 extends StatefulWidget {
+  final String goalId;
+  final String goalTitle; // 목표 제목
+  final String createdAt; // 목표 생성일
+  final String imageUrl;
 
-  final String createdAt = "2024-12-27";
-  final String goalTitle = "아침 9시 기상하기";
-  final String goalIntro = "";
-  final List<String> goalImages = [
-    "assets/sample1.svg",
-    "assets/sample1.svg",
-    "assets/sample1.svg",
-    "assets/sample1.svg",
-    "assets/sample1.svg",
-  ];
+  const CheckPageFoot3({
+    super.key,
+    required this.goalId,
+    required this.goalTitle,
+    required this.createdAt,
+    required this.imageUrl,
+  });
+
+  @override
+  _CheckPageFoot3State createState() => _CheckPageFoot3State();
+}
+
+class _CheckPageFoot3State extends State<CheckPageFoot3> {
+  @override
+  void initState() {
+    super.initState();
+
+    // ✅ `goalId`별로 이미지 저장
+    Future.microtask(() {
+      final goalProvider = Provider.of<GoalProvider>(context, listen: false);
+      goalProvider.addGoal({
+        "goalId": widget.goalId,
+        "title": widget.goalTitle,
+        "startDate": widget.createdAt,
+        "progress": 0.0, // ✅ 기본값 설정
+        "imageUrl": "", // ✅ 기본값 추가
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final goalProvider = Provider.of<GoalProvider>(context);
+    List<String> goalImages = goalProvider.getGoalImages(widget.goalId);
+
     return Scaffold(
       appBar: MeterialTopNavigationBar(
         checkPageId: 1,
@@ -89,7 +118,7 @@ class CheckPageImage extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: 10.h),
 
-                // ✅ **날짜 표시**
+                // ✅ **날짜 표시 (입력받은 날짜 그대로 반영)**
                 Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: 16.83.w, vertical: 5.7.h),
@@ -98,7 +127,7 @@ class CheckPageImage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
-                    createdAt,
+                    widget.createdAt, // 입력받은 날짜 반영
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: blackBrownColor,
@@ -112,12 +141,12 @@ class CheckPageImage extends StatelessWidget {
                 ),
                 SizedBox(height: 18.76.h),
 
-                // ✅ **목표 제목**
+                // ✅ **목표 제목 (입력받은 제목 그대로 반영)**
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      goalTitle,
+                      widget.goalTitle, // 입력받은 제목 반영
                       style: TextStyle(
                         fontSize: 18.sp,
                         color: blackBrownColor,
@@ -144,63 +173,78 @@ class CheckPageImage extends StatelessWidget {
                 ),
                 SizedBox(height: 10.63.h),
 
-                // ✅ **목표 소개**
-                Text(
-                  goalIntro,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: greyColor3,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                    height: 1.1,
-                    letterSpacing: -0.24,
-                  ),
-                ),
+                // // ✅ **목표 소개**
+                // Text(
+                //   widget.goalIntro,
+                //   style: TextStyle(
+                //     fontSize: 12.sp,
+                //     color: greyColor3,
+                //     fontFamily: 'Pretendard',
+                //     fontWeight: FontWeight.w400,
+                //     height: 1.1,
+                //     letterSpacing: -0.24,
+                //   ),
+                // ),
                 SizedBox(height: 22.42.h),
 
-                // ✅ **목표 이미지 표시**
+                // ✅ 도장판 (Paw 아이콘 추가)
+
+                // ✅ **도장판 (Paw 아이콘 추가)**
                 Container(
-                  padding: EdgeInsets.all(16.0.w),
+                  padding: EdgeInsets.all(10.0.w),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.r),
+                    color: Colors.white, // ✅ 배경색 추가
+                    borderRadius: BorderRadius.circular(10.r), // ✅ 둥근 모서리
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 30,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      mainAxisSpacing: 10.63.h,
-                      crossAxisSpacing: 10.75.w,
-                    ),
-                    itemBuilder: (context, index) {
-                      if (index < goalImages.length) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: mainBrownColor2,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(6.0.w), // ✅ **패딩 조정**
-                            child: SvgPicture.asset(
-                              goalImages[index],
-                              fit: BoxFit.contain,
-                              width: 24.w,
-                              height: 24.w,
-                            ),
-                          ),
-                        );
-                      } else {
-                        return DashedCircle(
-                          size: 24.57.w,
-                          color: mainBrownColor,
-                        );
-                      }
+                  child: Consumer<GoalProvider>(
+                    builder: (context, goalProvider, child) {
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 30, // 최대 30개의 도장을 표시
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,
+                          mainAxisSpacing: 10.63.h,
+                          crossAxisSpacing: 10.75.w,
+                        ),
+                        itemBuilder: (context, index) {
+                          return goalImages.length > index
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: mainBrownColor2, // ✅ Paw 배경 추가
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(6.0.w), // ✅ 패딩 조정
+                                    child: SvgPicture.asset(
+                                      'assets/paw.svg', // ✅ 업로드된 개수만큼 paw.svg 추가
+                                      fit: BoxFit.contain,
+                                      width: 24.w,
+                                      height: 24.w,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: mainBrownColor),
+                                  ),
+                                  width: 24.57.w,
+                                  height: 24.57.w,
+                                );
+                        },
+                      );
                     },
                   ),
                 ),
-                Spacer(),
               ],
             ),
 
@@ -214,23 +258,28 @@ class CheckPageImage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Upload(goalId: "default_goal"),
+                      builder: (context) => Upload(goalId: widget.goalId),
                     ),
                   );
                 },
               ),
             ),
 
-            // ✅ **체크 페이지 발자국 버튼**
+            // ✅ **체크 페이지 이미지 버튼**
             Positioned(
               top: 60.h,
               left: 300.w,
               child: FloatingActionButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CheckPageFoot(),
+                      builder: (context) => CheckPageImage3(
+                          goalId: widget.goalId,
+                          goalTitle: widget.goalTitle,
+                          createdAt: widget.createdAt,
+                          imageUrl: widget.imageUrl // ✅ imageUrl 전달
+                          ),
                     ),
                   );
                 },

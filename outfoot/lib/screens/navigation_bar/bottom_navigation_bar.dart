@@ -3,10 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 추가
 import 'package:outfoot/colors/colors.dart';
 
-// 이동 페이지
+// 이동 페이지 import
 import 'package:outfoot/screens/home_page.dart';
 import 'package:outfoot/screens/profile_my_page.dart';
-import 'package:outfoot/screens/checkpage_foot.dart';
+import 'package:outfoot/screens/checkpage_foot.dart' as checkPage;
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int selectedIndex;
@@ -30,38 +30,36 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex; // 초기값 설정
-    print('Access Token: ${widget.token}');
+    debugPrint('Access Token: ${widget.token}');
   }
 
   void _onItemTapped(int index) {
+    if (_selectedIndex == index) return; // 현재 선택된 페이지를 다시 선택하면 아무 동작 안 함.
+
+    Widget nextPage;
+    switch (index) {
+      case 0: // 둘러보기 (추후 추가 가능)
+        return;
+      case 1: // 홈
+        nextPage = HomePage();
+        break;
+      case 2: // 마이페이지
+        nextPage = const ProfileMyPage();
+        break;
+      default:
+        return;
+    }
+
+    // 네비게이션 실행 (setState() 제거)
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => nextPage),
+      (route) => false,
+    );
+
+    // 상태 업데이트 (네비게이션 후 실행)
     setState(() {
       _selectedIndex = index;
     });
-    switch (index) {
-      case 0: // 둘러보기
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CheckPageFoot(
-                    token: widget.token ?? 'default_token',
-                    checkPageId: '1',
-                    goalImagePath: 'default_image_path',
-                  )), // 둘러보기 페이지
-        );
-        break;
-      case 1: // 홈
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-        break;
-      case 2: // 마이페이지
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => ProfileMyPage()),
-        );
-        break;
-    }
   }
 
   @override
@@ -70,25 +68,25 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       width: double.infinity,
       height: 84.0,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
-            offset: Offset(0, -4),
+            offset: const Offset(0, -4),
             blurRadius: 8,
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
         child: BottomNavigationBar(
-          backgroundColor: lightMainColor, // 여기에 배경색을 설정
+          backgroundColor: lightMainColor, // 배경색 설정
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: _buildCustomItem(
@@ -138,7 +136,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             height: 24.0,
             color: _selectedIndex == index ? mainBrownColor : greyColor6,
           ),
-          SizedBox(height: 6.93),
+          const SizedBox(height: 6.93),
           Text(
             label,
             style: TextStyle(
@@ -157,17 +155,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 }
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: "assets/config/.env"); // .env 파일 로드
-
+void main() {
   runApp(MaterialApp(
     home: Scaffold(
-      body: Center(child: Text("Main Content")),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: 1,
-        token: dotenv.env['TOKEN']?? 'default_token',
-      ),
+      body: HomePage(), // 기본 시작 화면 설정
+      bottomNavigationBar: CustomBottomNavigationBar(),
     ),
   ));
 }
