@@ -23,8 +23,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _isDeleteMode = false;
+
   bool _isGroupGoalSelected = false;
   List<Map<String, dynamic>> goalList = [];
+
+  void _toggleDeleteMode() {
+    setState(() {
+      _isDeleteMode = !_isDeleteMode;
+    });
+  }
+
+  void _deleteGoal(String goalId) {
+    final goalProvider = Provider.of<GoalProvider>(context, listen: false);
+
+    goalProvider.deleteGoal(goalId); // ✅ 목표 삭제
+    setState(() {
+      goalList.removeWhere((goal) => goal["goalId"] == goalId);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('목표가 삭제되었습니다.')),
+    );
+  }
 
   @override
   void didChangeDependencies() {
@@ -137,7 +158,10 @@ class _HomePageState extends State<HomePage> {
       designSize: Size(375, 812),
       builder: (context, child) {
         return Scaffold(
-          appBar: TopNavigationBar(checkPageId: 1),
+          appBar: TopNavigationBar(
+            checkPageId: 1,
+            onDeleteModeToggle: _toggleDeleteMode, // 🔴 상단바 삭제 버튼과 연결
+          ),
           backgroundColor: lightColor1,
           body: Consumer<GoalProvider>(
             // ✅ 목표가 자동으로 업데이트되도록 Consumer 사용
@@ -219,6 +243,7 @@ class _HomePageState extends State<HomePage> {
                       for (var goal in goalList)
                         _buildGoalCard(
                           context,
+                          goal["goalId"],
                           goal["title"],
                           goal["startDate"],
                           goal["progress"],
@@ -258,78 +283,91 @@ class _HomePageState extends State<HomePage> {
   }
 
   // ✅ **목표 카드 위젯 (목표 리스트 동적 생성)**
-  Widget _buildGoalCard(BuildContext context, String title, String startDate,
-      double progressPercentage, Widget? destinationPage) {
+  Widget _buildGoalCard(BuildContext context, String goalId, String title,
+      String startDate, double progressPercentage, Widget? destinationPage) {
     return Padding(
       padding: EdgeInsets.only(bottom: 8.h),
-      child: GestureDetector(
-        onTap: destinationPage != null
-            ? () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => destinationPage),
-                );
-              }
-            : null, // OUTFOOT 모각코는 터치 이벤트 없음
-        child: Container(
-          width: 330.w,
-          height: 113.h,
-          padding: EdgeInsets.all(16.0.sp),
-          decoration: BoxDecoration(
-            color: lightColor2,
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "시작일 $startDate",
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: greyColor4,
-                  fontFamily: 'Pretendard',
-                  fontWeight: FontWeight.w400,
-                ),
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: !_isDeleteMode && destinationPage != null
+                ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => destinationPage),
+                    );
+                  }
+                : null,
+            child: Container(
+              width: 330.w,
+              height: 113.h,
+              padding: EdgeInsets.all(16.0.sp),
+              decoration: BoxDecoration(
+                color: lightColor2,
+                borderRadius: BorderRadius.circular(10.r),
               ),
-              SizedBox(height: 4.h),
-              Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
+                  Text(
+                    "시작일 $startDate",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: greyColor4,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: blackBrownColor,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  LinearProgressIndicator(
+                    value: ((progressPercentage ?? 0.0) / 100).clamp(0.0, 1.0),
+                    backgroundColor: greyColor3,
+                    valueColor: AlwaysStoppedAnimation(mainBrownColor),
+                    minHeight: 6.h,
+                  ),
+                  SizedBox(height: 4.h),
+                  Align(
+                    alignment: Alignment.centerRight,
                     child: Text(
-                      title,
+                      "완성도 $progressPercentage% 완성 중",
                       style: TextStyle(
-                        fontSize: 14.sp,
-                        color: blackBrownColor,
+                        fontSize: 12.sp,
+                        color: greyColor4,
                         fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 8.h),
-              LinearProgressIndicator(
-                value: ((progressPercentage ?? 0.0) / 100).clamp(0.0, 1.0),
-                backgroundColor: greyColor3,
-                valueColor: AlwaysStoppedAnimation(mainBrownColor),
-                minHeight: 6.h,
-              ),
-              SizedBox(height: 4.h),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "완성도 $progressPercentage% 완성 중",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: greyColor4,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          if (_isDeleteMode)
+            Positioned(
+              top: 4,
+              right: 4,
+              child: IconButton(
+                icon: Icon(Icons.remove_circle, color: Colors.red, size: 24),
+                onPressed: () => _deleteGoal(goalId),
+              ),
+            ),
+        ],
       ),
     );
   }

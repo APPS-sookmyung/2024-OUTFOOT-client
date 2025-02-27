@@ -67,14 +67,20 @@ class GoalProvider with ChangeNotifier {
   }
 
   void addGoal(Map<String, dynamic> goal) {
-    if (!goalExists(goal["goalId"].toString())) {
+    String goalId = goal["goalId"];
+
+    if (!goalExists(goalId)) {
+      _goalTitles[goalId] = goal["title"]; // ✅ 목표 제목 저장
+      _goalDates[goalId] = goal["startDate"]; // ✅ 목표 날짜 저장
+
       _goalList.add({
-        "goalId": goal["goalId"].toString(), // ✅ goalId를 String으로 유지
+        "goalId": goalId,
         "title": goal["title"],
         "startDate": goal["startDate"],
-        "progress": (goal["progress"] ?? 0.0).toDouble(), // ✅ null 방지
+        "progress": goal["progress"] ?? 0.0,
         "imageUrl": goal["imageUrl"] ?? "",
       });
+
       notifyListeners();
     }
   }

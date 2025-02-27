@@ -6,8 +6,10 @@ import 'package:outfoot/api/checkpage_delete_api.dart';
 
 class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
   final int checkPageId; // 삭제할 도장판 ID
+  final VoidCallback onDeleteModeToggle;
 
-  TopNavigationBar({required this.checkPageId});
+  TopNavigationBar(
+      {required this.checkPageId, required this.onDeleteModeToggle});
 
   final CheckPageApi _checkPageApi = CheckPageApi(); // CheckPageApi 객체 생성
 
@@ -43,8 +45,7 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
             width: 17.363,
             height: 21.565,
           ),
-          onPressed: () =>
-              _showDeleteConfirmationDialog(context), // 삭제 확인 다이얼로그
+          onPressed: onDeleteModeToggle,
         ),
       ],
     );
@@ -118,11 +119,27 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isDeleteMode = false; // 삭제 모드 상태
+
+  void _toggleDeleteMode() {
+    setState(() {
+      _isDeleteMode = !_isDeleteMode; // 삭제 모드 토글
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopNavigationBar(checkPageId: 1), // 예시로 ID 1 전달
+      appBar: TopNavigationBar(
+        checkPageId: 1,
+        onDeleteModeToggle: _toggleDeleteMode,
+      ), // 예시로 ID 1 전달
       body: Center(child: Text('body')),
     );
   }
