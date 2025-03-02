@@ -149,11 +149,10 @@ class StartLoginPageScreen extends StatelessWidget {
             // 카카오 로그인 로직 호출
             final userController = context.read<UserController>();
             await userController.kakaoLogin();
-            final user = context.read<UserController>().user;
-            if (user != null) {
+
+            if (userController.accessToken != null) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text('로그인 성공: ${user.properties?["nickname"]}')),
+                SnackBar(content: Text('로그인 성공! 토큰 저장 완료')),
               );
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
