@@ -285,6 +285,9 @@ class _HomePageState extends State<HomePage> {
   // ✅ **목표 카드 위젯 (목표 리스트 동적 생성)**
   Widget _buildGoalCard(BuildContext context, String goalId, String title,
       String startDate, double progressPercentage, Widget? destinationPage) {
+    final goalProvider = Provider.of<GoalProvider>(context);
+    double progress = goalProvider.getGoalProgress(goalId);
+
     return Padding(
       padding: EdgeInsets.only(bottom: 8.h),
       child: Stack(
@@ -336,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 8.h),
                   LinearProgressIndicator(
-                    value: ((progressPercentage ?? 0.0) / 100).clamp(0.0, 1.0),
+                    value: ((progress ?? 0.0) / 100).clamp(0.0, 1.0),
                     backgroundColor: greyColor3,
                     valueColor: AlwaysStoppedAnimation(mainBrownColor),
                     minHeight: 6.h,
@@ -345,7 +348,7 @@ class _HomePageState extends State<HomePage> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      "완성도 $progressPercentage% 완성 중",
+                      "완성도 ${progress.toInt()}% 완성 중",
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: greyColor4,

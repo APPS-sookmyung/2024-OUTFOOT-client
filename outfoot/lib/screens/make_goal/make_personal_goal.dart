@@ -5,6 +5,7 @@ import 'package:outfoot/api/personal_goal_api.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 // 이동 페이지 import
 import 'package:outfoot/screens/home_page.dart';
