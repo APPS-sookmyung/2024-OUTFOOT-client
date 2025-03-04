@@ -111,7 +111,7 @@ class _UploadState extends State<Upload> {
       final String goalId = widget.goalId; // ✅ 현재 목표 ID 가져오기
 
       _titleController.text = goalProvider.getGoalTitle(goalId);
-      _contentController.text = goalProvider.getGoalIntro(goalId);
+      //content를 초기화해서 해당 textfield에 placeholder가 아닌 text가 보였던거임
     });
   }
 
