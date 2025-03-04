@@ -5,7 +5,6 @@ import 'package:outfoot/api/personal_goal_api.dart';
 import 'package:outfoot/models/personal_goal_model.dart';
 import 'package:outfoot/colors/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 // 이동 페이지 import
 import 'package:outfoot/screens/home_page.dart';
@@ -289,139 +288,152 @@ class _MakePersonalGoalPageState extends State<MakePersonalGoalPage> {
 
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // 화면 크기와 관계없이 높이 조정 가능
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (BuildContext context) {
-        return Stack(
-          children: [
-            // 뒤의 배경 요소를 투명하게 설정
-            Positioned.fill(
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  color: Colors.black.withOpacity(0.5), // 반투명 검은 배경
-                ),
-              ),
-            ),
-            DraggableScrollableSheet(
-              initialChildSize: 0.7, // 초기 높이를 화면의 70%로 설정
-              maxChildSize: 0.95, // 최대 높이
-              minChildSize: 0.5, // 최소 높이
-              expand: false, // 고정된 높이에서 확장 가능 여부
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-                  decoration: BoxDecoration(
-                    color: greyColor10,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20.r)),
-                  ),
-                  child: SingleChildScrollView(
-                    controller: scrollController, // 스크롤 컨트롤러 연결
-                    child: Column(
-                      children: [
-                        SizedBox(height: 16.h),
-                        Text(
-                          '해당 목표의\n도장 메이트를 선택해주세요',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: greyColor1,
-                            fontSize: 18.sp,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w600,
-                            height: 1.2,
-                            letterSpacing: -0.36,
-                          ),
-                        ),
-                        SizedBox(height: 13.h),
-                        SvgPicture.asset(
-                          'assets/yellow_smile_icon.svg',
-                          width: 124.w,
-                          height: 124.h,
-                        ),
-                        SizedBox(height: 40.h),
-                        GridView.builder(
-                          shrinkWrap: true, // 그리드 크기를 자식에 맞춤
-                          physics: NeverScrollableScrollPhysics(), // 내부 스크롤 방지
-                          itemCount: 8,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 13.w,
-                            mainAxisSpacing: 13.h,
-                          ),
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  tempSelectedAnimalId =
-                                      index + 1; // 선택된 animalId
-                                });
-                              },
-                              child: Container(
-                                width: 60.w,
-                                height: 60.h,
-                                decoration: ShapeDecoration(
-                                  color: Color(0xFFF9F6F0),
-                                  shape: OvalBorder(),
-                                ),
-                                child: index == 0 // 첫 번째 원에만 이미지 추가
-                                    ? SvgPicture.asset(
-                                        'assets/animal_illust/polarBear.svg', // 첫 번째 원의 SVG 파일
-                                        width: 40.w,
-                                        height: 40.h,
-                                      )
-                                    : null, // 다른 원에는 아무 것도 추가하지 않음
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(height: 54.h), // 원과 선택 완료 버튼 사이의 간격
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50.h,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (tempSelectedAnimalId != null) {
-                                setState(() {
-                                  selectedAnimalId =
-                                      tempSelectedAnimalId; // 최종적으로 선택된 animalId
-                                });
-                                Navigator.pop(context);
-                              } else {
-                                print(
-                                    'Please select an animal before completing.');
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: apricotColor2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                            ),
-                            child: Text(
-                              '선택 완료',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16.h),
-                      ],
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Stack(
+              children: [
+                // 반투명 배경
+                Positioned.fill(
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
                     ),
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+                DraggableScrollableSheet(
+                  initialChildSize: 0.7,
+                  maxChildSize: 0.95,
+                  minChildSize: 0.5,
+                  expand: false,
+                  builder: (BuildContext context,
+                      ScrollController scrollController) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24.w, vertical: 16.h),
+                      decoration: BoxDecoration(
+                        color: greyColor10,
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20.r)),
+                      ),
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 16.h),
+                            Text(
+                              '해당 목표의\n도장 메이트를 선택해주세요',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: greyColor1,
+                                fontSize: 18.sp,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.2,
+                                letterSpacing: -0.36,
+                              ),
+                            ),
+                            SizedBox(height: 13.h),
+
+                            // 첫번째 원 누르면 polarBear.svg 표시
+                            SvgPicture.asset(
+                              selectedAnimalId == 1
+                                  ? 'assets/animal_illust/polarBear.svg'
+                                  : 'assets/yellow_smile_icon.svg',
+                              width: 124.w,
+                              height: 124.h,
+                            ),
+
+                            SizedBox(height: 40.h),
+
+                            // GridView 동물 선택
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 8,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4,
+                                crossAxisSpacing: 13.w,
+                                mainAxisSpacing: 13.h,
+                              ),
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setModalState(() {
+                                      tempSelectedAnimalId = index + 1;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 60.w,
+                                    height: 60.h,
+                                    decoration: ShapeDecoration(
+                                      color: Color(0xFFF9F6F0),
+                                      shape: OvalBorder(),
+                                    ),
+                                    child: index == 0
+                                        ? SvgPicture.asset(
+                                            'assets/animal_illust/polarBear.svg',
+                                            width: 40.w,
+                                            height: 40.h,
+                                          )
+                                        : null,
+                                  ),
+                                );
+                              },
+                            ),
+
+                            SizedBox(height: 54.h),
+
+                            // 선택 완료 버튼
+                            SizedBox(
+                              width: double.infinity,
+                              height: 50.h,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (tempSelectedAnimalId != null) {
+                                    setState(() {
+                                      selectedAnimalId = tempSelectedAnimalId;
+                                    });
+                                    Navigator.pop(context);
+                                  } else {
+                                    print(
+                                        'Please select an animal before completing.');
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: apricotColor2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                ),
+                                child: Text(
+                                  '선택 완료',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(height: 16.h),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
         );
       },
     );
