@@ -5,6 +5,7 @@ class GoalProvider with ChangeNotifier {
   Map<String, String> _goalIntros = {};
   Map<String, String> _goalDates = {};
   Map<String, List<String>> _goalImages = {};
+  Map<String, double> _goalProgress = {};
 
   List<Map<String, dynamic>> _goalList = [];
 
@@ -58,7 +59,16 @@ class GoalProvider with ChangeNotifier {
   void addImage(String goalId, String imageUrl) {
     _goalImages[goalId] ??= [];
     _goalImages[goalId]!.add(imageUrl);
+
+    // progress 계산 (현재 등록된 개수 / 30 * 100) 후 반올림
+    _goalProgress[goalId] =
+        ((getGoalImages(goalId).length / 30) * 100).roundToDouble();
+
     notifyListeners();
+  }
+
+  double getGoalProgress(String goalId) {
+    return _goalProgress[goalId] ?? 0.0;
   }
 
   bool goalExists(String goalId) {
